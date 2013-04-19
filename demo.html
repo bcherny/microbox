@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+	<title>microBox</title>
+	<link rel="stylesheet" href="stylesheets/microbox.css" />
+	<!--[if lte IE 9]><link rel="stylesheet" href="stylesheets/microbox-ie9.css" /><![endif]-->
+	<!--[if lte IE 8]><link rel="stylesheet" href="stylesheets/microbox-ie8.css" /><![endif]-->
+</head>
+<body>
+
+	<ul>
+		<li><a href="images/C4-1.png" class="lightbox" data-set="C4"><img src="images/logo.png" alt="" /></a></li>
+		<li><a href="images/ForwardMetrics-1.png" class="lightbox" data-set="ForwardMetrics"><img src="images/logo-fm.png" alt="" /></a></li>
+	</ul>
+
+	<!--<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>-->
+	<script src="javascripts/lib/event.js"></script>
+	<script src="javascripts/lib/shifty.js"></script>
+	<script src="javascripts/microbox.js"></script>
+	<script>
+		microBox.addImageSet({
+			'C4': ['images/C4-2.png'],
+			'ForwardMetrics': ['images/ForwardMetrics-2.png', 'images/ForwardMetrics-3.png']
+		});
+	</script>
+</body>
+</html>

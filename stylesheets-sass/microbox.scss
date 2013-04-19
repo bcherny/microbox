@@ -1,0 +1,177 @@
+// compass settings & imports
+
+$legacy-support-for-ie6: true;
+
+@import "compass/support";
+@import "compass/css3/border-radius";
+@import "compass/css3/box-shadow";
+@import "compass/css3/images";
+@import "compass/css3/opacity";
+@import "compass/css3/text-shadow";
+@import "compass/css3/transition";
+
+// reset
+
+* { border:0;margin:0;padding:0;outline:0 }
+
+// styles
+
+body {
+	background: #aaa;
+	font: 14px Helvetica, Arial, sans-serif;
+	padding: 20px;
+}
+
+li {
+	display: inline;
+	list-style: none;
+	margin: 0 -3px 0 0;
+
+	a {
+		background: #999;
+		display: inline-block;
+		padding: 10px;
+
+		&:hover {
+			background: #888;
+		}
+		img {
+			display: block;
+		}
+	}
+}
+
+.microBox {
+	@include box-shadow(2px 2px 3px rgba(0, 0, 0, 0.2));
+	background: rgba(0,0,0,.7);
+	overflow-y: auto;
+	padding: 10px;
+	position: fixed;
+		left: 50px;
+		top: 50px;
+
+	img {
+		@include box-shadow(0 0 3px rgba(0, 0, 0, 0.2));
+		display: none;
+		image-rendering: optimizeQuality;
+		-ms-interpolation-mode: bicubic;
+		margin: 0 auto 10px;
+
+		&.cur {
+			display: block;
+		}
+		&.abs {
+			display: block;
+			position: absolute;
+				left: 0;
+				top: 0;
+
+			&.new { z-index: 1 }
+			&.old { z-index: 2 }
+		}
+	}
+
+	.inner {
+		overflow: hidden;
+		position: relative;
+		width: 100%;
+	}
+
+	.pager {
+		@include border-radius(5px);
+		@include box-shadow(2px 2px 3px rgba(0, 0, 0, 0.2));
+		overflow: hidden;
+		position: fixed;
+			bottom: 6px;
+			left: 50px;
+		z-index: 3;
+
+		li {
+			display: inline-block;
+			list-style: none;
+			margin: 0;
+			vertical-align: bottom;
+		}
+
+		li.label, a {
+			border-right: 1px solid rgba(0,0,0,.2);
+			color: #999;
+			display: inline-block;
+			padding: 10px 15px;
+			text-decoration: none;
+		}
+
+		li.label {
+			@include border-radius(5px 0 0 5px);
+			@include text-shadow(-1px -1px 0 rgba(0,0,0,.15));
+			background: rgba(0,0,0,.75);
+			color: #999;
+			font-size: 12px;
+			font-weight: bold;
+			padding: 11px 14px 10px;
+		}
+
+		$pager: #555;
+		$pager-hover: darken($pager, 5%);
+		$pager-active: darken($pager-hover, 8%);
+
+		a {
+			background: $pager;
+			@include background(linear-gradient($pager, darken($pager, 12%)));
+			@include text-shadow(1px 1px 0 rgba(0,0,0,.2));
+
+			&:hover {
+				background: $pager-hover;
+				@include background(linear-gradient($pager-hover, darken($pager-hover, 12%)));
+				color: #fff;
+				text-decoration: underline;
+			}
+			&:active {
+				background: $pager-active;
+				@include background(linear-gradient($pager-active, darken($pager-hover, 12%)));
+			}
+
+			&.cur,
+			&.cur:hover {
+				background: $pager-active;
+				@include background(linear-gradient(lighten($pager-active, 4%), darken($pager-active, 5%)));
+				color: #eee;
+				font-size: 18px;
+				font-weight: bold;
+				padding: 7px 15px;
+				text-decoration: none;
+			}
+
+			// opera 9.5+ only
+			x:-o-prefocus,
+			&.cur,
+			&.cur:hover {
+				padding: 8px 15px 7px;
+			}
+
+			&.last {
+				@include border-radius(0 5px 5px 0);
+				border: 0;
+			}
+
+			&.first {
+				@include border-radius(5px 0 0 5px);
+			}
+		}
+	}
+
+	.scroller {
+		@include box-shadow(0 0 2px rgba(0,0,0,.2));
+		background-color: rgba(0,0,0,.5);
+		cursor: default;
+		display: block;
+		height: 100px;
+		position: absolute;
+			left: 0;
+			top: 0;
+		width: 30px;
+
+		&:hover  { background-color: rgba(0,0,0,.6) }
+		&.active { background-color: rgba(0,0,0,.8) }
+	}
+}
