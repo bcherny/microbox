@@ -18,6 +18,7 @@ define(function (require, exports, module) {
 
 		// vars
 		
+		var pages = {};
 		var sets = {};
 		var lightboxes = {};
 		var options = {
@@ -50,6 +51,7 @@ define(function (require, exports, module) {
 		}
 
 		function addSet (setId) {
+			pages[setId] = 0;
 			sets[setId] = [];
 		}
 
@@ -72,7 +74,7 @@ define(function (require, exports, module) {
 		}
 
 		function setRendered (setId) {
-			return !!$('#microBox-' + setId);
+			return !!$('#microbox-' + setId);
 		}
 
 		function getSetIdFromRel (string) {
@@ -98,34 +100,36 @@ define(function (require, exports, module) {
 		}
 
 		function hide (setId) {
-			$('#microBox-' + setId).classList.remove('microBox-show');
+			$('#microbox-' + setId).classList.remove('microbox-show');
 		}
 
 		function show (setId) {
-			$('#microBox-' + setId).classList.add('microBox-show');
+			$('#microbox-' + setId).classList.add('microbox-show');
 		}
 
-		function jump (element) {
+		/**
+		 * Jump to a slide
+		 * @param  {String} *setId		// defaults to first set (often unpredictable because some browsers sort object keys!)
+		 * @param  {Number} *pageId		// defaults to increment
+		 */
+		function jump (setId, pageId) {
 
-			// get parent
-			var parent = _.parent(element, {
-				tagName: 'UL'
-			});
+			// normalize setId
+			if (_.isNull(setId)) {
+				setId = _.one(sets);
+			}
 
-			// swap slides
-			var links = $('a', parent);
-			var index = element.innerHTML*1-1;
-			var lightbox = parent.parentNode;
+			// normalize pageId
+			if (_.isNull(pageId) || !_.isDefined(pageId)) {
+				pageId = pages[setId] + 1;
+			}
+
+			var lightbox = $('#microbox-' + setId);
 			var images = $('img', lightbox);
+			var newCur = images[pageId];
 			var oldCur = $('.cur', lightbox);
-			var newCur = images[index];
 			var maxHeight = px(getStyle(lightbox).maxHeight);
 			var maxWidth = px(getStyle(lightbox).maxWidth);
-			var pager;
-
-			if (options.showPager) {
-				pager = $('.pager', lightbox);
-			}
 
 			// do it
 			beforeTransition(oldCur, newCur, function() {
@@ -158,10 +162,6 @@ define(function (require, exports, module) {
 					newCur.style.opacity = 1-newOpacity;
 				}
 
-				if (pager) {
-					pager.style.left = newLeft + 'px';
-				}
-
 				// trigger callback
 
 				afterTransition(oldCur, newCur);
@@ -169,13 +169,13 @@ define(function (require, exports, module) {
 			});
 
 			// swap pager styles
-			if (element.classList.contains('cur')) {
-				var cur = $('.cur', parent);
-				if (cur) {
-					cur.classList.remove('cur');
-				}
-				element.classList.add('cur');
-			}
+			// if (element.classList.contains('cur')) {
+			// 	var cur = $('.cur', parent);
+			// 	if (cur) {
+			// 		cur.classList.remove('cur');
+			// 	}
+			// 	element.classList.add('cur');
+			// }
 		}
 
 		// function setSize () {
@@ -202,15 +202,16 @@ define(function (require, exports, module) {
 
 			var images = getSet(setId);
 			var html = template.images(setId, images);
+			var showPager = options.showPager;
 
 			// show pager?
-			if (options.showPager) {
+			if (showPager) {
 				html += template.pager(setId, images);
 			}
 
 			// remove the lightbox first if it's already rendered
 			if (setRendered(setId)) {
-				var element = $('#microBox-' + setId);
+				var element = $('#microbox-' + setId);
 				document.body.removeChild(element);
 			}
 
@@ -219,7 +220,18 @@ define(function (require, exports, module) {
 			D.body.innerHTML += box;
 
 			// store the reference
-			lightboxes[setId] = $('#microBox-' + setId);
+			lightboxes[setId] = $('#microbox-' + setId);
+
+			// if there's a pager, select the first item
+			if (showPager) {
+
+				var item = $('td', lightboxes[setId])[1];
+
+				if (item) {
+					item.classList.add('cur');
+				}
+
+			}
 
 		}
 
@@ -227,19 +239,27 @@ define(function (require, exports, module) {
 
 			var target = e.target;
 			var clickedTrigger = _.parent(target, function (element) {
-				return element.classList.contains('microBox-trigger');
-			});
-			var clickedInPager = target.tagName === 'A' && _.parent(target, function (element) {
-				return element.classList.contains('pager');
+				return element.classList.contains('microbox-trigger');
 			});
 			var clickedInLightbox = _.parent(target, function (element) {
-				return element.classList.contains('microBox');
+				return element.classList.contains('microbox');
+			});
+			var clickedInPager = _.parent(target, function (element) {
+				return element.getAttribute('data-microbox-set');
 			});
 
 			if (clickedInPager) {
 
 				stop(e);
-				jump(target);
+
+				var pageId = target.getAttribute('data-microbox-page');
+				var setId = target.getAttribute('data-microbox-srt');
+
+				$('.cur', target.parentNode)[0].classList.remove('cur');
+				target.classList.add('cur');
+
+				jump(setId, pageId);
+
 				return;
 
 			}
@@ -256,7 +276,7 @@ define(function (require, exports, module) {
 
 				target = clickedTrigger;
 
-				var setId = target.getAttribute('data-lightbox-set');
+				var setId = target.getAttribute('data-microbox-trigger');
 
 				// this set is the active set
 				if (setId === model.activeSetId) {
@@ -308,12 +328,12 @@ define(function (require, exports, module) {
 
 				// check for set ID
 				if (_.isNull(setId)) {
-					setId = 'lightbox-' + setCount;
+					setId = 'microbox-' + setCount;
 				}
 
 				// prepare DOM for delegated toggling
-				toggler.setAttribute('data-lightbox-set', setId);
-				toggler.classList.add('microBox-trigger');
+				toggler.setAttribute('data-microbox-trigger', setId);
+				toggler.classList.add('microbox-trigger');
 
 				// collect set info
 				add(setId, href);

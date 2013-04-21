@@ -33,7 +33,7 @@ li {
 	}
 }
 
-.microBox {
+.microbox {
 
 	$offset: 50px;
 
@@ -49,7 +49,7 @@ li {
 		right: $offset;
 		top: $offset;
 
-	&.microBox-show {
+	&.microbox-show {
 		display: block;
 	}
 
@@ -82,48 +82,30 @@ li {
 		width: 100%;
 	}
 
-	.pager {
-		@include border-radius;
-		@include box-shadow(2px 2px 3px rgba(0, 0, 0, 0.2));
-		@include transition;
-		overflow: hidden;
-		position: fixed;
-			bottom: 6px;
-			left: 50px;
-		z-index: 3;
-
-		li {
-			display: inline-block;
-			list-style: none;
-			margin: 0;
-			vertical-align: bottom;
-		}
-
-		li.label, a {
-			border-right: 1px solid rgba(0,0,0,.2);
-			color: #999;
-			display: inline-block;
-			padding: 10px 15px;
-			text-decoration: none;
-		}
-
-		li.label {
-			@include border-radius(5px 0 0 5px);
-			@include text-shadow(-1px -1px 0 rgba(0,0,0,.15));
-			background: rgba(0,0,0,.75);
-			color: #999;
-			font-size: 12px;
-			font-weight: bold;
-			padding: 11px 14px 10px;
-		}
+	.microbox-pager {
 
 		$pager: #555;
 		$pager-hover: darken($pager, 5%);
 		$pager-active: darken($pager-hover, 8%);
 
-		a {
+		@include border-radius;
+		@include box-shadow(2px 2px 3px rgba(0, 0, 0, 0.2));
+		@include transition;
+		border-collapse: collapse;
+		position: fixed;
+			bottom: 6px;
+			left: 50px;
+		z-index: 3;
+
+		td {
 			@include gradient($pager, darken($pager, 12%));
 			@include text-shadow(1px 1px 0 rgba(0,0,0,.2));
+			color: #ddd;
+			cursor: pointer;
+			height: 38px;
+			text-align: center;
+			vertical-align: middle;
+			width: 40px;
 
 			&:hover {
 				@include gradient($pager-hover, darken($pager-hover, 12%));
@@ -140,8 +122,15 @@ li {
 				color: #eee;
 				font-size: 18px;
 				font-weight: bold;
-				padding: 7px 15px;
 				text-decoration: none;
+			}
+
+			&:first-of-type {
+				@include border-radius(5px 0 0 5px);
+			}
+
+			&:last-of-type {
+				@include border-radius(0 5px 5px 0);
 			}
 
 			// opera 9.5+ only
@@ -150,8 +139,23 @@ li {
 			&.cur:hover {
 				padding: 8px 15px 7px;
 			}
-
 		}
+
+		.microbox-pager-label {
+			border-right: 1px solid rgba(0,0,0,.2);
+			color: #999;
+			padding: 0 15px;
+		}
+
+		.microbox-pager-label {
+			@include border-radius(5px 0 0 5px);
+			@include text-shadow(-1px -1px 0 rgba(0,0,0,.15));
+			background: rgba(0,0,0,.75);
+			color: #999;
+			font-size: 12px;
+			font-weight: bold;
+		}
+
 	}
 
 	.scroller {

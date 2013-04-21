@@ -33,6 +33,14 @@ define(function (require, exports, module) {
 		return typeof item === 'string';
 	}
 
+	function one (obj) {
+		for (var i in obj) {
+			if (obj.hasOwnProperty(i)) {
+				return i;
+			}
+		}
+	}
+
 	/**
 	 * Get element's parent
 	 * @param  {DOMElement} element	The element to start iterating on
@@ -44,7 +52,7 @@ define(function (require, exports, module) {
 		if (isFunction(filter)) {
 
 			do {
-				
+
 				if (filter(element)) {
 					return element;
 				}
@@ -101,6 +109,7 @@ define(function (require, exports, module) {
 		isNull: isNull,
 		isString: isString,
 		isObject: isObject,
+		one: one,
 		parent: parent,
 		toArray: toArray,
 		toNumber: toNumber,

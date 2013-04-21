@@ -11,7 +11,7 @@ define(function (require, exports, module) {
 
 		container: function (setId, content) {
 
-			return '<div class="microBox" id="microBox-' + setId + '">' + content + '</div>';
+			return '<div class="microbox" id="microbox-' + setId + '">' + content + '</div>';
 
 		},
 
@@ -32,17 +32,17 @@ define(function (require, exports, module) {
 			var html = [];
 			var options = this.options;
 
-			html.push('<ul class="pager">');
+			html.push('<table class="microbox-pager"><tr>');
 
 			if (options.showPagerTitle) {
-				html.push('<li class="label">', setId, '</li>');
+				html.push('<td class="microbox-pager-label">', setId, '</td>');
 			}
 
 			images.forEach(function (image, n) {
-				html.push('<li><a href="#' + setId + '-' + n + '" class="' + (!n ? 'cur' : '') + '">' + (n+1) + '</a></li>');
+				html.push('<td data-microbox-set="' + setId + '" data-microbox-page="' + n + '">' + (n+1) + '</td>');
 			});
 
-			html.push('</ul>');
+			html.push('</tr></table>');
 
 			return html.join('');
 		},
