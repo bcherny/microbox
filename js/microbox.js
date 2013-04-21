@@ -92,17 +92,17 @@ define(function (require, exports, module) {
 		}
 
 		function hideAll () {
-			for (var lightbox in lightboxes) {
-				hide(lightboxes[lightbox]);
+			for (var set in sets) {
+				hide(set);
 			}
 		}
 
-		function hide (element) {
-			element.classList.remove('microBox-show');
+		function hide (setId) {
+			$('#microBox-' + setId).classList.remove('microBox-show');
 		}
 
-		function show (element) {
-			element.classList.add('microBox-show');
+		function show (setId) {
+			$('#microBox-' + setId).classList.add('microBox-show');
 		}
 
 		function jump (element) {
@@ -236,8 +236,6 @@ define(function (require, exports, module) {
 				return element.classList.contains('microBox');
 			});
 
-			stop(e);
-
 			if (clickedInPager) {
 
 				stop(e);
@@ -263,7 +261,11 @@ define(function (require, exports, module) {
 				// this set is the active set
 				if (setId === model.activeSetId) {
 
-					hide(lightboxes[setId]);
+					// hide this lightbox
+					hide(setId);
+
+					// update model
+					model.activeSetId = null;
 
 				} else {
 
@@ -271,7 +273,10 @@ define(function (require, exports, module) {
 					hideAll();
 
 					// show this lightbox
-					show(lightboxes[setId]);
+					show(setId);
+
+					// update model
+					model.activeSetId = setId;
 
 				}
 
@@ -281,6 +286,9 @@ define(function (require, exports, module) {
 
 			// otherwise, hide other lightboxes
 			hideAll();
+
+			// update model
+			model.activeSetId = null;
 
 		}
 
