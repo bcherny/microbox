@@ -1,18 +1,10 @@
-// compass settings & imports
+// imports
 
-$legacy-support-for-ie6: true;
-
-@import "compass/support";
-@import "compass/css3/border-radius";
-@import "compass/css3/box-shadow";
-@import "compass/css3/images";
-@import "compass/css3/opacity";
-@import "compass/css3/text-shadow";
-@import "compass/css3/transition";
+@import "mixins";
 
 // reset
 
-* { border:0;margin:0;padding:0;outline:0 }
+* { border:0;margin:0;padding:0 }
 
 // styles
 
@@ -42,20 +34,33 @@ li {
 }
 
 .microBox {
+
+	$offset: 50px;
+
 	@include box-shadow(2px 2px 3px rgba(0, 0, 0, 0.2));
+	@include transition;
 	background: rgba(0,0,0,.7);
-	overflow-y: auto;
+	display: none;
+	overflow: auto;
 	padding: 10px;
 	position: fixed;
-		left: 50px;
-		top: 50px;
+		bottom: $offset;
+		left: $offset;
+		right: $offset;
+		top: $offset;
+
+	&.microBox-show {
+		display: block;
+	}
 
 	img {
 		@include box-shadow(0 0 3px rgba(0, 0, 0, 0.2));
+		@include transition;
 		display: none;
 		image-rendering: optimizeQuality;
 		-ms-interpolation-mode: bicubic;
-		margin: 0 auto 10px;
+		margin: 0 auto;
+		max-width: 100%;
 
 		&.cur {
 			display: block;
@@ -78,8 +83,9 @@ li {
 	}
 
 	.pager {
-		@include border-radius(5px);
+		@include border-radius;
 		@include box-shadow(2px 2px 3px rgba(0, 0, 0, 0.2));
+		@include transition;
 		overflow: hidden;
 		position: fixed;
 			bottom: 6px;
@@ -116,25 +122,21 @@ li {
 		$pager-active: darken($pager-hover, 8%);
 
 		a {
-			background: $pager;
-			@include background(linear-gradient($pager, darken($pager, 12%)));
+			@include gradient($pager, darken($pager, 12%));
 			@include text-shadow(1px 1px 0 rgba(0,0,0,.2));
 
 			&:hover {
-				background: $pager-hover;
-				@include background(linear-gradient($pager-hover, darken($pager-hover, 12%)));
+				@include gradient($pager-hover, darken($pager-hover, 12%));
 				color: #fff;
 				text-decoration: underline;
 			}
 			&:active {
-				background: $pager-active;
-				@include background(linear-gradient($pager-active, darken($pager-hover, 12%)));
+				@include gradient($pager-active, darken($pager-hover, 12%));
 			}
 
 			&.cur,
 			&.cur:hover {
-				background: $pager-active;
-				@include background(linear-gradient(lighten($pager-active, 4%), darken($pager-active, 5%)));
+				@include gradient(lighten($pager-active, 4%), darken($pager-active, 5%));
 				color: #eee;
 				font-size: 18px;
 				font-weight: bold;
@@ -149,14 +151,6 @@ li {
 				padding: 8px 15px 7px;
 			}
 
-			&.last {
-				@include border-radius(0 5px 5px 0);
-				border: 0;
-			}
-
-			&.first {
-				@include border-radius(5px 0 0 5px);
-			}
 		}
 	}
 

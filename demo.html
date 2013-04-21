@@ -2,26 +2,28 @@
 <html>
 <head>
 	<title>microBox</title>
-	<link rel="stylesheet" href="stylesheets/microbox.css" />
-	<!--[if lte IE 9]><link rel="stylesheet" href="stylesheets/microbox-ie9.css" /><![endif]-->
-	<!--[if lte IE 8]><link rel="stylesheet" href="stylesheets/microbox-ie8.css" /><![endif]-->
+	<link rel="stylesheet" href="css/microbox.css" />
+	<!--[if lte IE 9]><link rel="stylesheet" href="css/microbox-ie9.css" /><![endif]-->
+	<!--[if lte IE 8]><link rel="stylesheet" href="css/microbox-ie8.css" /><![endif]-->
 </head>
 <body>
 
 	<ul>
-		<li><a href="images/C4-1.png" class="lightbox" data-set="C4"><img src="images/logo.png" alt="" /></a></li>
-		<li><a href="images/ForwardMetrics-1.png" class="lightbox" data-set="ForwardMetrics"><img src="images/logo-fm.png" alt="" /></a></li>
+		<li><a href="img/C4-1.png" rel="lightbox[C4]"><img src="img/logo.png" alt="" /></a></li>
+		<li><a href="img/ForwardMetrics-1.png" rel="lightbox[ForwardMetrics]"><img src="img/logo-fm.png" alt="" /></a></li>
 	</ul>
 
 	<!--<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>-->
-	<script src="javascripts/lib/event.js"></script>
-	<script src="javascripts/lib/shifty.js"></script>
-	<script src="javascripts/microbox.js"></script>
+	<script data-main="js/microbox.js" src="js/lib/require.js"></script>
 	<script>
-		microBox.addImageSet({
-			'C4': ['images/C4-2.png'],
-			'ForwardMetrics': ['images/ForwardMetrics-2.png', 'images/ForwardMetrics-3.png']
+
+		require(['microBox'], function (microBox) {
+
+			microBox.add('C4', ['img/C4-2.png']);
+			microBox.add('ForwardMetrics', ['img/ForwardMetrics-2.png', 'img/ForwardMetrics-3.png']);
+
 		});
+
 	</script>
 </body>
 </html>
