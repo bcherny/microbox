@@ -17,10 +17,12 @@
 	<script data-main="js/microbox.js" src="js/lib/require.js"></script>
 	<script>
 
-		require(['microBox'], function (microBox) {
+		require(['microBox'], function (microbox) {
 
-			microBox.add('C4', ['img/C4-2.png']);
-			microBox.add('ForwardMetrics', ['img/ForwardMetrics-2.png', 'img/ForwardMetrics-3.png']);
+			var box = new microbox();
+
+			box.add('C4', ['img/C4-2.png']);
+			box.add('ForwardMetrics', ['img/ForwardMetrics-2.png', 'img/ForwardMetrics-3.png']);
 
 		});
 

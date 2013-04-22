@@ -20,7 +20,7 @@ define(function (require, exports, module) {
 			var html = ['<div class="inner">'];
 
 			images.forEach(function (image, n) {
-				html.push('<img src="' + image + '" alt="' + setId + ' (' + (n+1) + ')' + '"' + (!n ? ' class="cur"' : '') + ' />');
+				html.push('<img src="' + image + '" alt="' + setId + ' (' + (n+1) + ')' + '" />');
 			});
 
 			return html.concat('</div>').join('');

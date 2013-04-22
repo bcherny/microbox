@@ -12,9 +12,9 @@ define(function (require, exports, module) {
 	var W = window;
 	var isIE = N.appName === 'Microsoft Internet Explorer';
 	var regexLightbox = /^lightbox/;
-	var px = _.toNumber;
+	// var px = _.toNumber;
 
-	var microBox = (function (opts) {
+	function microbox (opts) {
 
 		// vars
 		
@@ -82,16 +82,16 @@ define(function (require, exports, module) {
 			return parts.length === 1 ? null : parts[1].slice(0,-1);
 		}
 
-		function beforeTransition (oldCur, newCur, callback) {
-			oldCur.className = 'abs old';
-			newCur.className = 'abs new';
-			if (callback) callback();
-		}
+		// function beforeTransition (oldCur, newCur, callback) {
+		// 	oldCur.className = 'abs old';
+		// 	newCur.className = 'abs new';
+		// 	if (callback) callback();
+		// }
 
-		function afterTransition (oldCur, newCur) {
-			oldCur.className = '';
-			newCur.className = 'cur';
-		}
+		// function afterTransition (oldCur, newCur) {
+		// 	oldCur.className = '';
+		// 	newCur.className = 'cur';
+		// }
 
 		function hideAll () {
 			for (var set in sets) {
@@ -121,52 +121,66 @@ define(function (require, exports, module) {
 
 			// normalize pageId
 			if (_.isNull(pageId) || !_.isDefined(pageId)) {
-				pageId = pages[setId] + 1;
+				pageId = pageCurrentId + 1;
 			}
 
+			// which images shall we animate?
+			var pageCurrentId = pages[setId];
 			var lightbox = $('#microbox-' + setId);
 			var images = $('img', lightbox);
-			var newCur = images[pageId];
-			var oldCur = $('.cur', lightbox);
-			var maxHeight = px(getStyle(lightbox).maxHeight);
-			var maxWidth = px(getStyle(lightbox).maxWidth);
+			var imgNew = images[pageId];
+			var imgOld = images[pageCurrentId];
+
+			// dooit
+			imgOld.classList.remove('cur');
+			imgNew.classList.add('cur');
+
+			// update model
+			pages[setId] = pageId;
+
+			// var lightbox = $('#microbox-' + setId);
+			// var images = $('img', lightbox);
+			// var newCur = images[pageId];
+			// var oldCur = $('.cur', lightbox);
+			// var maxHeight = px(getStyle(lightbox).maxHeight);
+			// var maxWidth = px(getStyle(lightbox).maxWidth);
 
 			// do it
-			beforeTransition(oldCur, newCur, function() {
+			// beforeTransition(oldCur, newCur, function() {
 
-				// compute new styles
+			// 	// compute new styles
 
-				var size = getSize();
-				var newHeight = newCur.offsetHeight || maxHeight;
-				var newWidth = newCur.offsetWidth || maxWidth;
-				var newLeft = (((size.x-newWidth)/2)|1) - 10;
-				var newTop = (((size.y-newHeight)/2)|1) - 10;
-				var newOpacity = 1;
+			// 	var size = getSize();
+			// 	var newHeight = newCur.offsetHeight || maxHeight;
+			// 	var newWidth = newCur.offsetWidth || maxWidth;
+			// 	var newLeft = (((size.x-newWidth)/2)|1) - 10;
+			// 	var newTop = (((size.y-newHeight)/2)|1) - 10;
+			// 	var newOpacity = 1;
 				
-				if (newHeight > maxHeight) {
-					newHeight = maxHeight;
-				}
+			// 	if (newHeight > maxHeight) {
+			// 		newHeight = maxHeight;
+			// 	}
 
-				if (newWidth > maxWidth) {
-					newWidth = maxWidth;
-				}
+			// 	if (newWidth > maxWidth) {
+			// 		newWidth = maxWidth;
+			// 	}
 
-				// set new styles
+			// 	// set new styles
 
-				lightbox.style.width = newWidth + 'px';
-				lightbox.style.height = newHeight + 'px';
-				lightbox.style.left = newLeft + 'px';
-				lightbox.style.top = newTop + 'px';
+			// 	lightbox.style.width = newWidth + 'px';
+			// 	lightbox.style.height = newHeight + 'px';
+			// 	lightbox.style.left = newLeft + 'px';
+			// 	lightbox.style.top = newTop + 'px';
 
-				if (newOpacity) {
-					newCur.style.opacity = 1-newOpacity;
-				}
+			// 	if (newOpacity) {
+			// 		newCur.style.opacity = 1-newOpacity;
+			// 	}
 
-				// trigger callback
+			// 	// trigger callback
 
-				afterTransition(oldCur, newCur);
+			// 	afterTransition(oldCur, newCur);
 
-			});
+			// });
 
 			// swap pager styles
 			// if (element.classList.contains('cur')) {
@@ -233,79 +247,104 @@ define(function (require, exports, module) {
 
 			}
 
+			// activate the first image
+			jump(setId, 0);
+
 		}
 
 		function click (e) {
 
-			var target = e.target;
-			var clickedTrigger = _.parent(target, function (element) {
-				return element.classList.contains('microbox-trigger');
-			});
-			var clickedInLightbox = _.parent(target, function (element) {
-				return element.classList.contains('microbox');
-			});
-			var clickedInPager = _.parent(target, function (element) {
-				return element.getAttribute('data-microbox-set');
-			});
+			var events = {
 
-			if (clickedInPager) {
+				// hide other lightboxes
+				document: {
+					fn: function () {
+						hideAll();
+					},
+					yep: function () {
+						return !_.parent(e.target, function (element) {
+							return !element.classList.contains('microbox');
+						});
+					}
+				},
 
-				stop(e);
+				image: {
+					fn: function () {
+						e.target.classList.toggle('zoom');
+					},
+					yep: function () {
+						return e.target.tagName === 'IMG';
+					}
+				},
 
-				var pageId = target.getAttribute('data-microbox-page');
-				var setId = target.getAttribute('data-microbox-srt');
+				pager: {
+					fn: function () {
+						stop(e);
 
-				$('.cur', target.parentNode)[0].classList.remove('cur');
-				target.classList.add('cur');
+						var target = e.target;
+						var pageId = target.getAttribute('data-microbox-page');
+						var setId = target.getAttribute('data-microbox-srt');
 
-				jump(setId, pageId);
+						$('.cur', target.parentNode)[0].classList.remove('cur');
+						target.classList.add('cur');
 
-				return;
+						jump(setId, pageId);
 
-			}
+						return;
+					},
+					yep: function () {
+						return _.parent(e.target, function (element) {
+							return element.getAttribute('data-microbox-set');
+						});
+					}
+				},
 
-			// ignore clicks inside the lightbox
-			if (clickedInLightbox) {
-				return;
-			}
+				// user clicked on a trigger -> show lightbox
+				trigger: {
+					fn: function () {
+						stop(e);
 
-			// user clicked on a trigger -> show lightbox
-			if (clickedTrigger) {
+						var target = this.yep();
+						var setId = target.getAttribute('data-microbox-trigger');
 
-				stop(e);
+						// this set is the active set
+						if (setId === model.activeSetId) {
 
-				target = clickedTrigger;
+							// hide this lightbox
+							hide(setId);
 
-				var setId = target.getAttribute('data-microbox-trigger');
+							// update model
+							model.activeSetId = null;
 
-				// this set is the active set
-				if (setId === model.activeSetId) {
+						} else {
 
-					// hide this lightbox
-					hide(setId);
+							// hide other lightboxes
+							hideAll();
 
-					// update model
-					model.activeSetId = null;
+							// show this lightbox
+							show(setId);
 
-				} else {
+							// update model
+							model.activeSetId = setId;
+						}
 
-					// hide other lightboxes
-					hideAll();
-
-					// show this lightbox
-					show(setId);
-
-					// update model
-					model.activeSetId = setId;
-
+						return;
+					},
+					yep: function () {
+						return _.parent(e.target, function (element) {
+							return element.classList.contains('microbox-trigger');
+						});
+					}
 				}
-
-				return;
-
+			};
+			
+			// trigger events
+			for (var evt in events) {
+				var candidate = events[evt];
+				if (candidate.yep()) {
+					candidate.fn();
+				}
 			}
-
-			// otherwise, hide other lightboxes
-			hideAll();
 
 			// update model
 			model.activeSetId = null;
@@ -375,7 +414,7 @@ define(function (require, exports, module) {
 			add: add
 		};
 
-	})();
+	}
 
 
 
@@ -383,28 +422,28 @@ define(function (require, exports, module) {
 
 
 
-	function getSize (element) {
-		var el = element || (W.innerWidth ? W : D.documentElement);
-		return element ? {x: el.offsetWidth, y: el.offsetHeight} : (el.clientWidth ? {x: el.clientWidth, y: el.clientHeight} : {x: el.innerWidth, y: el.innerHeight});
-	}
+	// function getSize (element) {
+	// 	var el = element || (W.innerWidth ? W : D.documentElement);
+	// 	return element ? {x: el.offsetWidth, y: el.offsetHeight} : (el.clientWidth ? {x: el.clientWidth, y: el.clientHeight} : {x: el.innerWidth, y: el.innerHeight});
+	// }
 
-	function getStyle (element) {
-		return isIE ? element.currentStyle : getComputedStyle(element);
-	}
+	// function getStyle (element) {
+	// 	return isIE ? element.currentStyle : getComputedStyle(element);
+	// }
 
-	function setCSS (selector, property, value) {
-		var sheet = document.styleSheets[0];
-		var rules = sheet.cssRules || sheet.rules;
-		var successFlag = 0;
-		console.log('len: ', rules.length);
-		rules.forEach(function (rule) {
-			if (rule.selectorText === selector) {
-				successFlag = 1;
-				rule.style[property] = value;
-			}
-		});
-		return successFlag;
-	}
+	// function setCSS (selector, property, value) {
+	// 	var sheet = document.styleSheets[0];
+	// 	var rules = sheet.cssRules || sheet.rules;
+	// 	var successFlag = 0;
+	// 	console.log('len: ', rules.length);
+	// 	rules.forEach(function (rule) {
+	// 		if (rule.selectorText === selector) {
+	// 			successFlag = 1;
+	// 			rule.style[property] = value;
+	// 		}
+	// 	});
+	// 	return successFlag;
+	// }
 
 	function getTogglers() {
 		return _.toArray($('a')).filter(
@@ -425,8 +464,8 @@ define(function (require, exports, module) {
 	
 
 
-	module.exports = microBox;
+	module.exports = microbox;
 
 
 
-})
+});

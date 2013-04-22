@@ -4,7 +4,7 @@ define(function (require, exports, module) {
 
 	'use strict';
 
-	
+
 	var D = document;
 	var W = window;
 	var Array_proto = Array.prototype;
@@ -32,6 +32,12 @@ define(function (require, exports, module) {
 				var self = this;
 				self.className = self.className.replace(new RegExp(regex[0] + className + regex[1]), '$1');
 				return self;
+			},
+			toggle: function (className) {
+				var classList = this.classList;
+				return classList[(
+					classList.contains('className') ? 'remove' : 'add'
+				)](className);
 			}
 		};
 
