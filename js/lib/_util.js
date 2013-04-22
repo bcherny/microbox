@@ -52,7 +52,6 @@ define(function (require, exports, module) {
 		if (isFunction(filter)) {
 
 			do {
-
 				if (filter(element)) {
 					return element;
 				}

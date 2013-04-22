@@ -11,7 +11,12 @@ define(function (require, exports, module) {
 
 		container: function (setId, content) {
 
-			return '<div class="microbox" id="microbox-' + setId + '">' + content + '</div>';
+			var div = document.createElement('div');
+			div.className = 'microbox';
+			div.id = 'microbox-' + setId;
+			div.innerHTML = content;
+
+			return div;
 
 		},
 

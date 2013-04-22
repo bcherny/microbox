@@ -231,7 +231,7 @@ define(function (require, exports, module) {
 
 			// inject lightbox
 			var box = template.container(setId, html);
-			D.body.innerHTML += box;
+			D.body.appendChild(box);
 
 			// store the reference
 			lightboxes[setId] = $('#microbox-' + setId);
@@ -262,9 +262,11 @@ define(function (require, exports, module) {
 						hideAll();
 					},
 					yep: function () {
-						return !_.parent(e.target, function (element) {
-							return !element.classList.contains('microbox');
+						var a = !_.parent(e.target, function (element) {
+							return element.classList.contains('microbox');
 						});
+						console.log(a);
+						return a;
 					}
 				},
 
