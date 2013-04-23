@@ -262,11 +262,10 @@ define(function (require, exports, module) {
 						hideAll();
 					},
 					yep: function () {
-						var a = !_.parent(e.target, function (element) {
-							return element.classList.contains('microbox');
+						return !_.parent(e.target, function (element) {
+							var classList = element.classList;
+							return classList && classList.contains('microbox');
 						});
-						console.log(a);
-						return a;
 					}
 				},
 
@@ -286,8 +285,11 @@ define(function (require, exports, module) {
 						var target = e.target;
 						var pageId = target.getAttribute('data-microbox-page');
 						var setId = target.getAttribute('data-microbox-srt');
+						var cur = $('.cur', target.parentNode);
 
-						$('.cur', target.parentNode)[0].classList.remove('cur');
+						if (cur[0]) {
+							cur[0].classList.remove('cur');
+						}
 						target.classList.add('cur');
 
 						jump(setId, pageId);
@@ -296,7 +298,7 @@ define(function (require, exports, module) {
 					},
 					yep: function () {
 						return _.parent(e.target, function (element) {
-							return element.getAttribute('data-microbox-set');
+							return !_.isNull(element.getAttribute('data-microbox-set'));
 						});
 					}
 				},

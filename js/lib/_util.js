@@ -52,13 +52,14 @@ define(function (require, exports, module) {
 		if (isFunction(filter)) {
 
 			do {
+
 				if (filter(element)) {
 					return element;
 				}
 
 				element = element.parentNode;
 
-			} while (element.offsetParent);
+			} while (_continue(element));
 
 		} else {
 
@@ -79,11 +80,15 @@ define(function (require, exports, module) {
 
 				element = element.parentNode;
 
-			} while (element.offsetParent);
+			} while (_continue(element));
 
 		}
 
-		return null;
+		function _continue (element) {
+			return !isDefined(element.documentElement) && element.tagName !== 'HTML';
+		}
+
+		return false;
 
 	}
 
