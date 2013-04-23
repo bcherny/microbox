@@ -9,20 +9,19 @@
 <body>
 
 	<ul>
-		<li><a href="img/C4-1.png" rel="lightbox[C4]"><img src="img/logo.png" alt="" /></a></li>
-		<li><a href="img/ForwardMetrics-1.png" rel="lightbox[ForwardMetrics]"><img src="img/logo-fm.png" alt="" /></a></li>
+		<li><a href="img/dlanham_Phosphoric Acid.jpg" rel="lightbox[Dlanham's artwork]"><img src="img/dlanham_Phosphoric-Acid.thumb.png" alt="" /></a></li>
+		<li><a href="img/dlanham_Entropy.jpg" rel="lightbox[Dlanham's artwork]"><img src="img/dlanham_Entropy.thumb.jpg" alt="" /></a></li>
+		<li><a href="img/dlanham_herp.jpg" rel="lightbox[Dlanham's artwork]"><img src="img/dlanham_herp.thumb.png" alt="" /></a></li>
+		<li><a href="img/dlanham_NightOwl.png" rel="lightbox[Dlanham's artwork]"><img src="img/dlanham_NightOwl.thumb.png" alt="" /></a></li>
 	</ul>
 
 	<!--<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>-->
 	<script data-main="js/microbox.js" src="js/lib/require.js"></script>
 	<script>
 
-		require(['microBox'], function (microbox) {
+		require(['microBox'], function (MicroBox) {
 
-			var box = new microbox();
-
-			box.add('C4', ['img/C4-2.png']);
-			box.add('ForwardMetrics', ['img/ForwardMetrics-2.png', 'img/ForwardMetrics-3.png']);
+			var mb = new MicroBox();
 
 		});
 
