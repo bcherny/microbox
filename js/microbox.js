@@ -8,13 +8,9 @@ define(function (require, exports, module) {
 	var template = require('lib/_template');
 
 	var D = document;
-	// var N = navigator;
-	// var W = window;
-	// var isIE = N.appName === 'Microsoft Internet Explorer';
 	var regexLightbox = /^lightbox/;
-	// var px = _.toNumber;
 
-	function microbox (opts) {
+	function MicroBox (opts) {
 
 		// vars
 		
@@ -84,33 +80,10 @@ define(function (require, exports, module) {
 			return setId in sets;
 		}
 
-		function setRendered (setId) {
-			return !!$('#microbox-' + setId);
-		}
-
-		// function beforeTransition (oldCur, newCur, callback) {
-		// 	oldCur.className = 'abs old';
-		// 	newCur.className = 'abs new';
-		// 	if (callback) callback();
-		// }
-
-		// function afterTransition (oldCur, newCur) {
-		// 	oldCur.className = '';
-		// 	newCur.className = 'cur';
-		// }
-
 		function hideAll () {
 			for (var set in sets) {
 				hide(set);
 			}
-		}
-
-		function hide (setId) {
-			$('#microbox-' + setId).classList.remove('microbox-show');
-		}
-
-		function show (setId) {
-			$('#microbox-' + setId).classList.add('microbox-show');
 		}
 
 		/**
@@ -160,79 +133,7 @@ define(function (require, exports, module) {
 			// update model
 			pages[setId] = pageId;
 
-			// var lightbox = $('#microbox-' + setId);
-			// var images = $('img', lightbox);
-			// var newCur = images[pageId];
-			// var oldCur = $('.cur', lightbox);
-			// var maxHeight = px(getStyle(lightbox).maxHeight);
-			// var maxWidth = px(getStyle(lightbox).maxWidth);
-
-			// do it
-			// beforeTransition(oldCur, newCur, function() {
-
-			// 	// compute new styles
-
-			// 	var size = getSize();
-			// 	var newHeight = newCur.offsetHeight || maxHeight;
-			// 	var newWidth = newCur.offsetWidth || maxWidth;
-			// 	var newLeft = (((size.x-newWidth)/2)|1) - 10;
-			// 	var newTop = (((size.y-newHeight)/2)|1) - 10;
-			// 	var newOpacity = 1;
-				
-			// 	if (newHeight > maxHeight) {
-			// 		newHeight = maxHeight;
-			// 	}
-
-			// 	if (newWidth > maxWidth) {
-			// 		newWidth = maxWidth;
-			// 	}
-
-			// 	// set new styles
-
-			// 	lightbox.style.width = newWidth + 'px';
-			// 	lightbox.style.height = newHeight + 'px';
-			// 	lightbox.style.left = newLeft + 'px';
-			// 	lightbox.style.top = newTop + 'px';
-
-			// 	if (newOpacity) {
-			// 		newCur.style.opacity = 1-newOpacity;
-			// 	}
-
-			// 	// trigger callback
-
-			// 	afterTransition(oldCur, newCur);
-
-			// });
-
-			// swap pager styles
-			// if (element.classList.contains('cur')) {
-			// 	var cur = $('.cur', parent);
-			// 	if (cur) {
-			// 		cur.classList.remove('cur');
-			// 	}
-			// 	element.classList.add('cur');
-			// }
 		}
-
-		// function setSize () {
-
-		// 	var element = $('.microBox');
-
-		// 	if (element) {
-
-		// 		var style = getStyle(element);
-		// 		var windowSize = getSize();
-		// 		var xPad = px(style.borderLeftWidth) + px(style.borderRightWidth) + px(style.paddingLeft) + px(style.paddingRight) + px(style.marginLeft) + px(style.marginRight) + 2*px(style.left);
-		// 		var yPad = px(style.borderTopWidth) + px(style.borderBottomWidth) + px(style.paddingTop) + px(style.paddingBottom) + px(style.marginTop) + px(style.marginBottom) + 2*px(style.top);
-
-		// 		var height = (windowSize.y-yPad) + 'px';
-
-		// 		setCSS('.microBox', 'height', height);
-		// 		setCSS('.microBox', 'maxWidth', (windowSize.x-xPad) + 'px');
-
-		// 	}
-
-		// }
 
 		function build (setId) {
 
@@ -327,12 +228,6 @@ define(function (require, exports, module) {
 						var target = e.target;
 						var pageId = target.getAttribute('data-microbox-page');
 						var setId = target.getAttribute('data-microbox-srt');
-						// var cur = $('.cur', target.parentNode);
-
-						// if (cur[0]) {
-						// 	cur[0].classList.remove('cur');
-						// }
-						// target.classList.add('cur');
 
 						jump(setId, pageId);
 
@@ -442,7 +337,7 @@ define(function (require, exports, module) {
 		 * Add images to an image set
 		 * @param {String}			setId	The set ID
 		 * @param {String|Array}	items	URL or array of URLs
-		 * @param {DOMELement}		*element
+		 * @param {DOMElement}		*element
 		 */
 		function add (setId, items, element) {
 			
@@ -473,29 +368,6 @@ define(function (require, exports, module) {
 
 
 
-	// function getSize (element) {
-	// 	var el = element || (W.innerWidth ? W : D.documentElement);
-	// 	return element ? {x: el.offsetWidth, y: el.offsetHeight} : (el.clientWidth ? {x: el.clientWidth, y: el.clientHeight} : {x: el.innerWidth, y: el.innerHeight});
-	// }
-
-	// function getStyle (element) {
-	// 	return isIE ? element.currentStyle : getComputedStyle(element);
-	// }
-
-	// function setCSS (selector, property, value) {
-	// 	var sheet = document.styleSheets[0];
-	// 	var rules = sheet.cssRules || sheet.rules;
-	// 	var successFlag = 0;
-	// 	console.log('len: ', rules.length);
-	// 	rules.forEach(function (rule) {
-	// 		if (rule.selectorText === selector) {
-	// 			successFlag = 1;
-	// 			rule.style[property] = value;
-	// 		}
-	// 	});
-	// 	return successFlag;
-	// }
-
 	function getTogglers() {
 		return _.toArray($('a')).filter(
 			function (item) {
@@ -516,11 +388,25 @@ define(function (require, exports, module) {
 		}
 	}
 
+	function hide (setId) {
+		$('#microbox-' + setId).classList.remove('microbox-show');
+	}
+
+	function show (setId) {
+		$('#microbox-' + setId).classList.add('microbox-show');
+	}
+
+	function setRendered (setId) {
+		return !!$('#microbox-' + setId);
+	}
+
+
+
 	///////////////////////////////////      public API     ///////////////////////////////////
 	
 
 
-	module.exports = microbox;
+	module.exports = MicroBox;
 
 
 
