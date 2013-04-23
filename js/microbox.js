@@ -8,9 +8,9 @@ define(function (require, exports, module) {
 	var template = require('lib/_template');
 
 	var D = document;
-	var N = navigator;
-	var W = window;
-	var isIE = N.appName === 'Microsoft Internet Explorer';
+	// var N = navigator;
+	// var W = window;
+	// var isIE = N.appName === 'Microsoft Internet Explorer';
 	var regexLightbox = /^lightbox/;
 	// var px = _.toNumber;
 
@@ -43,9 +43,20 @@ define(function (require, exports, module) {
 
 		// functions
 
-		function addToSet (setId, item) {
+		/**
+		 * Helper to add image to set
+		 * @param {String} setId	Unique set id
+		 * @param {String} item		URL for full sized image to hsow onClick
+		 * @param {Element} *element
+		 */
+		function addToSet (setId, item, element) {
 			if (!setContains(setId, item)) {
 				sets[setId].push(item);
+
+				if (element) {
+					element.setAttribute('data-microbox-page', sets[setId].length - 1);
+				}
+
 				build(setId);
 			}
 		}
@@ -75,11 +86,6 @@ define(function (require, exports, module) {
 
 		function setRendered (setId) {
 			return !!$('#microbox-' + setId);
-		}
-
-		function getSetIdFromRel (string) {
-			var parts = string.split('[');
-			return parts.length === 1 ? null : parts[1].slice(0,-1);
 		}
 
 		// function beforeTransition (oldCur, newCur, callback) {
@@ -134,6 +140,22 @@ define(function (require, exports, module) {
 			// dooit
 			imgOld.classList.remove('cur');
 			imgNew.classList.add('cur');
+
+			// de-activate old pager cell
+			var pager = $('.microbox-pager', lightbox)[0];
+			var cur = $('.cur', pager);
+
+			if (cur[0]) {
+				cur[0].classList.remove('cur');
+			}
+
+			// activate new pager cell
+			_.toArray($('td', pager)).forEach(function (item) {
+				if (item.getAttribute('data-microbox-page') === pageId) {
+					item.classList.add('cur');
+					return;
+				}
+			});
 
 			// update model
 			pages[setId] = pageId;
@@ -305,12 +327,12 @@ define(function (require, exports, module) {
 						var target = e.target;
 						var pageId = target.getAttribute('data-microbox-page');
 						var setId = target.getAttribute('data-microbox-srt');
-						var cur = $('.cur', target.parentNode);
+						// var cur = $('.cur', target.parentNode);
 
-						if (cur[0]) {
-							cur[0].classList.remove('cur');
-						}
-						target.classList.add('cur');
+						// if (cur[0]) {
+						// 	cur[0].classList.remove('cur');
+						// }
+						// target.classList.add('cur');
 
 						jump(setId, pageId);
 
@@ -330,6 +352,7 @@ define(function (require, exports, module) {
 
 						var target = this.yep();
 						var setId = target.getAttribute('data-microbox-trigger');
+						var pageId = target.getAttribute('data-microbox-page') || 0;
 
 						// this set is the active set
 						if (setId === model.activeSetId) {
@@ -347,6 +370,9 @@ define(function (require, exports, module) {
 
 							// show this lightbox
 							show(setId);
+
+							// page it
+							jump(setId, pageId);
 
 							// update model
 							model.activeSetId = setId;
@@ -399,7 +425,7 @@ define(function (require, exports, module) {
 				toggler.classList.add('microbox-trigger');
 
 				// collect set info
-				add(setId, href);
+				add(setId, href, toggler);
 			
 			});
 
@@ -416,8 +442,9 @@ define(function (require, exports, module) {
 		 * Add images to an image set
 		 * @param {String}			setId	The set ID
 		 * @param {String|Array}	items	URL or array of URLs
+		 * @param {DOMELement}		*element
 		 */
-		function add (setId, items) {
+		function add (setId, items, element) {
 			
 			// normalize items
 			if (_.isString(items)) {
@@ -429,7 +456,7 @@ define(function (require, exports, module) {
 
 			// add
 			items.forEach(function (item) {
-				addToSet(setId, item);
+				addToSet(setId, item, element);
 			});
 
 		}
@@ -475,6 +502,11 @@ define(function (require, exports, module) {
 				return item.rel.match(regexLightbox);
 			}
 		);
+	}
+
+	function getSetIdFromRel (string) {
+		var parts = string.split('[');
+		return parts.length === 1 ? null : parts[1].slice(0,-1);
 	}
 
 	function stop (e) {
