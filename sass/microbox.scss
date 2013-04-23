@@ -57,6 +57,7 @@ li {
 	img {
 		@include box-shadow(0 0 3px rgba(0, 0, 0, 0.2));
 		@include transition;
+		cursor: zoom-in;
 		display: none;
 		height: 100%;
 		image-rendering: optimizeQuality;
@@ -75,9 +76,6 @@ li {
 
 			&.new { z-index: 1 }
 			&.old { z-index: 2 }
-		}
-		&.zoom {
-			height: auto;
 		}
 	}
 

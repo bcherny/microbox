@@ -14,7 +14,7 @@ define(function (require, exports, module) {
 		var what = s[selector.charAt(0)];
 		return (context || document)['getElement'+(what || 'sByTagName')](selector.slice(what ? 1 : 0));
 	}
-
+	window.$ = $;
 
 	module.exports = $;
 
