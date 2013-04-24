@@ -154,27 +154,7 @@ define(function (require, exports, module) {
 
 				image: {
 					fn: function () {
-
-						// var img = e.target;
-						// var isZoomed = img.style.height;
-
-						// // create a dummy image that we can measure
-						// var full = new Image();
-						// full.src = img.src;
-
-						// // get full image height
-						// var height = full.height;
-						// var width = full.width;
-						// var style = img.style;
-
-						// // zoom!
-						// if (isZoomed) {
-						// 	style.cssText = '';
-						// } else {
-						// 	style.height = height + 'px';
-						// 	style['max-width'] = width + 'px';
-						// }
-
+						e.target.parentNode.classList.toggle('show-caption');
 					},
 					yep: function () {
 						return e.target.classList.contains('cur');

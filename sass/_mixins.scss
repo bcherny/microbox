@@ -67,6 +67,11 @@
 	        user-select: all;
 }
 
+@mixin scroll {
+	overflow: auto;
+	-webkit-overflow-scroll: touch;
+}
+
 @mixin opacity($opacity) {
 	@include prefix(opacity, $opacity);
 }
