@@ -36,9 +36,12 @@ li {
 
 .microbox {
 
-	$border: 10px;
+	$border: 0;
+	$shade: rgba(0,0,0,.8);
 	$offset: 23px;
 
+	background: $shade;
+	cursor: pointer;
 	display: none;
 	padding: $offset $offset ($offset + 2*$border);
 	position: fixed;
@@ -52,6 +55,14 @@ li {
 		display: block;
 	}
 
+	figcaption {
+		background: rgba(0,0,0,.5);
+		color: #ddd;
+		padding: 20px;
+		position: relative;
+			top: -55px;
+	}
+
 	img {
 		@include box-shadow(0 0 3px rgba(0, 0, 0, 0.2));
 		@include transition;
@@ -63,6 +74,17 @@ li {
 		max-height: 100%;
 		max-width: 100%;
 
+		&:after {
+			background: rgba(0,0,0,.5);
+			border-radius: 10px;
+			color: #bbb;
+			content: "Click anywhere to close";
+			padding: 20px 40px;
+			position: absolute;
+				right: 0;
+				top: 50%;
+		}
+
 		&.cur {
 			display: inline-block;
 		}
@@ -71,10 +93,15 @@ li {
 	.inner {
 		@include box-shadow(2px 2px 3px rgba(0, 0, 0, 0.2));
 		@include transition;
-		border: $border solid rgba(0,0,0,.7);
+		//border: $border solid rgba(255,255,255,.2);
+		cursor: default;
 		display: inline-block;
 		max-height: 100%;
 		text-align: center;
+
+		&.has-caption {
+			margin-bottom: 100px;
+		}
 	}
 	
 }

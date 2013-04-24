@@ -20,11 +20,16 @@ define(function (require, exports, module) {
 
 		},
 
-		images: function (setId, images) {
+		images: function (setId, images, captions) {
+
+			var caption = captions && captions[0] ? '<figcaption>' + captions[0] + '</figcaption>' : '';
 
 			return [
-				'<div class="inner">',
+				'<div class="inner' + (caption ? ' has-caption' : '') + '">',
+				'<figure>',
 				'<img src="' + images[0] + '" alt="' + setId + '" class="cur" />',
+				caption,
+				'</figure>',
 				'</div>'
 			].join('');
 

@@ -14,6 +14,7 @@ define(function (require, exports, module) {
 
 		// vars
 		
+		var captions = {};
 		var pages = {};
 		var sets = {};
 		var lightboxes = {};
@@ -42,12 +43,17 @@ define(function (require, exports, module) {
 		/**
 		 * Helper to add image to set
 		 * @param {String} setId	Unique set id
-		 * @param {String} item		URL for full sized image to hsow onClick
+		 * @param {String} item		URL for full sized image to show onClick
+		 * @param {String} caption	The image caption (description)
 		 * @param {Element} *element
 		 */
-		function addToSet (setId, item, element) {
+		function addToSet (setId, item, caption, element) {
 			if (!setContains(setId, item)) {
 				sets[setId].push(item);
+
+				addCaptionNx(setId);
+
+				captions[setId].push(caption);
 
 				if (element) {
 					element.setAttribute('data-microbox-page', sets[setId].length - 1);
@@ -56,6 +62,8 @@ define(function (require, exports, module) {
 				build(setId);
 			}
 		}
+
+		// set helpers
 
 		function addSet (setId) {
 			pages[setId] = 0;
@@ -80,6 +88,28 @@ define(function (require, exports, module) {
 			return setId in sets;
 		}
 
+		// caption helpers
+
+		function addCaption (setId) {
+			captions[setId] = [];
+		}
+
+		function addCaptionNx (setId) {
+			if (!captionExists(setId)) {
+				addCaption(setId);
+			}
+		}
+
+		function captionExists (setId) {
+			return setId in captions;
+		}
+
+		function getCaptions (setId) {
+			return captions[setId];
+		}
+
+		//
+
 		function hideAll () {
 			for (var set in sets) {
 				hide(set);
@@ -89,8 +119,9 @@ define(function (require, exports, module) {
 
 		function build (setId) {
 
+			var captions = getCaptions(setId);
 			var images = getSet(setId);
-			var html = template.images(setId, images);
+			var html = template.images(setId, images, captions);
 
 			// remove the lightbox first if it's already rendered
 			if (setRendered(setId)) {
@@ -124,25 +155,25 @@ define(function (require, exports, module) {
 				image: {
 					fn: function () {
 
-						var img = e.target;
-						var isZoomed = img.style.height;
+						// var img = e.target;
+						// var isZoomed = img.style.height;
 
-						// create a dummy image that we can measure
-						var full = new Image();
-						full.src = img.src;
+						// // create a dummy image that we can measure
+						// var full = new Image();
+						// full.src = img.src;
 
-						// get full image height
-						var height = full.height;
-						var width = full.width;
-						var style = img.style;
+						// // get full image height
+						// var height = full.height;
+						// var width = full.width;
+						// var style = img.style;
 
-						// zoom!
-						if (isZoomed) {
-							style.cssText = '';
-						} else {
-							style.height = height + 'px';
-							style['max-width'] = width + 'px';
-						}
+						// // zoom!
+						// if (isZoomed) {
+						// 	style.cssText = '';
+						// } else {
+						// 	style.height = height + 'px';
+						// 	style['max-width'] = width + 'px';
+						// }
 
 					},
 					yep: function () {
@@ -209,13 +240,7 @@ define(function (require, exports, module) {
 				return;
 			}
 
-			var box = $('#microbox-' + setId);
-			var img = $('img', box);
-
-			var x = box.innerWidth;
-			var y = img.innerHeight;
-
-			// TODO - force image resize
+			// TODO - trigger CSS to resize image (won't update in chrome!!!)
 
 		}
 
@@ -228,6 +253,7 @@ define(function (require, exports, module) {
 
 				var href = toggler.href;
 				var setId = 'microbox-' + setCount;
+				var title = toggler.title;
 
 				// increment set counter
 				++setCount;
@@ -237,7 +263,7 @@ define(function (require, exports, module) {
 				toggler.classList.add('microbox-trigger');
 
 				// collect set info
-				add(setId, href, toggler);
+				add(setId, href, title, toggler);
 			
 			});
 
@@ -253,23 +279,29 @@ define(function (require, exports, module) {
 		
 		/**
 		 * Add images to an image set
-		 * @param {String}			setId	The set ID
-		 * @param {String|Array}	items	URL or array of URLs
+		 * @param {String}			setId		The set ID
+		 * @param {String|Array}	items		URL or array of URLs
+		 * @param {String|Array}	captions	caption or array of captions
 		 * @param {DOMElement}		*element
 		 */
-		function add (setId, items, element) {
+		function add (setId, items, captions, element) {
 			
 			// normalize items
 			if (_.isString(items)) {
 				items = [items];
 			}
 
+			// normalize captions
+			if (_.isString(captions)) {
+				captions = [captions];
+			}
+
 			// check that the set exists, lazy create if it doesn't
 			addSetNx(setId);
 
 			// add
-			items.forEach(function (item) {
-				addToSet(setId, item, element);
+			items.forEach(function (item, n) {
+				addToSet(setId, item, captions[n], element);
 			});
 
 		}
