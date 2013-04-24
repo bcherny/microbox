@@ -25,7 +25,7 @@ define(function (require, exports, module) {
 			var caption;
 
 			if (captions && captions[0]) {
-				caption = '<span class="microbox-caption-trigger">i</span><figcaption>' + captions[0] + '</figcaption>';
+				caption = '<figcaption><span class="microbox-caption-trigger">i</span>' + captions[0] + '</figcaption>';
 			} else {
 				caption = '';
 			}

@@ -155,10 +155,32 @@ define(function (require, exports, module) {
 
 				caption: {
 					fn: function () {
-						var box = _.parent(e.target, function (element) {
+
+						var target = e.target;
+
+						// toggle box class
+						var box = _.parent(target, function (element) {
 							return element.classList.contains('microbox');
 						});
 						box.classList.toggle('show-caption');
+
+						// toggle caption
+						var caption = target.parentNode;
+						var height = caption.offsetHeight;
+						var winHeight = window.innerHeight || document.body.clientHeight;
+
+						if (box.classList.contains('show-caption')) {
+
+							console.log('height: ', height);
+
+							caption.style.top = (winHeight - height) + 'px';
+
+						} else {
+
+							caption.style.top = winHeight + 'px';
+
+						}
+
 					},
 					yep: function () {
 						return e.target.classList.contains('microbox-caption-trigger');
@@ -217,16 +239,17 @@ define(function (require, exports, module) {
 
 		}
 
-		function resize() {
-			var setId = model.activeSetId;
+		// function resize() {
 
-			if (!setId) {
-				return;
-			}
+		// 	var setId = model.activeSetId;
 
-			// TODO - trigger CSS to resize image (won't update in chrome!!!)
+		// 	if (!setId) {
+		// 		return;
+		// 	}
 
-		}
+		// 	align(setId);
+
+		// }
 
 		function init() {
 
@@ -257,7 +280,7 @@ define(function (require, exports, module) {
 
 		// attach delegated click event
 		document.addEventListener('click', click);
-		window.addEventListener('resize', resize);
+		// window.addEventListener('resize', resize);
 
 		// public API
 		
@@ -322,12 +345,12 @@ define(function (require, exports, module) {
 	}
 
 	function show (setId) {
-		var box = $('#microbox-' + setId);
-		box.classList.add('microbox-show');
-		align(box);
+		$('#microbox-' + setId).classList.add('microbox-show');
+		align(setId);
 	}
 
-	function align (box) {
+	function align (setId) {
+		var box = $('#microbox-' + setId);
 		var img = $('img', box)[0];
 		var inner = $('.inner', box);
 		var height = img.offsetHeight;
