@@ -318,7 +318,16 @@ define(function (require, exports, module) {
 	}
 
 	function show (setId) {
-		$('#microbox-' + setId).classList.add('microbox-show');
+		var box = $('#microbox-' + setId);
+		box.classList.add('microbox-show');
+		align(box);
+	}
+
+	function align (box) {
+		var img = $('img', box)[0];
+		var inner = $('.inner', box);
+		var height = img.offsetHeight;
+		inner[0].style['margin-top'] = -height/2 + 'px';
 	}
 
 	function setRendered (setId) {
