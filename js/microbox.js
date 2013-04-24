@@ -169,17 +169,11 @@ define(function (require, exports, module) {
 						var height = caption.offsetHeight;
 						var winHeight = window.innerHeight || document.body.clientHeight;
 
-						if (box.classList.contains('show-caption')) {
-
-							console.log('height: ', height);
-
-							caption.style.top = (winHeight - height) + 'px';
-
-						} else {
-
-							caption.style.top = winHeight + 'px';
-
-						}
+						caption.style.top = (
+							box.classList.contains('show-caption') ?
+							(winHeight - height) :
+							winHeight
+						) + 'px';
 
 					},
 					yep: function () {
@@ -239,18 +233,6 @@ define(function (require, exports, module) {
 
 		}
 
-		// function resize() {
-
-		// 	var setId = model.activeSetId;
-
-		// 	if (!setId) {
-		// 		return;
-		// 	}
-
-		// 	align(setId);
-
-		// }
-
 		function init() {
 
 			var togglers = getTogglers();
@@ -280,7 +262,6 @@ define(function (require, exports, module) {
 
 		// attach delegated click event
 		document.addEventListener('click', click);
-		// window.addEventListener('resize', resize);
 
 		// public API
 		
@@ -349,6 +330,10 @@ define(function (require, exports, module) {
 		align(setId);
 	}
 
+	/**
+	 * Vertically aligns a lightbox
+	 * @param  {String} setId
+	 */
 	function align (setId) {
 		var box = $('#microbox-' + setId);
 		var img = $('img', box)[0];
