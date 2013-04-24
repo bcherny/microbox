@@ -41,7 +41,6 @@ li {
 	$offset: 23px;
 
 	background: $shade;
-	cursor: pointer;
 	display: none;
 	position: fixed;
 		bottom: 0;
@@ -52,6 +51,16 @@ li {
 
 	&.microbox-show {
 		display: block;
+	}
+
+	&.show-caption {
+		figcaption {
+			@include opacity(1);
+			bottom: 0;
+		}
+		.microbox-caption-trigger {
+			bottom: 60px;
+		}
 	}
 
 	figure {
@@ -71,11 +80,6 @@ li {
 			right: 0;
 	}
 
-	.show-caption figcaption {
-		@include opacity(1);
-		bottom: 0;
-	}
-
 	img {
 		@include box-shadow(0 0 3px rgba(0, 0, 0, 0.2));
 		@include transition;
@@ -86,17 +90,6 @@ li {
 		margin-bottom: -3px;
 		max-height: 100%;
 		max-width: 100%;
-
-		&:after {
-			background: rgba(0,0,0,.5);
-			border-radius: 10px;
-			color: #bbb;
-			content: "Click anywhere to close";
-			padding: 20px 40px;
-			position: absolute;
-				right: 0;
-				top: 50%;
-		}
 
 		&.cur {
 			display: inline-block;
@@ -111,11 +104,40 @@ li {
 		max-height: 100%;
 		position: absolute;
 			left: 0;
+			right: 0;
 			top: 50%;
 		text-align: center;
 
 		&.has-caption {
 			margin-bottom: 100px;
+		}
+	}
+
+	.microbox-caption-trigger {
+		@include border-radius(30px);
+		@include box-shadow(inset 0 2px 2px 2px rgba(0,0,0,.2));
+		@include gradient( rgba(0,0,0,.2), rgba(0,0,0,.4) );
+		@include noselect;
+		@include transition;
+		color: #ccc;
+		cursor: pointer;
+		display: block;
+		font-family: "Times New Roman";
+		font-size: 36px;
+		font-style: italic;
+		padding: 4px 20px;
+		position: absolute;
+			bottom: 10px;
+			right: 10px;
+		z-index: 100;
+
+		&:hover {
+			@include gradient( rgba(0,0,0,.2), rgba(0,0,0,.3) );
+			color: #ddd;
+		}
+
+		&:active {
+			@include gradient( rgba(0,0,0,.3), rgba(0,0,0,.4) );
 		}
 	}
 	

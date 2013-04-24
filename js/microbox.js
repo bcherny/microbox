@@ -148,16 +148,20 @@ define(function (require, exports, module) {
 						hideAll();
 					},
 					yep: function () {
-						return e.target.classList.contains('microbox');
+						var target = e.target;
+						return !target.classList.contains('microbox-caption-trigger') && target.tagName !== 'FIGCAPTION';
 					}
 				},
 
-				image: {
+				caption: {
 					fn: function () {
-						e.target.parentNode.classList.toggle('show-caption');
+						var box = _.parent(e.target, function (element) {
+							return element.classList.contains('microbox');
+						});
+						box.classList.toggle('show-caption');
 					},
 					yep: function () {
-						return e.target.classList.contains('cur');
+						return e.target.classList.contains('microbox-caption-trigger');
 					}
 				},
 
