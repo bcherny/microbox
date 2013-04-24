@@ -5,7 +5,6 @@ define(function (require, exports, module) {
 
 	var _ = require('lib/_util');
 	var $ = require('lib/_dom');
-	var swipe = require('lib/_swipe');
 	var template = require('lib/_template');
 
 	var D = document;
@@ -88,113 +87,10 @@ define(function (require, exports, module) {
 			model.activeSetId = null;
 		}
 
-		/**
-		 * Jump to a slide
-		 * @param  {String} *setId		// defaults to first set (often unpredictable because some browsers sort object keys!)
-		 * @param  {Number} *pageId		// defaults to increment
-		 */
-		function jump (setId, pageId) {
-
-			// normalize setId
-			if (_.isNull(setId)) {
-				setId = _.one(sets);
-			}
-
-			var pageCurrentId = pages[setId];
-
-			// normalize pageId
-			if (_.isNull(pageId) || !_.isDefined(pageId)) {
-				pageId = pageCurrentId + 1;
-			}
-
-			// which images shall we animate?
-			var lightbox = $('#microbox-' + setId);
-			var images = $('img', lightbox);
-			var imgNew = images[pageId];
-			var imgOld = images[pageCurrentId];
-
-			// dooit
-			imgOld.classList.remove('cur');
-			imgNew.classList.add('cur');
-
-			// de-activate old pager cell
-			var pager = $('.microbox-pager', lightbox)[0];
-			var cur = $('.cur', pager);
-
-			if (cur[0]) {
-				cur[0].classList.remove('cur');
-			}
-
-			// activate new pager cell
-			_.toArray($('td', pager)).forEach(function (item) {
-				if (item.getAttribute('data-microbox-page') === pageId) {
-					item.classList.add('cur');
-					return;
-				}
-			});
-
-			// update model
-			pages[setId] = pageId;
-
-		}
-
-		function jumpDir (direction, e) {
-
-			var box = _.parent(e.target, function (element) {
-				return element.classList.contains('microbox');
-			});
-
-			if (!box) {
-				return false;
-			}
-
-			var setId = box.id.slice(9);
-
-			if (setId) {
-
-				var pageId = +pages[setId];
-				var lightbox = $('#microbox-' + setId);
-				var images = $('img', lightbox);
-				var pageMax = images.length - 1;
-
-				if (direction === 'right') {
-					++pageId;
-					if (pageId > pageMax) {
-						pageId = pageMax;
-					}
-				} else {
-					--pageId;
-					if (pageId < 0) {
-						pageId = 0;
-					}
-				}
-
-				console.log('jump: ', setId, pageId);
-
-				jump(setId, pageId);
-
-			}
-
-		}
-
-		function jumpLeft (x, y, e) {
-			jumpDir('left', e);
-		}
-
-		function jumpRight (x, y, e) {
-			jumpDir('right', e);
-		}
-
 		function build (setId) {
 
 			var images = getSet(setId);
 			var html = template.images(setId, images);
-			var showPager = options.showPager;
-
-			// show pager?
-			if (showPager) {
-				html += template.pager(setId, images);
-			}
 
 			// remove the lightbox first if it's already rendered
 			if (setRendered(setId)) {
@@ -209,20 +105,6 @@ define(function (require, exports, module) {
 			// store the reference
 			lightboxes[setId] = $('#microbox-' + setId);
 
-			// if there's a pager, select the first item
-			if (showPager) {
-
-				var item = $('td', lightboxes[setId])[1];
-
-				if (item) {
-					item.classList.add('cur');
-				}
-
-			}
-
-			// activate the first image
-			jump(setId, 0);
-
 		}
 
 		function click (e) {
@@ -235,10 +117,7 @@ define(function (require, exports, module) {
 						hideAll();
 					},
 					yep: function () {
-						return !_.parent(e.target, function (element) {
-							var classList = element.classList;
-							return classList && classList.contains('microbox');
-						});
+						return e.target.classList.contains('microbox');
 					}
 				},
 
@@ -267,26 +146,7 @@ define(function (require, exports, module) {
 
 					},
 					yep: function () {
-						return e.target.tagName === 'IMG';
-					}
-				},
-
-				pager: {
-					fn: function () {
-						stop(e);
-
-						var target = e.target;
-						var pageId = target.getAttribute('data-microbox-page');
-						var setId = target.getAttribute('data-microbox-srt');
-
-						jump(setId, pageId);
-
-						return;
-					},
-					yep: function () {
-						return _.parent(e.target, function (element) {
-							return !_.isNull(element.getAttribute('data-microbox-set'));
-						});
+						return e.target.classList.contains('cur');
 					}
 				},
 
@@ -297,7 +157,6 @@ define(function (require, exports, module) {
 
 						var target = this.yep();
 						var setId = target.getAttribute('data-microbox-trigger');
-						var pageId = target.getAttribute('data-microbox-page') || 0;
 
 						// this set is the active set
 						if (setId === model.activeSetId) {
@@ -318,9 +177,6 @@ define(function (require, exports, module) {
 
 							// show this lightbox
 							show(setId);
-
-							// page it
-							jump(setId, pageId);
 						}
 
 						return;
@@ -346,6 +202,23 @@ define(function (require, exports, module) {
 
 		}
 
+		function resize() {
+			var setId = model.activeSetId;
+
+			if (!setId) {
+				return;
+			}
+
+			var box = $('#microbox-' + setId);
+			var img = $('img', box);
+
+			var x = box.innerWidth;
+			var y = img.innerHeight;
+
+			// TODO - force image resize
+
+		}
+
 		function init() {
 
 			var togglers = getTogglers();
@@ -354,16 +227,10 @@ define(function (require, exports, module) {
 			togglers.forEach(function (toggler) {
 
 				var href = toggler.href;
-				var rel = toggler.rel;
-				var setId = getSetIdFromRel(rel);
+				var setId = 'microbox-' + setCount;
 
 				// increment set counter
 				++setCount;
-
-				// check for set ID
-				if (_.isNull(setId)) {
-					setId = 'microbox-' + setCount;
-				}
 
 				// prepare DOM for delegated toggling
 				toggler.setAttribute('data-microbox-trigger', setId);
@@ -380,10 +247,7 @@ define(function (require, exports, module) {
 
 		// attach delegated click event
 		document.addEventListener('click', click);
-
-		// attach swipe events
-		swipe.left(null, jumpLeft);
-		swipe.right(null, jumpRight);
+		window.addEventListener('resize', resize);
 
 		// public API
 		
@@ -428,11 +292,6 @@ define(function (require, exports, module) {
 				return item.rel.match(regexLightbox);
 			}
 		);
-	}
-
-	function getSetIdFromRel (string) {
-		var parts = string.split('[');
-		return parts.length === 1 ? null : parts[1].slice(0,-1);
 	}
 
 	function stop (e) {

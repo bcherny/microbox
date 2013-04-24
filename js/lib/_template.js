@@ -22,34 +22,12 @@ define(function (require, exports, module) {
 
 		images: function (setId, images) {
 
-			var html = ['<div class="inner">'];
+			return [
+				'<div class="inner">',
+				'<img src="' + images[0] + '" alt="' + setId + '" class="cur" />',
+				'</div>'
+			].join('');
 
-			images.forEach(function (image, n) {
-				html.push('<img src="' + image + '" alt="' + setId + ' (' + (n+1) + ')' + '" />');
-			});
-
-			return html.concat('</div>').join('');
-
-		},
-
-		pager: function (setId, images) {
-
-			var html = [];
-			var options = this.options;
-
-			html.push('<table class="microbox-pager"><tr>');
-
-			if (options.showPagerTitle) {
-				html.push('<td class="microbox-pager-label">', setId, '</td>');
-			}
-
-			images.forEach(function (image, n) {
-				html.push('<td data-microbox-set="' + setId + '" data-microbox-page="' + n + '">' + (n+1) + '</td>');
-			});
-
-			html.push('</tr></table>');
-
-			return html.join('');
 		},
 
 		setOptions: function (options) {
