@@ -55,19 +55,26 @@ li {
 		display: block;
 	}
 
+	figure {
+		overflow: hidden;
+		position: relative;
+	}
+
 	figcaption {
 		@include opacity(0);
 		@include transition;
 		background: rgba(0,0,0,.5);
 		color: #ddd;
-		margin-top: -55px;
-		padding: 20px 0;
-		position: relative; // show background
-		width: 100%;
+		padding: 20px;
+		position: absolute; // show background
+			bottom: -150px;
+			left: 0;
+			right: 0;
 	}
 
 	.show-caption figcaption {
 		@include opacity(1);
+		bottom: 0;
 	}
 
 	img {
