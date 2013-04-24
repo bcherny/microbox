@@ -4,7 +4,6 @@ define(function (require, exports, module) {
 
 	'use strict';
 
-
 	function isArray (item) {
 		return !isString(item) && 'length' in item;
 	}
@@ -104,8 +103,29 @@ define(function (require, exports, module) {
 		return item + '';
 	}
 
+	// see http://stackoverflow.com/a/4819886
+	// and http://blog.stevelydford.com/2012/03/detecting-touch-hardware-in-ie-10/
+	var isWebkitTouchDevice = !!('ontouchstart' in window);
+	var isMsTouchDevice = !!('msMaxTouchPoints' in navigator);
+
+	var events = isWebkitTouchDevice ? {
+		down: 'touchstart',
+		move: 'touchmove',
+		up: 'touchend'
+	} : (
+		isMsTouchDevice ? {
+			down: 'MSPointerDown',
+			move: 'MSPointerMove',
+			up: 'MSPointerUp'
+		} : {
+			down: 'mousedown',
+			move: 'mousemove',
+			up: 'mouseup'
+		}
+	);
 
 	module.exports = {
+		e: events,
 		isArray: isArray,
 		isDefined: isDefined,
 		isFunction: isFunction,
@@ -113,6 +133,7 @@ define(function (require, exports, module) {
 		isNull: isNull,
 		isString: isString,
 		isObject: isObject,
+		isTouchDevice: isWebkitTouchDevice || isMsTouchDevice,
 		one: one,
 		parent: parent,
 		toArray: toArray,
