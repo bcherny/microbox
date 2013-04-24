@@ -60,15 +60,14 @@ li {
 		@include transition;
 		background: rgba(0,0,0,.5);
 		color: #ddd;
+		margin-top: -55px;
 		padding: 20px 0;
-		position: relative;
-			top: 50px;
+		position: relative; // show background
 		width: 100%;
 	}
 
 	.show-caption figcaption {
 		@include opacity(1);
-		top: -55px;
 	}
 
 	img {
