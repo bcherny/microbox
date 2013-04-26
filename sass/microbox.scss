@@ -53,12 +53,7 @@ li {
 		display: block;
 	}
 
-	figure {
-		overflow: hidden;
-		position: relative;
-	}
-
-	figcaption {
+	.caption {
 		@include transition;
 		background: rgba(0,0,0,.5);
 		color: #ddd;

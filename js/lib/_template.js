@@ -25,18 +25,16 @@ define(function (require, exports, module) {
 			var caption;
 
 			if (captions && captions[0]) {
-				caption = '<figcaption><span class="microbox-caption-trigger">i</span>' + captions[0] + '</figcaption>';
+				caption = '<div class="caption"><span class="microbox-caption-trigger">i</span>' + captions[0] + '</div>';
 			} else {
 				caption = '';
 			}
 
 			return [
 				'<div class="inner' + (caption ? ' has-caption' : '') + '">',
-				'<figure>',
 				'<img src="' + images[0] + '" alt="' + setId + '" class="cur" />',
-				caption,
-				'</figure>',
-				'</div>'
+				'</div>',
+				caption
 			].join('');
 
 		},
