@@ -9,6 +9,8 @@ define(function (require, exports, module) {
 	var W = window;
 	var Array_proto = Array.prototype;
 	var Element_proto = Element.prototype;
+	var element = document.createElement('b');
+	var array = [];
 
 
 	//
@@ -18,7 +20,7 @@ define(function (require, exports, module) {
 
 	var regex = ['(^|\\s)', '(?:\\s|$)'];
 
-	if (!Element_proto.classList) {
+	if (!element.classList) {
 
 		Element_proto.classList = {
 			add: function (className) {
@@ -65,7 +67,7 @@ define(function (require, exports, module) {
 	//
 	
 
-	if (![].forEach) {
+	if (!array.forEach) {
 
 		Array_proto.forEach = function (callback, self) {
 			var scope = self || this;
@@ -83,7 +85,7 @@ define(function (require, exports, module) {
 	//
 
 
-	if (![].filter) {
+	if (!array.filter) {
 
 		Array_proto.filter = function (fun /*, thisp */) {
 
@@ -121,7 +123,7 @@ define(function (require, exports, module) {
 	//
 
 
-	if (![].indexOf) {
+	if (!array.indexOf) {
 
 		Array_proto.indexOf = function (item) {
 

@@ -22,16 +22,12 @@ define(function (require, exports, module) {
 
 		images: function (setId, images, captions) {
 
-			var caption;
-
-			if (captions && captions[0]) {
-				caption = '<div class="caption"><span class="microbox-caption-trigger">i</span>' + captions[0] + '</div>';
-			} else {
-				caption = '';
-			}
+			var caption = captions && captions[0] ?
+				'<div class="caption"><span class="microbox-caption-trigger">i</span>' + captions[0] + '</div>' :
+				'';
 
 			return [
-				'<div class="inner' + (caption ? ' has-caption' : '') + '">',
+				'<div class="inner">',
 				'<img src="' + images[0] + '" alt="' + setId + '" class="cur" />',
 				'</div>',
 				caption

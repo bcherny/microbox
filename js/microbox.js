@@ -8,6 +8,7 @@ define(function (require, exports, module) {
 	var template = require('lib/_template');
 
 	var D = document;
+	var W = window;
 	var regexLightbox = /^lightbox/;
 
 	function MicroBox (opts) {
@@ -19,13 +20,24 @@ define(function (require, exports, module) {
 		var sets = {};
 		var lightboxes = {};
 		var options = {
-			showPager: true,
-			showPagerTitle: true
+			classes: {
+				caption: 'caption',
+				captionTrigger: 'microbox-caption-trigger',
+				lightboxTrigger: 'microbox-trigger',
+				microbox: 'microbox',
+				showingCaption: 'show-caption',
+				showingLightbox: 'show-microbox'
+			},
+			attrs: {
+				lightboxPage: 'data-microbox-page',
+				lightboxTrigger: 'data-microbox-trigger'
+			},
+			ids: {
+				lightboxPrefix: 'microbox-'
+			}
 		};
 		var setCount = 0;
-		var model = {
-			activeSetId: null	
-		};
+		var activeSetId = null;
 
 		// set user-defined options
 		if (opts) {
@@ -56,7 +68,7 @@ define(function (require, exports, module) {
 				captions[setId].push(caption);
 
 				if (element) {
-					element.setAttribute('data-microbox-page', sets[setId].length - 1);
+					element.setAttribute(options.attrs.lightboxPage, sets[setId].length - 1);
 				}
 
 				build(setId);
@@ -108,14 +120,48 @@ define(function (require, exports, module) {
 			return captions[setId];
 		}
 
-		//
+		// show/hide helpers
 
 		function hideAll () {
 			for (var set in sets) {
 				hide(set);
 			}
-			model.activeSetId = null;
+			activeSetId = null;
 		}
+
+		function hide (setId) {
+			getElement(setId).classList.remove(options.classes.showingLightbox);
+		}
+
+		function show (setId) {
+			getElement(setId).classList.add(options.classes.showingLightbox);
+			align(setId);
+		}
+
+		//
+		
+		function getElement (setId) {
+			return $('#' + options.ids.lightboxPrefix + setId);
+		}
+
+		function setRendered (setId) {
+			return !!getElement(setId);
+		}
+
+		/**
+		 * Vertically aligns a lightbox
+		 * @param  {String} setId
+		 */
+		function align (setId) {
+			var box = getElement(setId);
+			var img = $('img', box)[0];
+			var inner = $('.inner', box);
+			var height = img.offsetHeight;
+			var winHeight = getWindowHeight();
+			inner[0].style['margin-top'] = (winHeight-height)/2 + 'px';
+		}
+
+		//
 
 		function build (setId) {
 
@@ -125,7 +171,7 @@ define(function (require, exports, module) {
 
 			// remove the lightbox first if it's already rendered
 			if (setRendered(setId)) {
-				var element = $('#microbox-' + setId);
+				var element = getElement(setId);
 				document.body.removeChild(element);
 			}
 
@@ -134,7 +180,7 @@ define(function (require, exports, module) {
 			D.body.appendChild(box);
 
 			// store the reference
-			lightboxes[setId] = $('#microbox-' + setId);
+			lightboxes[setId] = getElement(setId);
 
 		}
 
@@ -148,36 +194,39 @@ define(function (require, exports, module) {
 						hideAll();
 					},
 					yep: function () {
-						var target = e.target;
-						return !target.classList.contains('microbox-caption-trigger') && target.tagName !== 'FIGCAPTION';
+						var classes = options.classes;
+						var classList = e.target.classList;
+						return !classList.contains(classes.captionTrigger) && !classList.contains(classes.caption);
 					}
 				},
 
 				caption: {
 					fn: function () {
 
+						var classes = options.classes;
+						var class_showingCaption = classes.showingCaption;
 						var target = e.target;
 
 						// toggle box class
 						var box = _.parent(target, function (element) {
-							return element.classList.contains('microbox');
+							return element.classList.contains(classes.microbox);
 						});
-						box.classList.toggle('show-caption');
+						box.classList.toggle(class_showingCaption);
 
 						// toggle caption
 						var caption = target.parentNode;
 						var height = caption.offsetHeight;
-						var winHeight = window.innerHeight || document.body.clientHeight;
+						var winHeight = getWindowHeight();
 
 						caption.style.top = (
-							box.classList.contains('show-caption') ?
+							box.classList.contains(class_showingCaption) ?
 							(winHeight - height) :
 							winHeight
 						) + 'px';
 
 					},
 					yep: function () {
-						return e.target.classList.contains('microbox-caption-trigger');
+						return e.target.classList.contains(options.classes.captionTrigger);
 					}
 				},
 
@@ -187,13 +236,13 @@ define(function (require, exports, module) {
 						stop(e);
 
 						var target = this.yep();
-						var setId = target.getAttribute('data-microbox-trigger');
+						var setId = target.getAttribute(options.attrs.lightboxTrigger);
 
 						// this set is the active set
-						if (setId === model.activeSetId) {
+						if (setId === activeSetId) {
 
 							// update model
-							model.activeSetId = null;
+							activeSetId = null;
 
 							// hide this lightbox
 							hide(setId);
@@ -204,7 +253,7 @@ define(function (require, exports, module) {
 							hideAll();
 
 							// update model
-							model.activeSetId = setId;
+							activeSetId = setId;
 
 							// show this lightbox
 							show(setId);
@@ -214,7 +263,7 @@ define(function (require, exports, module) {
 					},
 					yep: function () {
 						return _.parent(e.target, function (element) {
-							return element.classList.contains('microbox-trigger');
+							return element.classList.contains(options.classes.lightboxTrigger);
 						});
 					}
 				}
@@ -228,9 +277,13 @@ define(function (require, exports, module) {
 				}
 			}
 
-			// update model
-			model.activeSetId = null;
+		}
 
+		function resize() {
+			var setId = activeSetId;
+			if (_.isDefined(setId) && !_.isNull(setId)) {
+				align(setId);
+			}
 		}
 
 		function init() {
@@ -241,15 +294,15 @@ define(function (require, exports, module) {
 			togglers.forEach(function (toggler) {
 
 				var href = toggler.href;
-				var setId = 'microbox-' + setCount;
+				var setId = options.ids.lightboxPrefix + setCount;
 				var title = toggler.title;
 
 				// increment set counter
 				++setCount;
 
 				// prepare DOM for delegated toggling
-				toggler.setAttribute('data-microbox-trigger', setId);
-				toggler.classList.add('microbox-trigger');
+				toggler.setAttribute(options.attrs.lightboxTrigger, setId);
+				toggler.classList.add(options.classes.lightboxTrigger);
 
 				// collect set info
 				add(setId, href, title, toggler);
@@ -260,8 +313,9 @@ define(function (require, exports, module) {
 
 		init();
 
-		// attach delegated click event
-		document.addEventListener('click', click);
+		// attach events
+		D.addEventListener('click', click);
+		W.addEventListener('resize', resize);
 
 		// public API
 		
@@ -321,29 +375,8 @@ define(function (require, exports, module) {
 		}
 	}
 
-	function hide (setId) {
-		$('#microbox-' + setId).classList.remove('microbox-show');
-	}
-
-	function show (setId) {
-		$('#microbox-' + setId).classList.add('microbox-show');
-		align(setId);
-	}
-
-	/**
-	 * Vertically aligns a lightbox
-	 * @param  {String} setId
-	 */
-	function align (setId) {
-		var box = $('#microbox-' + setId);
-		var img = $('img', box)[0];
-		var inner = $('.inner', box);
-		var height = img.offsetHeight;
-		inner[0].style['margin-top'] = -height/2 + 'px';
-	}
-
-	function setRendered (setId) {
-		return !!$('#microbox-' + setId);
+	function getWindowHeight() {
+		return W.innerHeight || D.body.clientHeight;
 	}
 
 
