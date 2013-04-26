@@ -12,8 +12,9 @@ define(function (require, exports, module) {
 		container: function (setId, content) {
 
 			var div = document.createElement('div');
-			div.className = 'microbox';
-			div.id = 'microbox-' + setId;
+			var options = this.options;
+			div.className = options.classes.lightbox;
+			div.id = options.ids.lightboxPrefix + setId;
 			div.innerHTML = content;
 
 			return div;
@@ -22,13 +23,14 @@ define(function (require, exports, module) {
 
 		images: function (setId, images, captions) {
 
+			var classes = this.options.classes;
 			var caption = captions && captions[0] ?
-				'<div class="caption"><span class="microbox-caption-trigger">i</span>' + captions[0] + '</div>' :
+				'<div class="' + classes.caption + '"><span class="' + classes.captionTrigger + '">i</span>' + captions[0] + '</div>' :
 				'';
 
 			return [
-				'<div class="inner">',
-				'<img src="' + images[0] + '" alt="' + setId + '" class="cur" />',
+				'<div class="' + classes.lightboxInner + '">',
+				'<img src="' + images[0] + '" alt="' + setId + '" class="' + classes.imageCurrent + '" />',
 				'</div>',
 				caption
 			].join('');

@@ -23,8 +23,10 @@ define(function (require, exports, module) {
 			classes: {
 				caption: 'caption',
 				captionTrigger: 'microbox-caption-trigger',
+				imageCurrent: 'cur',
+				lightbox: 'microbox',
+				lightboxInner: 'inner',
 				lightboxTrigger: 'microbox-trigger',
-				microbox: 'microbox',
 				showingCaption: 'show-caption',
 				showingLightbox: 'show-microbox'
 			},
@@ -141,7 +143,7 @@ define(function (require, exports, module) {
 		//
 		
 		function getElement (setId) {
-			return $('#' + options.ids.lightboxPrefix + setId);
+			return $('#' + options.ids.lightboxPrefix + setId)[0];
 		}
 
 		function setRendered (setId) {
@@ -155,10 +157,10 @@ define(function (require, exports, module) {
 		function align (setId) {
 			var box = getElement(setId);
 			var img = $('img', box)[0];
-			var inner = $('.inner', box);
+			var inner = $('.' + options.classes.lightboxInner, box)[0];
 			var height = img.offsetHeight;
 			var winHeight = getWindowHeight();
-			inner[0].style['margin-top'] = (winHeight-height)/2 + 'px';
+			inner.style['margin-top'] = (winHeight-height)/2 + 'px';
 		}
 
 		//
@@ -209,7 +211,7 @@ define(function (require, exports, module) {
 
 						// toggle box class
 						var box = _.parent(target, function (element) {
-							return element.classList.contains(classes.microbox);
+							return element.classList.contains(classes.lightbox);
 						});
 						box.classList.toggle(class_showingCaption);
 

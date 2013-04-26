@@ -11,10 +11,11 @@ define(function (require, exports, module) {
 	};
 
 	function $(selector, context) {
-		var what = s[selector.charAt(0)];
-		return (context || document)['getElement'+(what || 'sByTagName')](selector.slice(what ? 1 : 0));
+		var firstChar = selector.charAt(0);
+		var what = s[firstChar];
+		var result = (context || document)['getElement'+(what || 'sByTagName')](selector.slice(what ? 1 : 0));
+		return firstChar === '#' ? [result] : result;
 	}
-	window.$ = $;
 
 	module.exports = $;
 
