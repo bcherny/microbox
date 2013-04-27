@@ -15,7 +15,7 @@ microBox - the very tiny lightbox
 <script src="js/microbox.min.js"></script>
 ```
 
-###2. Include the stylesheet somewhere in the `<head>` of your page (preferable at ther end of the `<head>`):
+###2. Include the stylesheet somewhere in the `<head>` of your page (preferably at ther end of the `<head>`):
 
 ```html
 <link rel="stylesheet" href="css/microbox.css" />
