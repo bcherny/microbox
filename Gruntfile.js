@@ -17,10 +17,10 @@ module.exports = function(grunt) {
 			standard: {
 				files: {
 					'dist/microbox.min.js': [
-						'src/lib/_polyfills.js',
-						'src/lib/_dom.js',
-						'src/lib/_util.js',
-						'src/lib/_template.js',
+						'src/lib/polyfills.js',
+						'src/lib/dom.js',
+						'src/lib/util.js',
+						'src/lib/template.js',
 						'src/microbox.js'
 					]
 				}
