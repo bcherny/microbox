@@ -39,22 +39,30 @@ If you want to let users page through image sets, just add the set name to the `
 
 Microbox is built with several micro-dependencies:
 
-1. `dom.js` - Dollar DOM selector, API-compatible with [jQuery](http://jquery.com/)
+`dom.js` - Dollar DOM selector, API-compatible with [jQuery](http://jquery.com/)
 
-2. `util.js` - Generic utilities, API-compatible with [underscore](http://underscorejs.org/):
+`util.js` - Generic utilities, API-compatible with [underscore](http://underscorejs.org/):
+
 - isFunction
 - isNull
 - isString
 - isUndefined
 - toArray
 
-3. `polyfill.js` - polyfills for:
+`polyfill.js` - polyfills for:
+
 - Element.classList ([browser support](http://caniuse.com/classlist))
 - Element.addEventListener
 - Array.forEach (IE9 and up, [browser support](http://kangax.github.io/es5-compat-table/#Array.prototype.forEach))
 - Array.filter (IE9 and up, [browser support](http://kangax.github.io/es5-compat-table/#Array.prototype.filter))
 - Array.indexOf (IE9 and up, [browser support](http://kangax.github.io/es5-compat-table/#Array.prototype.indexOf))
 
-4. `template.js` - Swappable and API-compatible with your preferred templating utility
+`template.js` - Swappable and API-compatible with your preferred templating utility
 
 `dom` can be removed from the build if you're already using jQuery, and same for `util` if you're using underscore or lodash. `polyfill` can be removed if you're only targeting the latest browsers - be sure to check browser support before removing anything! You can also remove specific polyfills by editing `polyfill.js`, eg. if you're not supporting IE8 and below you can safely remove the `Array.*` polyfills.
+
+**To create a custom build:**
+
+1. Run an `npm install` in cmd/Terminal in the root directory
+2. Pop open `Gruntfile.js` and remove any unnecessary dependencies
+3. Run `grunt` in cmd/Terminal
