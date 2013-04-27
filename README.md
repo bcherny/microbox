@@ -9,13 +9,13 @@ microBox - the very tiny lightbox
 
 ##Usage
 
-###1. Include the script somewhere on your page (preferably at the very end of your body):
+###1. Include the script somewhere on your page (preferably right before `</body>`):
 
 ```html
 <script src="js/microbox.min.js"></script>
 ```
 
-###2. Include the stylesheet somewhere in the `<head>` of your page (preferably at ther end of the `<head>`):
+###2. Include the stylesheet somewhere in the `<head>` of your page (preferably right before `</head>`):
 
 ```html
 <link rel="stylesheet" href="css/microbox.css" />
