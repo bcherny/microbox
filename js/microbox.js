@@ -11,14 +11,10 @@ define(function (require, exports, module) {
 	var W = window;
 	var regexLightbox = /^lightbox/;
 
-	function MicroBox (opts) {
+	function Microbox (opts) {
 
-		// vars
-		
-		var captions = {};
-		var pages = {};
-		var sets = {};
-		var lightboxes = {};
+		// default options
+
 		var options = {
 			classes: {
 				caption: 'caption',
@@ -38,6 +34,13 @@ define(function (require, exports, module) {
 				lightboxPrefix: 'microbox-'
 			}
 		};
+
+		// vars
+		
+		var captions = {};
+		var pages = {};
+		var sets = {};
+		var lightboxes = {};
 		var setCount = 0;
 		var activeSetId = null;
 
@@ -163,8 +166,10 @@ define(function (require, exports, module) {
 			inner.style['margin-top'] = (winHeight-height)/2 + 'px';
 		}
 
-		//
-
+		/**
+		 * Builds lightbox into the DOM
+		 * @param  {String} setId
+		 */
 		function build (setId) {
 
 			var captions = getCaptions(setId);
@@ -186,6 +191,10 @@ define(function (require, exports, module) {
 
 		}
 
+		/**
+		 * Delegated click handler
+		 * @param  {Event} e The click event
+		 */
 		function click (e) {
 
 			var events = {
@@ -281,6 +290,9 @@ define(function (require, exports, module) {
 
 		}
 
+		/**
+		 * Resize event handler
+		 */
 		function resize() {
 			var setId = activeSetId;
 			if (_.isDefined(setId) && !_.isNull(setId)) {
@@ -288,6 +300,9 @@ define(function (require, exports, module) {
 			}
 		}
 
+		/**
+		 * Initialize based on what's currently in the DOM
+		 */
 		function init() {
 
 			var togglers = getTogglers();
@@ -318,8 +333,6 @@ define(function (require, exports, module) {
 		// attach events
 		D.addEventListener('click', click);
 		W.addEventListener('resize', resize);
-
-		// public API
 		
 		/**
 		 * Add images to an image set
@@ -349,10 +362,6 @@ define(function (require, exports, module) {
 			});
 
 		}
-
-		return {
-			add: add
-		};
 
 	}
 
@@ -387,7 +396,7 @@ define(function (require, exports, module) {
 	
 
 
-	module.exports = MicroBox;
+	module.exports = Microbox;
 
 
 
