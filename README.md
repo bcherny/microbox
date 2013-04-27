@@ -27,14 +27,6 @@ microBox - the very tiny lightbox
 <a href="images/fullSizedImage.png" rel="lightbox"><img src="images/thumbSizedImage.png" /></a>
 ```
 
-##Image set support:
-
-If you want to let users page through image sets, just add the set name to the `rel` attribute:
-
-```html
-<a href="images/fullSizedImage.png" rel="lightbox[Set Title]"><img src="images/thumbSizedImage.png" /></a>
-```
-
 ##Custom builds
 
 Microbox is built with several micro-dependencies:
