@@ -219,7 +219,7 @@ define(function (require, exports, module) {
 						var target = e.target;
 
 						// toggle box class
-						var box = _.parent(target, function (element) {
+						var box = parent(target, function (element) {
 							return element.classList.contains(classes.lightbox);
 						});
 						box.classList.toggle(class_showingCaption);
@@ -273,7 +273,7 @@ define(function (require, exports, module) {
 						return;
 					},
 					yep: function () {
-						return _.parent(e.target, function (element) {
+						return parent(e.target, function (element) {
 							return element.classList.contains(options.classes.lightboxTrigger);
 						});
 					}
@@ -295,7 +295,7 @@ define(function (require, exports, module) {
 		 */
 		function resize() {
 			var setId = activeSetId;
-			if (_.isDefined(setId) && !_.isNull(setId)) {
+			if (!_.isUndefined(setId) && !_.isNull(setId)) {
 				align(setId);
 			}
 		}
@@ -388,6 +388,57 @@ define(function (require, exports, module) {
 
 	function getWindowHeight() {
 		return W.innerHeight || D.body.clientHeight;
+	}
+
+	/**
+	 * Get element's parent
+	 * @param  {DOMElement} element	The element to start iterating on
+	 * @param  {Function|Object} filter	A filter function (eg. function (el) { return el.href })) or hash (eg. {tagName: 'A'})
+	 * @return {DOMElement|null}
+	 */
+	function parent (element, filter) {
+
+		if (_.isFunction(filter)) {
+
+			do {
+
+				if (filter(element)) {
+					return element;
+				}
+
+				element = element.parentNode;
+
+			} while (_continue(element));
+
+		} else {
+
+			do {
+
+				var good = 0, count = 0;
+
+				for (var property in filter) {
+					if (filter[property] == element[property]) {
+						++good;
+					}
+					++count;
+				}
+
+				if (good === count) {
+					return element;
+				}
+
+				element = element.parentNode;
+
+			} while (_continue(element));
+
+		}
+
+		function _continue (element) {
+			return _.isUndefined(element.documentElement) && element.tagName !== 'HTML';
+		}
+
+		return false;
+
 	}
 
 

@@ -63,23 +63,6 @@ define(function (require, exports, module) {
 
 
 	//
-	// Array.forEach
-	//
-	
-
-	if (!array.forEach) {
-
-		Array_proto.forEach = function (callback, self) {
-			var scope = self || this;
-			for (var n = 0, nn = this.length; n < nn; ++n) {
-				callback.call(scope, this[n], n, this);
-			}
-		};
-
-	}
-
-
-	//
 	// Array.filter
 	// @source: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/filter
 	//
@@ -113,6 +96,23 @@ define(function (require, exports, module) {
 			}
 
 			return res;
+		};
+
+	}
+
+
+	//
+	// Array.forEach
+	//
+	
+
+	if (!array.forEach) {
+
+		Array_proto.forEach = function (callback, self) {
+			var scope = self || this;
+			for (var n = 0, nn = this.length; n < nn; ++n) {
+				callback.call(scope, this[n], n, this);
+			}
 		};
 
 	}
