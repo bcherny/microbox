@@ -1,5 +1,4 @@
-/*global define, require, module */
-define(function (require, exports, module) {
+;(function(){
 
 
 	'use strict';
@@ -141,4 +140,5 @@ define(function (require, exports, module) {
 		};
 
 	}
-});
+	
+})();

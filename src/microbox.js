@@ -1,11 +1,4 @@
-/*global define, require, module */
-define(function (require, exports, module) {
-
-	require('lib/_polyfills');
-
-	var _ = require('lib/_util');
-	var $ = require('lib/_dom');
-	var template = require('lib/_template');
+var Microbox = (function(){
 
 	var D = document;
 	var W = window;
@@ -447,8 +440,8 @@ define(function (require, exports, module) {
 	
 
 
-	module.exports = Microbox;
+	return Microbox;
 
 
 
-});
+})();
