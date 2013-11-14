@@ -7,8 +7,6 @@ define(function (require, exports, module) {
 
 	var template = {
 
-		options: {},
-
 		container: function (setId, content) {
 
 			var div = document.createElement('div');

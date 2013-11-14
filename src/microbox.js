@@ -1,4 +1,5 @@
-(function(){
+/* globals: _, $, izzy, template */
+;(function(){
 
 	"use strict";
 
@@ -51,10 +52,11 @@
 
 	// vars
 	
+	var model = new umodel({
+		sets: {}
+	});
 	var captions = {};
-	var pages = {};
 	var sets = {};
-	var lightboxes = {};
 	var setCount = 0;
 	var activeSetId = null;
 
@@ -86,114 +88,110 @@
 
 	// set helpers
 
-		function addSet (setId) {
-			pages[setId] = 0;
-			sets[setId] = [];
+	function addSet (setId) {
+		sets[setId] = [];
+	}
+
+	function addSetNx (setId) {
+		if (!setExists(setId)) {
+			addSet(setId);
+		}
+	}
+
+	function getSet (setId) {
+		return sets[setId];
+	}
+
+	function contains (array, item) {
+		return array.indexOf(item) > -1;
+	}
+
+	function setExists (setId) {
+		return setId in sets;
+	}
+
+	// caption helpers
+
+	function addCaption (setId) {
+		captions[setId] = [];
+	}
+
+	function addCaptionNx (setId) {
+		if (!captionExists(setId)) {
+			addCaption(setId);
+		}
+	}
+
+	function captionExists (setId) {
+		return setId in captions;
+	}
+
+	function getCaptions (setId) {
+		return captions[setId];
+	}
+
+	// show/hide helpers
+
+	function hideAll () {
+		for (var set in sets) {
+			hide(set);
+		}
+		activeSetId = null;
+	}
+
+	function hide (setId) {
+		getElement(setId).classList.remove(options.classes.showingLightbox);
+	}
+
+	function show (setId) {
+		getElement(setId).classList.add(options.classes.showingLightbox);
+		align(setId);
+	}
+
+	//
+	
+	function getElement (setId) {
+		return document.getElementById(options.ids.lightboxPrefix + setId);
+	}
+
+	function setRendered (setId) {
+		return !!getElement(setId);
+	}
+
+	/**
+	 * Vertically aligns a lightbox
+	 * @param  {String} setId
+	 */
+	function align (setId) {
+		var box = getElement(setId);
+		var img = $('img', box)[0];
+		var inner = $('.'+options.classes.lightboxInner, box)[0];
+		var height = img.offsetHeight;
+		var winHeight = getWindowHeight();
+		inner.style['margin-top'] = (winHeight-height)/2 + 'px';
+	}
+
+	/**
+	 * Builds lightbox into the DOM
+	 * @param  {String} setId
+	 */
+	function build (setId) {
+
+		var captions = getCaptions(setId);
+		var images = getSet(setId);
+		var html = template.images(setId, images, captions, options);
+
+		// remove the lightbox first if it's already rendered
+		if (setRendered(setId)) {
+			var element = getElement(setId);
+			document.body.removeChild(element);
 		}
 
-		function addSetNx (setId) {
-			if (!setExists(setId)) {
-				addSet(setId);
-			}
-		}
+		// inject lightbox
+		var box = template.container(setId, html, options);
+		document.body.appendChild(box);
 
-		function getSet (setId) {
-			return sets[setId];
-		}
-
-		function contains (array, item) {
-			return array.indexOf(item) > -1;
-		}
-
-		function setExists (setId) {
-			return setId in sets;
-		}
-
-		// caption helpers
-
-		function addCaption (setId) {
-			captions[setId] = [];
-		}
-
-		function addCaptionNx (setId) {
-			if (!captionExists(setId)) {
-				addCaption(setId);
-			}
-		}
-
-		function captionExists (setId) {
-			return setId in captions;
-		}
-
-		function getCaptions (setId) {
-			return captions[setId];
-		}
-
-		// show/hide helpers
-
-		function hideAll () {
-			for (var set in sets) {
-				hide(set);
-			}
-			activeSetId = null;
-		}
-
-		function hide (setId) {
-			getElement(setId).classList.remove(options.classes.showingLightbox);
-		}
-
-		function show (setId) {
-			getElement(setId).classList.add(options.classes.showingLightbox);
-			align(setId);
-		}
-
-		//
-		
-		function getElement (setId) {
-			return $('#' + options.ids.lightboxPrefix + setId)[0];
-		}
-
-		function setRendered (setId) {
-			return !!getElement(setId);
-		}
-
-		/**
-		 * Vertically aligns a lightbox
-		 * @param  {String} setId
-		 */
-		function align (setId) {
-			var box = getElement(setId);
-			var img = $('img', box)[0];
-			var inner = $('.' + options.classes.lightboxInner, box)[0];
-			var height = img.offsetHeight;
-			var winHeight = getWindowHeight();
-			inner.style['margin-top'] = (winHeight-height)/2 + 'px';
-		}
-
-		/**
-		 * Builds lightbox into the DOM
-		 * @param  {String} setId
-		 */
-		function build (setId) {
-
-			var captions = getCaptions(setId);
-			var images = getSet(setId);
-			var html = template.images(setId, images, captions);
-
-			// remove the lightbox first if it's already rendered
-			if (setRendered(setId)) {
-				var element = getElement(setId);
-				document.body.removeChild(element);
-			}
-
-			// inject lightbox
-			var box = template.container(setId, html);
-			document.body.appendChild(box);
-
-			// store the reference
-			lightboxes[setId] = getElement(setId);
-
-		}
+	}
 
 		/**
 		 * Delegated click handler
@@ -219,14 +217,14 @@
 					fn: function () {
 
 						var classes = options.classes;
-						var class_showingCaption = classes.showingCaption;
+						var classShowingCaption = classes.showingCaption;
 						var target = e.target;
 
 						// toggle box class
 						var box = parent(target, function (element) {
 							return element.classList.contains(classes.lightbox);
 						});
-						box.classList.toggle(class_showingCaption);
+						box.classList.toggle(classShowingCaption);
 
 						// toggle caption
 						var caption = target.parentNode;
@@ -234,7 +232,7 @@
 						var winHeight = getWindowHeight();
 
 						caption.style.top = (
-							box.classList.contains(class_showingCaption) ?
+							box.classList.contains(classShowingCaption) ?
 							(winHeight - height) :
 							winHeight
 						) + 'px';
@@ -294,78 +292,78 @@
 
 		}
 
-		/**
-		 * Resize event handler
-		 */
-		function resize() {
-			var setId = activeSetId;
-			if (!_.isUndefined(setId) && !_.isNull(setId)) {
-				align(setId);
-			}
+	/**
+	 * Resize event handler
+	 */
+	function resize() {
+		var setId = activeSetId;
+		if (setId != null) {
+			align(setId);
 		}
+	}
 
-		/**
-		 * Initialize based on what's currently in the DOM
-		 */
-		function init() {
+	/**
+	 * Initialize based on what's currently in the DOM
+	 */
+	function init() {
 
-			var togglers = getTogglers();
+		var togglers = getTogglers();
 
-			// initialize
-			togglers.forEach(function (toggler) {
+		// initialize
+		togglers.forEach(function (toggler) {
 
-				var href = toggler.href;
-				var setId = options.ids.lightboxPrefix + setCount;
-				var title = toggler.title;
+			var href = toggler.href;
+			var setId = options.ids.lightboxPrefix + setCount;
+			var title = toggler.title;
 
-				// increment set counter
-				++setCount;
+			// increment set counter
+			++setCount;
 
-				// prepare DOM for delegated toggling
-				toggler.setAttribute(options.attrs.lightboxTrigger, setId);
-				toggler.classList.add(options.classes.lightboxTrigger);
+			// prepare DOM for delegated toggling
+			toggler.setAttribute(options.attrs.lightboxTrigger, setId);
+			toggler.classList.add(options.classes.lightboxTrigger);
 
-				// collect set info
-				add(setId, href, title, toggler);
-			
-			});
-
-		}
-
-		init();
-
-		// attach events
-		document.addEventListener('click', click);
-		window.addEventListener('resize', resize);
+			// collect set info
+			add(setId, href, title, toggler);
 		
-		/**
-		 * Add images to an image set
-		 * @param {String}			setId		The set ID
-		 * @param {String|Array}	items		URL or array of URLs
-		 * @param {String|Array}	captions	caption or array of captions
-		 * @param {DOMElement}		*element
-		 */
-		function add (setId, items, captions, element) {
-			
-			// normalize items
-			if (_.isString(items)) {
-				items = [items];
-			}
+		});
 
-			// normalize captions
-			if (_.isString(captions)) {
-				captions = [captions];
-			}
+	}
 
-			// check that the set exists, lazy create if it doesn't
-			addSetNx(setId);
+	init();
 
-			// add
-			items.forEach(function (item, n) {
-				addToSet(setId, item, captions[n], element);
-			});
-
+	// attach events
+	document.addEventListener('click', click);
+	window.addEventListener('resize', resize);
+		
+	/**
+	 * Add images to an image set
+	 * @param {String}			setId		The set ID
+	 * @param {String|Array}	items		URL or array of URLs
+	 * @param {String|Array}	captions	caption or array of captions
+	 * @param {DOMElement}		*element
+	 */
+	function add (setId, items, captions, element) {
+		
+		// normalize items
+		if (izzy.string(items)) {
+			items = [items];
 		}
+
+		// normalize captions
+		if (izzy.string(captions)) {
+			captions = [captions];
+		}
+
+		// check that the set exists, lazy create if it doesn't
+		addSetNx(setId);
+
+		// add
+		items.forEach(function (item, n) {
+			addToSet(setId, item, captions[n], element);
+		});
+
+	}
 
 
 
@@ -400,7 +398,7 @@
 	 */
 	function parent (element, filter) {
 
-		if (_.isFunction(filter)) {
+		if (izzy['function'](filter)) {
 
 			do {
 
@@ -436,7 +434,7 @@
 		}
 
 		function _continue (element) {
-			return _.isUndefined(element.documentElement) && element.tagName !== 'HTML';
+			return !izzy.defined(element.documentElement) && element.tagName !== 'HTML';
 		}
 
 		return false;

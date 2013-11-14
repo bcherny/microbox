@@ -1,11 +1,8 @@
 var template = {
 
-	options: {},
-
-	container: function (setId, content) {
+	container: function (setId, content, options) {
 
 		var div = document.createElement('div');
-		var options = this.options;
 		div.className = options.classes.lightbox;
 		div.id = options.ids.lightboxPrefix + setId;
 		div.innerHTML = content;
@@ -14,9 +11,9 @@ var template = {
 
 	},
 
-	images: function (setId, images, captions) {
+	images: function (setId, images, captions, options) {
 
-		var classes = this.options.classes;
+		var classes = options.classes;
 		var caption = captions && captions[0] ?
 			'<div class="' + classes.caption + '"><span class="' + classes.captionTrigger + '">i</span>' + captions[0] + '</div>' :
 			'';
@@ -27,12 +24,6 @@ var template = {
 			'</div>',
 			caption
 		].join('');
-
-	},
-
-	setOptions: function (options) {
-
-		this.options = options;
 
 	}
 
