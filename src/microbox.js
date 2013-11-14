@@ -1,79 +1,90 @@
-var Microbox = (function(){
+(function(){
 
-	var D = document;
-	var W = window;
+	"use strict";
+
 	var regexLightbox = /^lightbox/;
 
-	function Microbox (opts) {
+	var _ = {
 
-		// default options
+		extend: function () {
 
-		var options = {
-			classes: {
-				caption: 'caption',
-				captionTrigger: 'microbox-caption-trigger',
-				imageCurrent: 'cur',
-				lightbox: 'microbox',
-				lightboxInner: 'inner',
-				lightboxTrigger: 'microbox-trigger',
-				showingCaption: 'show-caption',
-				showingLightbox: 'show-microbox'
-			},
-			attrs: {
-				lightboxPage: 'data-microbox-page',
-				lightboxTrigger: 'data-microbox-trigger'
-			},
-			ids: {
-				lightboxPrefix: 'microbox-'
-			}
-		};
+			var obj = arguments[0]
+			  , others = arguments.length > 1 ? _.toArray(arguments, 1) : [];
 
-		// vars
-		
-		var captions = {};
-		var pages = {};
-		var sets = {};
-		var lightboxes = {};
-		var setCount = 0;
-		var activeSetId = null;
-
-		// set user-defined options
-		if (opts) {
-			for (var opt in opts) {
-				if (options.hasOwnProperty(opt)) {
-					options[opt] = opts[opt];
+			if (obj && others) {
+				for (var i = 0, length = others.length; i < length; i++) {
+					for (var key in others[i]) {
+						obj[key] = others[i][key];
+					}
 				}
 			}
+			return obj;
+		},
+
+		toArray: function (thing, index) {
+
+			return [].slice.call(thing, index || 0);
+
 		}
 
-		template.setOptions(options);
+	};
 
-		// functions
+	var options = {
+		classes: {
+			caption: 'caption',
+			captionTrigger: 'microbox-caption-trigger',
+			imageCurrent: 'cur',
+			lightbox: 'microbox',
+			lightboxInner: 'inner',
+			lightboxTrigger: 'microbox-trigger',
+			showingCaption: 'show-caption',
+			showingLightbox: 'show-microbox'
+		},
+		attrs: {
+			lightboxPage: 'data-microbox-page',
+			lightboxTrigger: 'data-microbox-trigger'
+		},
+		ids: {
+			lightboxPrefix: 'microbox-'
+		}
+	};
 
-		/**
-		 * Helper to add image to set
-		 * @param {String} setId	Unique set id
-		 * @param {String} item		URL for full sized image to show onClick
-		 * @param {String} caption	The image caption (description)
-		 * @param {Element} *element
-		 */
-		function addToSet (setId, item, caption, element) {
-			if (!setContains(setId, item)) {
-				sets[setId].push(item);
+	// vars
+	
+	var captions = {};
+	var pages = {};
+	var sets = {};
+	var lightboxes = {};
+	var setCount = 0;
+	var activeSetId = null;
 
-				addCaptionNx(setId);
+	// functions
 
-				captions[setId].push(caption);
+	/**
+	 * Helper to add image to set
+	 * @param {String} setId	Unique set id
+	 * @param {String} item		URL for full sized image to show onClick
+	 * @param {String} caption	The image caption (description)
+	 * @param {Element} *element
+	 */
+	function addToSet (setId, item, caption, element) {
+		if (!contains(sets[setId], item)) {
 
-				if (element) {
-					element.setAttribute(options.attrs.lightboxPage, sets[setId].length - 1);
-				}
+			sets[setId].push(item);
 
-				build(setId);
+			addCaptionNx(setId);
+
+			captions[setId].push(caption);
+
+			if (element) {
+				element.setAttribute(options.attrs.lightboxPage, sets[setId].length - 1);
 			}
-		}
 
-		// set helpers
+			build(setId);
+		}
+	}
+
+	// set helpers
 
 		function addSet (setId) {
 			pages[setId] = 0;
@@ -90,8 +101,8 @@ var Microbox = (function(){
 			return sets[setId];
 		}
 
-		function setContains (setId, item) {
-			return sets[setId].indexOf(item) > -1;
+		function contains (array, item) {
+			return array.indexOf(item) > -1;
 		}
 
 		function setExists (setId) {
@@ -177,7 +188,7 @@ var Microbox = (function(){
 
 			// inject lightbox
 			var box = template.container(setId, html);
-			D.body.appendChild(box);
+			document.body.appendChild(box);
 
 			// store the reference
 			lightboxes[setId] = getElement(setId);
@@ -324,8 +335,8 @@ var Microbox = (function(){
 		init();
 
 		// attach events
-		D.addEventListener('click', click);
-		W.addEventListener('resize', resize);
+		document.addEventListener('click', click);
+		window.addEventListener('resize', resize);
 		
 		/**
 		 * Add images to an image set
@@ -356,8 +367,6 @@ var Microbox = (function(){
 
 		}
 
-	}
-
 
 
 	///////////////////////////////////      helpers      ///////////////////////////////////
@@ -380,7 +389,7 @@ var Microbox = (function(){
 	}
 
 	function getWindowHeight() {
-		return W.innerHeight || D.body.clientHeight;
+		return window.innerHeight || document.body.clientHeight;
 	}
 
 	/**
@@ -433,15 +442,5 @@ var Microbox = (function(){
 		return false;
 
 	}
-
-
-
-	///////////////////////////////////      public API     ///////////////////////////////////
-	
-
-
-	return Microbox;
-
-
 
 })();

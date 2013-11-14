@@ -14,19 +14,12 @@
 	@include prefix(box-shadow, $params);
 }
 
-@mixin box-shadow2($param1, $param2) {
-	-moz-box-shadow: $param1, $param2;
-	-webkit-box-shadow: $param1, $param2;
-	box-shadow: $param1, $param2;
-}
-
 @mixin gradient($from, $to, $angle:-90deg) {
 	background-color: mix($from, $to);
 	@include overlayGradient($from, $to, $angle);
 }
 
 @mixin overlayGradient($from, $to, $angle:-90deg) {
-	background-image:        -webkit-gradient(linear, $angle, $from, $to);
 	background-image: -webkit-linear-gradient($angle, $from, $to);
 	background-image:    -moz-linear-gradient($angle, $from, $to);
 	background-image:     -ms-linear-gradient($angle, $from, $to);
@@ -84,6 +77,6 @@
 	@include prefix(transform, $params);
 }
 
-@mixin transition($props: all, $duration: .1s, $function: linear) {
-	@include prefix(transition, $duration $function $props);
+@mixin transition($params: all .1s linear) {
+	@include prefix(transition, $params);
 }
