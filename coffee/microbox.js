@@ -28,7 +28,7 @@ template = {
       });
     }
     if (data.images.length > 1) {
-      arrows = "<div class=\"arrows\">\n	<span class=\"microbox-button prev\"><</span>\n	<span class=\"microbox-button next\">></span>\n</div>";
+      arrows = "<div class=\"arrows\">\n	<span class=\"microbox-button prev\">▸</span>\n	<span class=\"microbox-button next\">▸</span>\n</div>";
     } else {
       arrows = '';
     }

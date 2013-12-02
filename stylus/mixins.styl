@@ -1,0 +1,45 @@
+vendor(prop, args)
+	-webkit-{prop} args
+	-moz-{prop} args
+	-ms-{prop} args
+	-o-{prop} args
+	{prop} args
+
+// transparent
+
+animation()
+	vendor('animation', arguments)
+
+background-size()
+	vendor('background-size', arguments)
+
+border-radius()
+	vendor('border-radius', arguments)
+
+box-shadow()
+	vendor('box-shadow', arguments)
+
+opacity()
+	vendor('opacity', arguments)
+
+text-shadow()
+	vendor('text-shadow', arguments)
+
+transform()
+	vendor('transform', arguments)
+
+transition()
+	vendor('transition', arguments)
+
+// custom
+
+gradient($from, $to, $angle = -90deg)
+	background-image -webkit-linear-gradient($angle, $from, $to)
+	background-image    -moz-linear-gradient($angle, $from, $to)
+	background-image     -ms-linear-gradient($angle, $from, $to)
+	background-image      -o-linear-gradient($angle, $from, $to)
+	background-image         linear-gradient($angle - 90, $from, $to)
+
+noselect()
+	vendor(user-select, none)
+	-webkit-touch-callout none

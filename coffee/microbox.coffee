@@ -76,8 +76,8 @@ template =
 		if data.images.length > 1
 			arrows = """
 				<div class="arrows">
-					<span class="microbox-button prev"><</span>
-					<span class="microbox-button next">></span>
+					<span class="microbox-button prev">▸</span>
+					<span class="microbox-button next">▸</span>
 				</div>
 			"""
 		else
