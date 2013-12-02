@@ -3,7 +3,7 @@
 clear
 
 # start sass
-stylus --watch stylud --out css &
+stylus --watch stylus --out css &
 
 # start coffee
 coffee -cwo js coffee &
