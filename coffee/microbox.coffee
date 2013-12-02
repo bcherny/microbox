@@ -48,7 +48,7 @@ template =
 	caption: (data) ->
 
 		"""
-			<div class="caption"><span class="caption-trigger">i</span>#{data.caption}</div>
+			<div class="caption"><span class="microbox-button caption-trigger">i</span>#{data.caption}</div>
 		"""
 
 	image: (data) ->
@@ -59,24 +59,36 @@ template =
 
 	lightbox: (data) ->
 
-		# template images
+		# images
 		images = ''
 		for src, n in data.images
 			images += template.image
 				last: n is data.images.length
 				src: src
 
-		# template captions
+		# captions
 		captions = ''
 		for cap in data.captions
 			captions += template.caption
 				caption: cap
+
+		# arrows
+		if data.images.length > 1
+			arrows = """
+				<div class="arrows">
+					<span class="microbox-button prev"><</span>
+					<span class="microbox-button next">></span>
+				</div>
+			"""
+		else
+			arrows = ''
 
 		"""
 			<div class="inner">
 				#{images}
 			</div>
 			#{captions}
+			#{arrows}
 		"""
 
 microbox = do ->

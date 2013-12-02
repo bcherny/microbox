@@ -3,13 +3,13 @@ var microbox, template;
 
 template = {
   caption: function(data) {
-    return "<div class=\"caption\"><span class=\"caption-trigger\">i</span>" + data.caption + "</div>";
+    return "<div class=\"caption\"><span class=\"microbox-button caption-trigger\">i</span>" + data.caption + "</div>";
   },
   image: function(data) {
     return "<img src=\"" + data.src + "\" alt=\"\" />";
   },
   lightbox: function(data) {
-    var cap, captions, images, n, src, _i, _j, _len, _len1, _ref, _ref1;
+    var arrows, cap, captions, images, n, src, _i, _j, _len, _len1, _ref, _ref1;
     images = '';
     _ref = data.images;
     for (n = _i = 0, _len = _ref.length; _i < _len; n = ++_i) {
@@ -27,7 +27,12 @@ template = {
         caption: cap
       });
     }
-    return "<div class=\"inner\">\n	" + images + "\n</div>\n" + captions;
+    if (data.images.length > 1) {
+      arrows = "<div class=\"arrows\">\n	<span class=\"microbox-button prev\"><</span>\n	<span class=\"microbox-button next\">></span>\n</div>";
+    } else {
+      arrows = '';
+    }
+    return "<div class=\"inner\">\n	" + images + "\n</div>\n" + captions + "\n" + arrows;
   }
 };
 
