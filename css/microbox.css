@@ -89,24 +89,27 @@
   background-image: -ms-linear-gradient(-90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.4));
   background-image: -o-linear-gradient(-90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.4));
   background-image: linear-gradient(-180deg, rgba(0,0,0,0.2), rgba(0,0,0,0.4));
-  padding: 4px 20px;
+  height: 46px;
+  line-height: 46px;
   position: absolute;
+  text-align: center;
   -webkit-transition: all 0.2s linear;
   -moz-transition: all 0.2s linear;
   -ms-transition: all 0.2s linear;
   -o-transition: all 0.2s linear;
   transition: all 0.2s linear;
+  width: 46px;
   z-index: 100;
 }
-.microbox-buttonhover {
-  color: #ddd;
+.microbox-button:hover {
+  color: #eee;
   background-image: -webkit-linear-gradient(-90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.3));
   background-image: -moz-linear-gradient(-90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.3));
   background-image: -ms-linear-gradient(-90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.3));
   background-image: -o-linear-gradient(-90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.3));
   background-image: linear-gradient(-180deg, rgba(0,0,0,0.2), rgba(0,0,0,0.3));
 }
-.microbox-buttonactive {
+.microbox-button:active {
   background-image: -webkit-linear-gradient(-90deg, rgba(0,0,0,0.3), rgba(0,0,0,0.4));
   background-image: -moz-linear-gradient(-90deg, rgba(0,0,0,0.3), rgba(0,0,0,0.4));
   background-image: -ms-linear-gradient(-90deg, rgba(0,0,0,0.3), rgba(0,0,0,0.4));
@@ -115,10 +118,16 @@
 }
 .microbox-button.next,
 .microbox-button.prev {
+  margin-top: -23px;
   top: 50%;
 }
 .microbox-button.prev {
   left: 10px;
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 .microbox-button.next {
   right: 10px;
@@ -135,9 +144,9 @@
   -o-box-shadow: 2px 2px 3px rgba(0,0,0,0.2);
   box-shadow: 2px 2px 3px rgba(0,0,0,0.2);
   border-collapse: collapse;
-  position: fixed;
   bottom: 6px;
   left: 50px;
+  position: fixed;
   -webkit-transition: all 0.2s linear;
   -moz-transition: all 0.2s linear;
   -ms-transition: all 0.2s linear;
@@ -146,20 +155,20 @@
   z-index: 3;
 }
 .microbox-pager td {
+  color: #ddd;
+  cursor: pointer;
   background-image: -webkit-linear-gradient(-90deg, #555, #4b4b4b);
   background-image: -moz-linear-gradient(-90deg, #555, #4b4b4b);
   background-image: -ms-linear-gradient(-90deg, #555, #4b4b4b);
   background-image: -o-linear-gradient(-90deg, #555, #4b4b4b);
   background-image: linear-gradient(-180deg, #555, #4b4b4b);
+  height: 38px;
+  text-align: center;
   -webkit-text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
   -moz-text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
   -ms-text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
   -o-text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
   text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
-  color: #ddd;
-  cursor: pointer;
-  height: 38px;
-  text-align: center;
   vertical-align: middle;
   width: 40px;
 }

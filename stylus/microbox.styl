@@ -5,8 +5,8 @@
 // vars
 
 $border = 0
+$button = 46px
 $shade = rgba(0,0,0,.8)
-$offset = 23px
 $pager = #555
 $pager-hover = darken($pager, 5%)
 $pager-active = darken($pager-hover, 8%)
@@ -60,7 +60,6 @@ $pager-active = darken($pager-hover, 8%)
 			right 0
 			top 0
 		text-align center
-	
 
 	.caption-trigger
 		font-family "Times New Roman"
@@ -78,25 +77,30 @@ $pager-active = darken($pager-hover, 8%)
 	display block
 	font-size 36px
 	gradient rgba(0,0,0,.2), rgba(0,0,0,.4)
+	height $button
+	line-height $button
 	noselect
-	padding 4px 20px
 	position absolute
+	text-align center
 	transition all .2s linear
+	width $button
 	z-index 100
 
-	&hover
-		color #ddd
+	&:hover
+		color #eee
 		gradient rgba(0,0,0,.2), rgba(0,0,0,.3)
 	
-	&active
+	&:active
 		gradient rgba(0,0,0,.3), rgba(0,0,0,.4)
 
 	&.next
 	&.prev
+		margin-top -($button/2)
 		top 50%
 
 	&.prev
 		left 10px
+		transform rotate(180deg)
 
 	&.next
 		right 10px
@@ -104,23 +108,22 @@ $pager-active = darken($pager-hover, 8%)
 // pager
 
 .microbox-pager
-
 	border-radius 5px
 	box-shadow 2px 2px 3px rgba(0, 0, 0, 0.2)
 	border-collapse collapse
-	position fixed
 	bottom 6px
 	left 50px
+	position fixed
 	transition all .2s linear
 	z-index 3
 
 	td
-		gradient $pager, darken($pager, 12%)
-		text-shadow 1px 1px 0 rgba(0,0,0,.2)
 		color #ddd
 		cursor pointer
+		gradient $pager, darken($pager, 12%)
 		height 38px
 		text-align center
+		text-shadow 1px 1px 0 rgba(0,0,0,.2)
 		vertical-align middle
 		width 40px
 

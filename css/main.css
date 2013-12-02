@@ -1,0 +1,27 @@
+* {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: #aaa;
+  font: 14px Helvetica, Arial, sans-serif;
+  padding: 20px;
+}
+li {
+  display: inline;
+  list-style: none;
+  margin: 0 -3px 0 0;
+}
+li a {
+  background: #999;
+  display: inline-block;
+  padding: 10px;
+}
+li a:hover {
+  background: #888;
+}
+li a img {
+  display: block;
+  width: 200px;
+}
