@@ -1,47 +1,47 @@
 
-contains = (haystack, needle) ->
+# contains = (haystack, needle) ->
 
-	haystack.indexOf (needle) > -1
+# 	haystack.indexOf (needle) > -1
 
-parent = (element, filter) ->
+# parent = (element, filter) ->
 
-	# {Function} filter
-	if izzy['function'] filter
+# 	# {Function} filter
+# 	if izzy['function'] filter
 
-		while _continue element
+# 		while _continue element
 
-			if filter element
-				return element
+# 			if filter element
+# 				return element
 
-			element = element.parentNode
+# 			element = element.parentNode
 
-	# {Object} filter
-	else
+# 	# {Object} filter
+# 	else
 
-		while _continue element
+# 		while _continue element
 
-			good = 0
-			count = 0
+# 			good = 0
+# 			count = 0
 
-			for property of filter
+# 			for property of filter
 
-				e = element[property]
-				f = filter[property]
+# 				e = element[property]
+# 				f = filter[property]
 
-				if contains element[property], filter[property]
-					++good
+# 				if contains element[property], filter[property]
+# 					++good
 				
-				++count
+# 				++count
 			
-			if count is good
-				return element
+# 			if count is good
+# 				return element
 
-			element = element.parentNode
+# 			element = element.parentNode
 
-	_continue = (element) ->
-		not izzy.defined(element.documentElement) and element.tagName isnt 'HTML'
+# 	_continue = (element) ->
+# 		not izzy.defined(element.documentElement) and element.tagName isnt 'HTML'
 
-	false
+# 	false
 
 template =
 
@@ -54,7 +54,7 @@ template =
 	image: (data) ->
 
 		"""
-			<img src="#{data.src}" alt=""#{if data.last then ' class="cur"' else ''} />
+			<img src="#{data.src}" alt="" />
 		"""
 
 	lightbox: (data) ->
@@ -83,7 +83,6 @@ microbox = do ->
 
 	counter = -1
 	model = new umodel
-		lightboxes: {}
 		sets: {}
 
 	# generates unique set ID
@@ -96,7 +95,24 @@ microbox = do ->
 
 		console.log set, id, index
 
-		(model.get "lighboxes/#{id}").classList.toggle 'visible'
+		element = set.element
+
+		# toggle visibility
+		element.classList.toggle 'visible'
+
+		visible = element.classList.contains 'visible'
+
+		if visible
+
+			#index = set.active
+			images = element.querySelectorAll 'img'
+
+			# clear active
+			_.each images, (img) ->
+				img.classList.remove 'visible'
+
+			# set active
+			images[index].classList.add 'visible'
 
 	# attach click event
 	attach = (id, trigger) ->
@@ -139,6 +155,7 @@ microbox = do ->
 				captions: [title]
 				images: [href]
 				triggers: [trigger]
+				active: 0
 
 		# attach click event
 		attach id, trigger
@@ -153,6 +170,4 @@ microbox = do ->
 		document.body.appendChild element
 
 		# store in model
-		
-
-		model.set "lighboxes/#{id}", element
+		model.set "sets/#{id}/element", element
