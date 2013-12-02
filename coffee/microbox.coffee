@@ -100,11 +100,9 @@ microbox = do ->
 		# toggle visibility
 		element.classList.toggle 'visible'
 
-		visible = element.classList.contains 'visible'
+		# if visible, show the right image
+		if element.classList.contains 'visible'
 
-		if visible
-
-			#index = set.active
 			images = element.querySelectorAll 'img'
 
 			# clear active
@@ -171,3 +169,26 @@ microbox = do ->
 
 		# store in model
 		model.set "sets/#{id}/element", element
+
+	# hide lightboxes when clicking outside of them
+	document.addEventListener 'click', (e) ->
+
+		target = e.target
+
+		# caption trigger click event
+		if target.classList.contains 'caption-trigger'
+
+			caption = target.parentNode
+			height = caption.offsetHeight
+			screen = window.innerHeight
+			top = caption.style.top
+
+			# caption is hidden
+			if (not top) or ((parseInt top, 10) is screen)
+
+				newTop = screen - height
+				caption.style.top = "#{newTop}px"
+
+			else
+
+				caption.style.top = "#{screen}px"

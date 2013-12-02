@@ -43,12 +43,11 @@ microbox = (function() {
     }
   };
   toggle = function(set, id, index) {
-    var element, images, visible;
+    var element, images;
     console.log(set, id, index);
     element = set.element;
     element.classList.toggle('visible');
-    visible = element.classList.contains('visible');
-    if (visible) {
+    if (element.classList.contains('visible')) {
       images = element.querySelectorAll('img');
       _.each(images, function(img) {
         return img.classList.remove('visible');
@@ -94,7 +93,7 @@ microbox = (function() {
     }
     return attach(id, trigger);
   });
-  return _.each(model.get('sets'), function(set, id) {
+  _.each(model.get('sets'), function(set, id) {
     var element, html;
     html = template.lightbox(set);
     element = document.createElement('div');
@@ -102,5 +101,21 @@ microbox = (function() {
     element.innerHTML = html;
     document.body.appendChild(element);
     return model.set("sets/" + id + "/element", element);
+  });
+  return document.addEventListener('click', function(e) {
+    var caption, height, newTop, screen, target, top;
+    target = e.target;
+    if (target.classList.contains('caption-trigger')) {
+      caption = target.parentNode;
+      height = caption.offsetHeight;
+      screen = window.innerHeight;
+      top = caption.style.top;
+      if ((!top) || ((parseInt(top, 10)) === screen)) {
+        newTop = screen - height;
+        return caption.style.top = "" + newTop + "px";
+      } else {
+        return caption.style.top = "" + screen + "px";
+      }
+    }
   });
 })();
