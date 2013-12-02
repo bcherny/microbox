@@ -54,7 +54,7 @@ template =
 	image: (data) ->
 
 		"""
-			<img src="#{data.src}" alt="#{data.setId}" #{if data.last then ' class="cur"' else ''} />
+			<img src="#{data.src}" alt=""#{if data.last then ' class="cur"' else ''} />
 		"""
 
 	lightbox: (data) ->
@@ -64,7 +64,6 @@ template =
 		for src, n in data.images
 			images += template.image
 				last: n is data.images.length
-				setId: data.setId
 				src: src
 
 		# template captions
@@ -115,7 +114,7 @@ microbox = do ->
 
 		href = trigger.getAttribute 'href'
 		rel = trigger.getAttribute 'rel'
-		title = trigger.getAttribute 'title' or ''
+		title = (trigger.getAttribute 'title') or ''
 		parts = rel.split '['
 
 		# get set id

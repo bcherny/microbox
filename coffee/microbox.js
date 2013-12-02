@@ -43,7 +43,7 @@ template = {
     return "<div class=\"caption\"><span class=\"caption-trigger\">i</span>" + data.caption + "</div>";
   },
   image: function(data) {
-    return "<img src=\"" + data.src + "\" alt=\"" + data.setId + "\" " + (data.last ? ' class="cur"' : '') + " />";
+    return "<img src=\"" + data.src + "\" alt=\"\"" + (data.last ? ' class="cur"' : '') + " />";
   },
   lightbox: function(data) {
     var cap, captions, images, n, src, _i, _j, _len, _len1, _ref, _ref1;
@@ -53,7 +53,6 @@ template = {
       src = _ref[n];
       images += template.image({
         last: n === data.images.length,
-        setId: data.setId,
         src: src
       });
     }
@@ -99,7 +98,7 @@ microbox = (function() {
     var href, id, parts, rel, set, title;
     href = trigger.getAttribute('href');
     rel = trigger.getAttribute('rel');
-    title = trigger.getAttribute('title' || '');
+    title = (trigger.getAttribute('title')) || '';
     parts = rel.split('[');
     if (parts[1]) {
       id = parts[1].slice(0, -1);
