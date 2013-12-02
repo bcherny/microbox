@@ -41,60 +41,103 @@ parent = (element, filter) ->
 	_continue = (element) ->
 		not izzy.defined(element.documentElement) and element.tagName isnt 'HTML'
 
-	return false
+	false
+
+template =
+
+	caption: (data) ->
+
+		"""
+			<div class="caption"><span class="caption-trigger">i</span>#{data.caption}</div>
+		"""
+
+	image: (data) ->
+
+		"""
+			<img src="#{data.src}" alt="#{data.setId}" #{if data.last then ' class="cur"' else ''} />
+		"""
+
+	lightbox: (data) ->
+
+		# template images
+		images = ''
+		for src, n in data.images
+			images += template.image
+				last: n is data.images.length
+				setId: data.setId
+				src: src
+
+		# template captions
+		captions = ''
+		for cap in data.captions
+			captions += template.caption
+				caption: cap
+
+		"""
+			<div class="inner">
+				#{images}
+			</div>
+			#{captions}
+		"""
 
 microbox = do ->
 
-	# model
+	counter = -1
 	model = new umodel
+		sets: {}
 
-		# flag to avoid double-processing lightbox triggers
-		# [Element...]
-		processed: []
+	# generates unique set ID
+	getId = ->
+		while ++counter not of (model.get 'sets')
+			return counter
 
+	# toggle a lightbox
+	toggle = (set, index) ->
 
-	process = (trigger) ->
+		console.log set, index
 
-		processed = model.get 'processed'
+	# collect triggers
+	triggers = document.querySelectorAll 'a[href][rel^="lightbox"]'
 
-		# exit if this trigger has already been processed
-		if trigger in processed
-			return
+	# initialize triggers
+	triggers.forEach (trigger) ->
 
-		# ...
+		href = trigger.getAttribute 'href'
+		rel = trigger.getAttribute 'rel'
+		title = trigger.getAttribute 'title'
+		parts = rel.split '['
 
-		# mark as processed
-		processed.push trigger
+		# get set id
+		if parts[1]
+			id = parts[1].slice 0, -1
+		else
+			id = do getId
 
-	click = (event) ->
+		# add to model
+		set = model.get "sets/#{id}"
 
-		target = event.target
-		lightbox = parent target,
-			rel: 'lightbox'
+		if set
 
-		if lightbox
+			# prevent duplicates
+			if (set.triggers.indexOf trigger) < 0
+				set.captions.push title
+				set.images.push href
+				set.triggers.push trigger
 
-			rel = lightbox.rel
+		else
+			model.set "sets/#{id}",
+				captions: [title]
+				images: [href]
+				triggers: [trigger]
 
-			# endure that lightbox is rendered
-			
-			# or, lazy-create the lightbox
-			
+		# attach click event
+		set = model.get "sets/#{id}"
+		index = set.triggers.indexOf trigger
+		trigger.addEventListener 'click', ->
+			toggle set, index
 
-			# toggle lightbox visibility
-
-
-	initialize = ->
-
-		document.addEventListener 'click', click
-
-		# as = document.querySelectorAll '[rel^=lightbox]'
-
-		# process a for a in as
-
-
-
-	# export
-	{
-		initialize: initialize
-	}
+	# build lightboxes
+	html = ''
+	for set of model.get 'sets'
+		html += template.lightbox set
+	document.body.innerHTML += html
