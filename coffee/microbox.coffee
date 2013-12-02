@@ -84,6 +84,7 @@ microbox = do ->
 
 	counter = -1
 	model = new umodel
+		lightboxes: {}
 		sets: {}
 
 	# generates unique set ID
@@ -92,9 +93,11 @@ microbox = do ->
 			return counter
 
 	# toggle a lightbox
-	toggle = (set, index) ->
+	toggle = (set, id, index) ->
 
-		console.log set, index
+		console.log set, id, index
+
+		(model.get "lighboxes/#{id}").classList.toggle 'visible'
 
 	# attach click event
 	attach = (id, trigger) ->
@@ -102,7 +105,7 @@ microbox = do ->
 		index = set.triggers.indexOf trigger
 		trigger.addEventListener 'click', (e) ->
 			do e.preventDefault
-			toggle set, index
+			toggle set, id, index
 
 	# collect triggers
 	triggers = document.querySelectorAll 'a[href][rel^="lightbox"]'
@@ -112,7 +115,7 @@ microbox = do ->
 
 		href = trigger.getAttribute 'href'
 		rel = trigger.getAttribute 'rel'
-		title = trigger.getAttribute 'title'
+		title = trigger.getAttribute 'title' or ''
 		parts = rel.split '['
 
 		# get set id
@@ -142,10 +145,15 @@ microbox = do ->
 		attach id, trigger
 
 	# build lightboxes
-	html = ''
-	_.each (model.get 'sets'), (set) ->
-		html += template.lightbox set
-	element = document.createElement 'div'
-	element.className = 'microbox'
-	element.innerHTML = html
-	document.body.appendChild element
+	_.each (model.get 'sets'), (set, id) ->
+
+		html = template.lightbox set
+		element = document.createElement 'div'
+		element.className = 'microbox'
+		element.innerHTML = html
+		document.body.appendChild element
+
+		# store in model
+		
+
+		model.set "lighboxes/#{id}", element
