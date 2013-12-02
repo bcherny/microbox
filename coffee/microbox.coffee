@@ -74,10 +74,12 @@ template =
 				caption: cap
 
 		"""
-			<div class="inner">
-				#{images}
+			<div class="microbox">
+				<div class="inner">
+					#{images}
+				</div>
+				#{captions}
 			</div>
-			#{captions}
 		"""
 
 microbox = do ->
@@ -100,7 +102,7 @@ microbox = do ->
 	triggers = document.querySelectorAll 'a[href][rel^="lightbox"]'
 
 	# initialize triggers
-	triggers.forEach (trigger) ->
+	_.each triggers, (trigger) ->
 
 		href = trigger.getAttribute 'href'
 		rel = trigger.getAttribute 'rel'
@@ -133,11 +135,12 @@ microbox = do ->
 		# attach click event
 		set = model.get "sets/#{id}"
 		index = set.triggers.indexOf trigger
-		trigger.addEventListener 'click', ->
+		trigger.addEventListener 'click', (e) ->
+			do e.preventDefault
 			toggle set, index
 
 	# build lightboxes
 	html = ''
-	for set of model.get 'sets'
+	_.each (model.get 'sets'), (set) ->
 		html += template.lightbox set
 	document.body.innerHTML += html

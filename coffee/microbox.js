@@ -65,12 +65,12 @@ template = {
         caption: cap
       });
     }
-    return "<div class=\"inner\">\n	" + images + "\n</div>\n" + captions;
+    return "<div class=\"microbox\">\n	<div class=\"inner\">\n		" + images + "\n	</div>\n	" + captions + "\n</div>";
   }
 };
 
 microbox = (function() {
-  var counter, getId, html, model, set, toggle, triggers;
+  var counter, getId, html, model, toggle, triggers;
   counter = -1;
   model = new umodel({
     sets: {}
@@ -84,7 +84,7 @@ microbox = (function() {
     return console.log(set, index);
   };
   triggers = document.querySelectorAll('a[href][rel^="lightbox"]');
-  triggers.forEach(function(trigger) {
+  _.each(triggers, function(trigger) {
     var href, id, index, parts, rel, set, title;
     href = trigger.getAttribute('href');
     rel = trigger.getAttribute('rel');
@@ -111,13 +111,14 @@ microbox = (function() {
     }
     set = model.get("sets/" + id);
     index = set.triggers.indexOf(trigger);
-    return trigger.addEventListener('click', function() {
+    return trigger.addEventListener('click', function(e) {
+      e.preventDefault();
       return toggle(set, index);
     });
   });
   html = '';
-  for (set in model.get('sets')) {
-    html += template.lightbox(set);
-  }
+  _.each(model.get('sets'), function(set) {
+    return html += template.lightbox(set);
+  });
   return document.body.innerHTML += html;
 })();
