@@ -83,6 +83,7 @@ microbox = do ->
 
 	counter = -1
 	model = new umodel
+		visible: null
 		sets: {}
 
 	# generates unique set ID
@@ -111,6 +112,13 @@ microbox = do ->
 
 			# set active
 			images[index].classList.add 'visible'
+
+			# set in model
+			model.set 'visible', element
+
+		else
+
+			model.set 'visible', null
 
 	# attach click event
 	attach = (id, trigger) ->
@@ -175,8 +183,15 @@ microbox = do ->
 
 		target = e.target
 
+		# hide lightbox
+		if target.classList.contains 'inner'
+
+			(model.get 'visible').classList.remove 'visible'
+
+			model.set 'visible', null
+
 		# caption trigger click event
-		if target.classList.contains 'caption-trigger'
+		else if target.classList.contains 'caption-trigger'
 
 			caption = target.parentNode
 			height = caption.offsetHeight

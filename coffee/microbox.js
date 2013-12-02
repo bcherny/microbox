@@ -35,6 +35,7 @@ microbox = (function() {
   var attach, counter, getId, model, toggle, triggers;
   counter = -1;
   model = new umodel({
+    visible: null,
     sets: {}
   });
   getId = function() {
@@ -52,7 +53,10 @@ microbox = (function() {
       _.each(images, function(img) {
         return img.classList.remove('visible');
       });
-      return images[index].classList.add('visible');
+      images[index].classList.add('visible');
+      return model.set('visible', element);
+    } else {
+      return model.set('visible', null);
     }
   };
   attach = function(id, trigger) {
@@ -105,7 +109,10 @@ microbox = (function() {
   return document.addEventListener('click', function(e) {
     var caption, height, newTop, screen, target, top;
     target = e.target;
-    if (target.classList.contains('caption-trigger')) {
+    if (target.classList.contains('inner')) {
+      (model.get('visible')).classList.remove('visible');
+      return model.set('visible', null);
+    } else if (target.classList.contains('caption-trigger')) {
       caption = target.parentNode;
       height = caption.offsetHeight;
       screen = window.innerHeight;
