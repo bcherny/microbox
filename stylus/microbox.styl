@@ -51,18 +51,23 @@ $pager-active = darken($pager-hover, 8%)
 		position absolute
 
 	img
+		bottom 0
 		box-shadow 0 0 3px rgba(0, 0, 0, 0.2)
 		cursor zoom-in
 		display none
 		image-rendering optimizeQuality
 		-ms-interpolation-mode bicubic
-		margin-bottom -3px
+		left 0
+		margin auto
 		max-height 100%
 		max-width 100%
+		position absolute
+		right 0
+		top 0
 		transition all .2s linear
 
 		&.visible
-			display inline-block
+			display block
 
 	.inner
 		box-shadow 2px 2px 3px rgba(0, 0, 0, 0.2)
