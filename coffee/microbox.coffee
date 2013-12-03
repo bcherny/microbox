@@ -134,6 +134,8 @@ microbox = do ->
 			counts = element.querySelector '.counts'
 			images = element.querySelectorAll 'img'
 			pagerItems = element.querySelectorAll '.microbox-pager [microbox-trigger-set]'
+			next = element.querySelector '[microbox-trigger="next"]'
+			prev = element.querySelector '[microbox-trigger="prev"]'
 
 			# update active index in model
 			set.active = index
@@ -148,11 +150,24 @@ microbox = do ->
 			# update pager text
 			counts.innerHTML = "#{index+1}/#{set.images.length}"
 
-			# update active pager item
+			# deactivate pager items
 			_.each pagerItems, (item) ->
 				item.classList.remove 'active'
 
+			# activate pager item
 			pagerItems[index].classList.add 'active'
+			
+			# deactivate "<" arrow?
+			if index is 0
+				prev.classList.add 'disabled'
+			else
+				prev.classList.remove 'disabled'
+			
+			# deactivate ">" arrow?
+			if index is set.images.length - 1
+				next.classList.add 'disabled'
+			else
+				next.classList.remove 'disabled'
 
 			# set active set in model
 			model.set 'visible', element

@@ -56,7 +56,7 @@
       }
     };
     toggle = function(id, index, show) {
-      var counts, element, images, pagerItems, set, verb;
+      var counts, element, images, next, pagerItems, prev, set, verb;
       console.log(id, index);
       set = model.get("sets/" + id);
       element = set.element;
@@ -67,6 +67,8 @@
         counts = element.querySelector('.counts');
         images = element.querySelectorAll('img');
         pagerItems = element.querySelectorAll('.microbox-pager [microbox-trigger-set]');
+        next = element.querySelector('[microbox-trigger="next"]');
+        prev = element.querySelector('[microbox-trigger="prev"]');
         set.active = index;
         _.each(images, function(img) {
           return img.classList.remove('visible');
@@ -77,6 +79,16 @@
           return item.classList.remove('active');
         });
         pagerItems[index].classList.add('active');
+        if (index === 0) {
+          prev.classList.add('disabled');
+        } else {
+          prev.classList.remove('disabled');
+        }
+        if (index === set.images.length - 1) {
+          next.classList.add('disabled');
+        } else {
+          next.classList.remove('disabled');
+        }
         return model.set('visible', element);
       } else {
         return model.set('visible', null);

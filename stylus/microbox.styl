@@ -135,3 +135,23 @@ $pager-active = darken($pager-hover, 8%)
 		margin-left 0
 		margin-right -2px
 		transform rotate(180deg)
+
+[microbox-trigger]
+
+	&.disabled
+	&.disabled:active
+	&.disabled:hover
+		background 0
+		box-shadow 0 0
+		color rgba(255,255,255,.2)
+		cursor default
+		position relative
+
+		&:after
+			border-bottom 2px solid rgba(255,255,255,.2)
+			content ""
+			left $button-margin
+			position absolute
+			right $button-margin
+			top 50%
+			transform rotate(-45deg)

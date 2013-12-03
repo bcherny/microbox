@@ -169,3 +169,31 @@
   -o-transform: rotate(180deg);
   transform: rotate(180deg);
 }
+[microbox-trigger].disabled,
+[microbox-trigger].disabled:active,
+[microbox-trigger].disabled:hover {
+  background: 0;
+  -webkit-box-shadow: 0 0;
+  -moz-box-shadow: 0 0;
+  -ms-box-shadow: 0 0;
+  -o-box-shadow: 0 0;
+  box-shadow: 0 0;
+  color: rgba(255,255,255,0.2);
+  cursor: default;
+  position: relative;
+}
+[microbox-trigger].disabled:after,
+[microbox-trigger].disabled:active:after,
+[microbox-trigger].disabled:hover:after {
+  border-bottom: 2px solid rgba(255,255,255,0.2);
+  content: "";
+  left: 10px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
