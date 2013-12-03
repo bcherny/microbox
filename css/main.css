@@ -16,12 +16,11 @@ h1 {
   box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
   color: #999;
   line-height: 100px;
-  margin-bottom: 20px;
   text-align: center;
 }
 h2 {
   font-weight: normal;
-  padding: 10px 10px 0;
+  padding: 20px 10px 0;
 }
 .credit {
   display: block;
