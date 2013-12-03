@@ -34,7 +34,7 @@
 .microbox .caption.hide {
   display: none;
 }
-.microbox .count {
+.microbox .microbox-count {
   bottom: 10px;
   color: rgba(255,255,255,0.3);
   font-size: 24px;
@@ -155,6 +155,10 @@
   background-image: -o-linear-gradient(-90deg, rgba(0,0,0,0.3), rgba(0,0,0,0.4));
   background-image: linear-gradient(-180deg, rgba(0,0,0,0.3), rgba(0,0,0,0.4));
 }
+.microbox-close {
+  right: 10px;
+  top: 10px;
+}
 .microbox-pager {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -238,13 +242,13 @@
   color: #fff;
   cursor: default;
 }
-.microbox-pager .counts {
+.microbox-pager .microbox-counts {
   padding: 0 10px;
   width: auto;
 }
-.microbox-pager .counts,
-.microbox-pager .counts:active,
-.microbox-pager .counts:hover {
+.microbox-pager .microbox-counts,
+.microbox-pager .microbox-counts:active,
+.microbox-pager .microbox-counts:hover {
   background: 0;
   -webkit-box-shadow: 0 0;
   -moz-box-shadow: 0 0;

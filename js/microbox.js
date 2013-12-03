@@ -25,11 +25,11 @@
         item = _ref2[n];
         items += "<li microbox-trigger-set=\"" + id + "\" microbox-trigger-index=\"" + n + "\">" + (n + 1) + "</li>";
       }
-      pager = "<ul class=\"microbox-pager\">\n	<li class=\"counts\">" + (data.active + 1) + "/" + data.images.length + "</li>\n	<li microbox-trigger-prev microbox-trigger-set=\"" + id + "\">&#9656;</li>\n	" + items + "\n	<li microbox-trigger-next microbox-trigger-set=\"" + id + "\">&#9656;</li>\n</ul>";
+      pager = "<ul class=\"microbox-pager\">\n	<li class=\"microbox-counts\">" + (data.active + 1) + "/" + data.images.length + "</li>\n	<li microbox-trigger-prev microbox-trigger-set=\"" + id + "\">&#9656;</li>\n	" + items + "\n	<li microbox-trigger-next microbox-trigger-set=\"" + id + "\">&#9656;</li>\n</ul>";
     } else {
       pager = '';
     }
-    return "<div class=\"inner\">\n	" + images + "\n</div>\n" + captions + "\n" + pager;
+    return "<span class=\"microbox-button microbox-close\" microbox-close>&times;</span>\n<div class=\"inner\">\n	" + images + "\n</div>\n" + captions + "\n" + pager;
   };
 
   microbox = (function() {
@@ -71,7 +71,7 @@
       if (element.classList.contains('visible')) {
         captions = element.querySelectorAll('.caption');
         caption = element.querySelector("[microbox-caption=\"" + index + "\"]");
-        counts = element.querySelector('.counts');
+        counts = element.querySelector('.microbox-counts');
         images = element.querySelectorAll('img');
         pager = element.querySelector('.microbox-pager');
         pagerItems = pager.querySelectorAll('[microbox-trigger-index]');
@@ -161,7 +161,7 @@
     return document.addEventListener('click', function(e) {
       var caption, height, index, newTop, pager, screen, set, target, top;
       target = e.target;
-      if (target.classList.contains('inner')) {
+      if ((target.classList.contains('inner')) || (target.hasAttribute('microbox-close'))) {
         (model.get('visible')).classList.remove('visible');
         return model.set('visible', null);
       } else if ((target.hasAttribute('microbox-trigger-index')) && (target.hasAttribute('microbox-trigger-set'))) {

@@ -28,7 +28,7 @@ template = (data, id) ->
 
 		pager = """
 			<ul class="microbox-pager">
-				<li class="counts">#{data.active+1}/#{data.images.length}</li>
+				<li class="microbox-counts">#{data.active+1}/#{data.images.length}</li>
 				<li microbox-trigger-prev microbox-trigger-set="#{id}">&#9656;</li>
 				#{items}
 				<li microbox-trigger-next microbox-trigger-set="#{id}">&#9656;</li>
@@ -39,6 +39,7 @@ template = (data, id) ->
 
 	# return
 	"""
+		<span class="microbox-button microbox-close" microbox-close>&times;</span>
 		<div class="inner">
 			#{images}
 		</div>
@@ -98,7 +99,7 @@ microbox = do ->
 
 			captions = element.querySelectorAll '.caption'
 			caption = element.querySelector "[microbox-caption=\"#{index}\"]"
-			counts = element.querySelector '.counts'
+			counts = element.querySelector '.microbox-counts'
 			images = element.querySelectorAll 'img'
 			pager = element.querySelector '.microbox-pager'
 			pagerItems = pager.querySelectorAll '[microbox-trigger-index]'
@@ -234,8 +235,8 @@ microbox = do ->
 
 		target = e.target
 
-		# if clicked off a lightbox while it is open, hide the lightbox
-		if target.classList.contains 'inner'
+		# if clicked off a lightbox or clicked on the (x) while it is open, hide the lightbox
+		if (target.classList.contains 'inner') or (target.hasAttribute 'microbox-close')
 
 			(model.get 'visible').classList.remove 'visible'
 

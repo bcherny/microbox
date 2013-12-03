@@ -44,7 +44,7 @@ $pager-active = darken($pager-hover, 8%)
 		&.hide
 			display none
 
-	.count
+	.microbox-count
 		bottom $button-margin
 		color rgba(255,255,255,.3)
 		font-size 24px
@@ -92,6 +92,10 @@ $pager-active = darken($pager-hover, 8%)
 .microbox-button
 	button()
 
+.microbox-close
+	right $button-margin
+	top $button-margin
+
 // pager
 
 .microbox-pager
@@ -111,7 +115,7 @@ $pager-active = darken($pager-hover, 8%)
 		&.active
 			button-active()
 
-	.counts
+	.microbox-counts
 		button-disabled()
 		padding 0 $button-margin
 		width auto
