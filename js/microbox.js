@@ -56,7 +56,7 @@
       }
     };
     toggle = function(id, index, show) {
-      var counts, element, images, set, verb;
+      var counts, element, images, pagerItems, set, verb;
       console.log(id, index);
       set = model.get("sets/" + id);
       element = set.element;
@@ -64,14 +64,19 @@
       verb = show != null ? 'add' : 'toggle';
       element.classList[verb]('visible');
       if (element.classList.contains('visible')) {
-        counts = set.element.querySelector('.counts');
+        counts = element.querySelector('.counts');
         images = element.querySelectorAll('img');
+        pagerItems = element.querySelectorAll('.microbox-pager [microbox-trigger-set]');
         set.active = index;
         _.each(images, function(img) {
           return img.classList.remove('visible');
         });
         images[index].classList.add('visible');
         counts.innerHTML = "" + (index + 1) + "/" + set.images.length;
+        _.each(pagerItems, function(item) {
+          return item.classList.remove('active');
+        });
+        pagerItems[index].classList.add('active');
         return model.set('visible', element);
       } else {
         return model.set('visible', null);

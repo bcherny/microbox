@@ -131,8 +131,9 @@ microbox = do ->
 		# if visible, show the right image
 		if element.classList.contains 'visible'
 
-			counts = set.element.querySelector '.counts'
+			counts = element.querySelector '.counts'
 			images = element.querySelectorAll 'img'
+			pagerItems = element.querySelectorAll '.microbox-pager [microbox-trigger-set]'
 
 			# update active index in model
 			set.active = index
@@ -146,6 +147,12 @@ microbox = do ->
 
 			# update pager text
 			counts.innerHTML = "#{index+1}/#{set.images.length}"
+
+			# update active pager item
+			_.each pagerItems, (item) ->
+				item.classList.remove 'active'
+
+			pagerItems[index].classList.add 'active'
 
 			# set active set in model
 			model.set 'visible', element

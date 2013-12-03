@@ -81,6 +81,7 @@ $pager-active = darken($pager-hover, 8%)
 .microbox-pager li
 	border-radius $button
 	box-shadow inset 0 2px 2px 2px rgba(0,0,0,.2)
+	box-sizing border-box
 	color #ccc
 	cursor pointer
 	display block
@@ -91,7 +92,7 @@ $pager-active = darken($pager-hover, 8%)
 	noselect
 	position absolute
 	text-align center
-	transition all .2s linear
+	transition background .2s linear, color .2s linear
 	width $button
 	z-index 100
 
@@ -114,6 +115,11 @@ $pager-active = darken($pager-hover, 8%)
 		list-style none
 		margin-right 2px
 		position relative
+
+		&.active
+			border 2px solid rgba(255,255,255,.8)
+			color #fff
+			cursor default
 
 	.counts
 	.counts:active
