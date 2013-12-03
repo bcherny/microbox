@@ -153,11 +153,16 @@ microbox = do ->
 		# if visible, show the right image
 		if element.classList.contains 'visible'
 
+			captions = element.querySelectorAll '.caption'
 			counts = element.querySelector '.counts'
 			images = element.querySelectorAll 'img'
 			pagerItems = element.querySelectorAll '[microbox-trigger-index]'
 			next = element.querySelector '[microbox-trigger-next]'
 			prev = element.querySelector '[microbox-trigger-prev]'
+
+			#
+			# image
+			#
 
 			# clear active
 			_.each images, (img) ->
@@ -165,6 +170,10 @@ microbox = do ->
 
 			# set active image
 			images[index].classList.add 'visible'
+
+			#
+			# pager
+			#
 
 			# update pager text
 			counts.innerHTML = "#{index+1}/#{set.images.length}"
@@ -187,6 +196,22 @@ microbox = do ->
 				next.classList.add 'disabled'
 			else
 				next.classList.remove 'disabled'
+
+			#
+			# caption
+			#
+
+			# hide and deactivate all captions
+			_.each captions, (caption) ->
+				caption.classList.add 'hide'
+				caption.classList.remove 'active'
+
+			# activate this caption
+			captions[index].classList.remove 'hide'
+
+			#
+			# model
+			# 
 
 			# update active index in model
 			set.active = index
