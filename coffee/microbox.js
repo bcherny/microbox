@@ -34,7 +34,7 @@ template = {
         item = _ref2[n];
         items += "<li microbox-trigger-set=\"" + id + "\" microbox-trigger-index=\"" + n + "\">" + (n + 1) + "</li>";
       }
-      pager = "<ul class=\"microbox-pager\">\n	<li class=\"counts\">" + (data.active + 1) + "/" + data.images.length + "</li>\n	<li microbox-trigger=\"prev\">&#9656;</li>\n	" + items + "\n	<li microbox-trigger=\"next\">&#9656;</li>\n</ul>";
+      pager = "<ul class=\"microbox-pager\">\n	<li class=\"counts\">" + (data.active + 1) + "/" + data.images.length + "</li>\n	<li microbox-trigger-prev microbox-trigger-set=\"" + id + "\">&#9656;</li>\n	" + items + "\n	<li microbox-trigger-next microbox-trigger-set=\"" + id + "\">&#9656;</li>\n</ul>";
     } else {
       pager = '';
     }
@@ -55,20 +55,35 @@ microbox = (function() {
     }
   };
   toggle = function(id, index, show) {
-    var counts, element, images, next, pagerItems, prev, set, verb;
-    console.log(id, index);
+    var counts, element, images, max, next, pagerItems, prev, set, verb;
+    if (index == null) {
+      index = 0;
+    }
+    if (id == null) {
+      console.error("microbox.toggle expects a set ID, given '" + id + "'");
+      return false;
+    }
     set = model.get("sets/" + id);
+    max = set.images.length - 1;
     element = set.element;
+    if (set == null) {
+      console.error("microbox.toggle passed an invalid set id '" + id + "'");
+      return false;
+    }
     index = +index;
+    if (index < 0) {
+      index = 0;
+    } else if (index > max) {
+      index = max;
+    }
     verb = show != null ? 'add' : 'toggle';
     element.classList[verb]('visible');
     if (element.classList.contains('visible')) {
       counts = element.querySelector('.counts');
       images = element.querySelectorAll('img');
-      pagerItems = element.querySelectorAll('.microbox-pager [microbox-trigger-set]');
-      next = element.querySelector('[microbox-trigger="next"]');
-      prev = element.querySelector('[microbox-trigger="prev"]');
-      set.active = index;
+      pagerItems = element.querySelectorAll('[microbox-trigger-index]');
+      next = element.querySelector('[microbox-trigger-next]');
+      prev = element.querySelector('[microbox-trigger-prev]');
       _.each(images, function(img) {
         return img.classList.remove('visible');
       });
@@ -83,11 +98,12 @@ microbox = (function() {
       } else {
         prev.classList.remove('disabled');
       }
-      if (index === set.images.length - 1) {
+      if (index === max) {
         next.classList.add('disabled');
       } else {
         next.classList.remove('disabled');
       }
+      set.active = index;
       return model.set('visible', element);
     } else {
       return model.set('visible', null);
@@ -149,6 +165,15 @@ microbox = (function() {
     } else if ((target.hasAttribute('microbox-trigger-index')) && (target.hasAttribute('microbox-trigger-set'))) {
       set = target.getAttribute('microbox-trigger-set');
       index = target.getAttribute('microbox-trigger-index');
+      return toggle(set, index, true);
+    } else if ((target.hasAttribute('microbox-trigger-next')) || (target.hasAttribute('microbox-trigger-prev'))) {
+      set = target.getAttribute('microbox-trigger-set');
+      index = model.get("sets/" + set + "/active");
+      if (target.hasAttribute('microbox-trigger-next')) {
+        ++index;
+      } else {
+        --index;
+      }
       return toggle(set, index, true);
     } else if (target.classList.contains('caption-trigger')) {
       caption = target.parentNode;

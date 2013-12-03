@@ -87,9 +87,9 @@ template =
 			pager = """
 				<ul class="microbox-pager">
 					<li class="counts">#{data.active+1}/#{data.images.length}</li>
-					<li microbox-trigger="prev">&#9656;</li>
+					<li microbox-trigger-prev microbox-trigger-set="#{id}">&#9656;</li>
 					#{items}
-					<li microbox-trigger="next">&#9656;</li>
+					<li microbox-trigger-next microbox-trigger-set="#{id}">&#9656;</li>
 				</ul>
 			"""
 		else
@@ -115,17 +115,39 @@ microbox = do ->
 		while ++counter not of (model.get 'sets')
 			return counter
 
-	# toggle a lightbox
-	toggle = (id, index, show) ->
+	# toggles a lightbox
+	# 
+	# @id		{String}		set id
+	# @index	{Number|String}	index in set
+	# @show		{Boolean}		show, not toggle
+	# 
+	toggle = (id, index = 0, show) ->
 
-		console.log id, index
+		# check for set id
+		if not id?
+			console.error "microbox.toggle expects a set ID, given '#{id}'"
+			return false
 
 		set = model.get "sets/#{id}"
+		max = set.images.length - 1
 		element = set.element
-		index = +index # coerce type
-		verb = if show? then 'add' else 'toggle'
+
+		# validate set id
+		if not set?
+			console.error "microbox.toggle passed an invalid set id '#{id}'"
+			return false
+
+		# coerce index to Number
+		index = +index
+
+		# validate index
+		if index < 0
+			index = 0
+		else if index > max
+			index = max
 
 		# toggle visibility
+		verb = if show? then 'add' else 'toggle'
 		element.classList[verb] 'visible'
 
 		# if visible, show the right image
@@ -133,12 +155,9 @@ microbox = do ->
 
 			counts = element.querySelector '.counts'
 			images = element.querySelectorAll 'img'
-			pagerItems = element.querySelectorAll '.microbox-pager [microbox-trigger-set]'
-			next = element.querySelector '[microbox-trigger="next"]'
-			prev = element.querySelector '[microbox-trigger="prev"]'
-
-			# update active index in model
-			set.active = index
+			pagerItems = element.querySelectorAll '[microbox-trigger-index]'
+			next = element.querySelector '[microbox-trigger-next]'
+			prev = element.querySelector '[microbox-trigger-prev]'
 
 			# clear active
 			_.each images, (img) ->
@@ -164,10 +183,13 @@ microbox = do ->
 				prev.classList.remove 'disabled'
 			
 			# deactivate ">" arrow?
-			if index is set.images.length - 1
+			if index is max
 				next.classList.add 'disabled'
 			else
 				next.classList.remove 'disabled'
+
+			# update active index in model
+			set.active = index
 
 			# set active set in model
 			model.set 'visible', element
@@ -251,6 +273,19 @@ microbox = do ->
 
 			set = target.getAttribute 'microbox-trigger-set'
 			index = target.getAttribute 'microbox-trigger-index'
+
+			toggle set, index, true
+
+		# trigger prev/next
+		else if (target.hasAttribute 'microbox-trigger-next') or (target.hasAttribute 'microbox-trigger-prev')
+
+			set = target.getAttribute 'microbox-trigger-set'
+			index = model.get "sets/#{set}/active"
+
+			if target.hasAttribute 'microbox-trigger-next'
+				++index
+			else
+				--index
 
 			toggle set, index, true
 
