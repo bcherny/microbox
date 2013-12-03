@@ -39,6 +39,7 @@ $pager-active = darken($pager-hover, 8%)
 
 		&.active [microbox-trigger-caption]
 			button-active()
+			cursor pointer
 
 		&.hide
 			display none
@@ -115,14 +116,8 @@ $pager-active = darken($pager-hover, 8%)
 		padding 0 $button-margin
 		width auto
 
-	[microbox-trigger-prev]
-		margin-left 0
-		margin-right -2px
-		transform rotate(180deg)
-
 [microbox-trigger-next]
 [microbox-trigger-prev]
-
 	&.disabled
 		button-disabled()
 
@@ -134,3 +129,8 @@ $pager-active = darken($pager-hover, 8%)
 			right $button-margin
 			top 50%
 			transform rotate(-45deg)
+
+[microbox-trigger-prev]
+	margin-left 0
+	margin-right -2px
+	transform rotate(180deg)

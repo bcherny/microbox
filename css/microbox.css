@@ -29,6 +29,7 @@
   border: 2px solid rgba(255,255,255,0.8);
   color: #fff;
   cursor: default;
+  cursor: pointer;
 }
 .microbox .caption.hide {
   display: none;
@@ -245,15 +246,6 @@
   color: rgba(255,255,255,0.2);
   cursor: default;
 }
-.microbox-pager [microbox-trigger-prev] {
-  margin-left: 0;
-  margin-right: -2px;
-  -webkit-transform: rotate(180deg);
-  -moz-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
-  -o-transform: rotate(180deg);
-  transform: rotate(180deg);
-}
 [microbox-trigger-next].disabled,
 [microbox-trigger-prev].disabled,
 [microbox-trigger-next].disabled:active,
@@ -282,4 +274,13 @@
   -ms-transform: rotate(-45deg);
   -o-transform: rotate(-45deg);
   transform: rotate(-45deg);
+}
+[microbox-trigger-prev] {
+  margin-left: 0;
+  margin-right: -2px;
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
 }
