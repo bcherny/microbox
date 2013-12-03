@@ -47,6 +47,13 @@ template = (data, id) ->
 		#{pager}
 	"""
 
+bound = (thing, min, max) ->
+	if thing < min
+		thing = min
+	else if thing > max
+		thing = max
+	thing
+
 microbox = do ->
 
 	counter = -1
@@ -81,14 +88,8 @@ microbox = do ->
 			console.error "microbox.toggle passed an invalid set id '#{id}'"
 			return false
 
-		# coerce index to Number
-		index = +index
-
-		# validate index
-		if index < 0
-			index = 0
-		else if index > max
-			index = max
+		# coerce index to Number, validate index
+		index = bound +index, 0, max
 
 		# toggle visibility
 		verb = if show? then 'add' else 'toggle'
