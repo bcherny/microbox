@@ -37,9 +37,6 @@ li a {
   display: inline-block;
   margin: 10px 0 0 10px;
 }
-li a:hover {
-  background: #888;
-}
 li a img {
   display: block;
   width: 200px;
