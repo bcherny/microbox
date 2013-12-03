@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "umodel": "0.0.5",
-    "izzy": "~0.1.4",
     "_": "git://github.com/eighttrackmind/_.git"
   }
 }
