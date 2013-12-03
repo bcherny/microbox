@@ -116,14 +116,16 @@ microbox = do ->
 			return counter
 
 	# toggle a lightbox
-	toggle = (set, id, index) ->
+	toggle = (id, index, show) ->
 
-		console.log set, id, index
+		console.log id, index
 
+		set = model.get "sets/#{id}"
 		element = set.element
+		verb = if show? then 'add' else 'toggle'
 
 		# toggle visibility
-		element.classList.toggle 'visible'
+		element.classList[verb] 'visible'
 
 		# if visible, show the right image
 		if element.classList.contains 'visible'
@@ -150,7 +152,7 @@ microbox = do ->
 		index = set.triggers.indexOf trigger
 		trigger.addEventListener 'click', (e) ->
 			do e.preventDefault
-			toggle set, id, index
+			toggle id, index
 
 	# collect triggers
 	triggers = document.querySelectorAll 'a[href][rel^="lightbox"]'
@@ -207,14 +209,22 @@ microbox = do ->
 
 		target = e.target
 
-		# hide lightbox
+		# if clicked off a lightbox while it is open, hide the lightbox
 		if target.classList.contains 'inner'
 
 			(model.get 'visible').classList.remove 'visible'
 
 			model.set 'visible', null
 
-		# caption trigger click event
+		# trigger set @ index
+		else if (target.hasAttribute 'microbox-trigger-index') and (target.hasAttribute 'microbox-trigger-set')
+
+			set = target.getAttribute 'microbox-trigger-set'
+			index = target.getAttribute 'microbox-trigger-index'
+
+			toggle set, index, true
+
+		# toggle caption
 		else if target.classList.contains 'caption-trigger'
 
 			caption = target.parentNode

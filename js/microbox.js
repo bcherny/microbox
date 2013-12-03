@@ -55,11 +55,13 @@
         return counter;
       }
     };
-    toggle = function(set, id, index) {
-      var element, images;
-      console.log(set, id, index);
+    toggle = function(id, index, show) {
+      var element, images, set, verb;
+      console.log(id, index);
+      set = model.get("sets/" + id);
       element = set.element;
-      element.classList.toggle('visible');
+      verb = show != null ? 'add' : 'toggle';
+      element.classList[verb]('visible');
       if (element.classList.contains('visible')) {
         images = element.querySelectorAll('img');
         _.each(images, function(img) {
@@ -77,7 +79,7 @@
       index = set.triggers.indexOf(trigger);
       return trigger.addEventListener('click', function(e) {
         e.preventDefault();
-        return toggle(set, id, index);
+        return toggle(id, index);
       });
     };
     triggers = document.querySelectorAll('a[href][rel^="lightbox"]');
@@ -119,11 +121,15 @@
       return model.set("sets/" + id + "/element", element);
     });
     return document.addEventListener('click', function(e) {
-      var caption, height, newTop, screen, target, top;
+      var caption, height, index, newTop, screen, set, target, top;
       target = e.target;
       if (target.classList.contains('inner')) {
         (model.get('visible')).classList.remove('visible');
         return model.set('visible', null);
+      } else if ((target.hasAttribute('microbox-trigger-index')) && (target.hasAttribute('microbox-trigger-set'))) {
+        set = target.getAttribute('microbox-trigger-set');
+        index = target.getAttribute('microbox-trigger-index');
+        return toggle(set, index, true);
       } else if (target.classList.contains('caption-trigger')) {
         caption = target.parentNode;
         height = caption.offsetHeight;
