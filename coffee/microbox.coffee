@@ -122,6 +122,7 @@ microbox = do ->
 
 		set = model.get "sets/#{id}"
 		element = set.element
+		index = +index # coerce type
 		verb = if show? then 'add' else 'toggle'
 
 		# toggle visibility
@@ -130,16 +131,23 @@ microbox = do ->
 		# if visible, show the right image
 		if element.classList.contains 'visible'
 
+			counts = set.element.querySelector '.counts'
 			images = element.querySelectorAll 'img'
+
+			# update active index in model
+			set.active = index
 
 			# clear active
 			_.each images, (img) ->
 				img.classList.remove 'visible'
 
-			# set active
+			# set active image
 			images[index].classList.add 'visible'
 
-			# set in model
+			# update pager text
+			counts.innerHTML = "#{index+1}/#{set.images.length}"
+
+			# set active set in model
 			model.set 'visible', element
 
 		else

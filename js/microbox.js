@@ -56,18 +56,22 @@
       }
     };
     toggle = function(id, index, show) {
-      var element, images, set, verb;
+      var counts, element, images, set, verb;
       console.log(id, index);
       set = model.get("sets/" + id);
       element = set.element;
+      index = +index;
       verb = show != null ? 'add' : 'toggle';
       element.classList[verb]('visible');
       if (element.classList.contains('visible')) {
+        counts = set.element.querySelector('.counts');
         images = element.querySelectorAll('img');
+        set.active = index;
         _.each(images, function(img) {
           return img.classList.remove('visible');
         });
         images[index].classList.add('visible');
+        counts.innerHTML = "" + (index + 1) + "/" + set.images.length;
         return model.set('visible', element);
       } else {
         return model.set('visible', null);
