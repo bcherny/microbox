@@ -2,45 +2,32 @@
 (function() {
   var microbox, template;
 
-  template = {
-    caption: function(data) {
-      return "<div class=\"caption\">\n	<span class=\"microbox-button\" microbox-trigger-caption>i</span>\n	" + data.caption + "\n</div>";
-    },
-    image: function(data) {
-      return "<img src=\"" + data.src + "\" alt=\"\" />";
-    },
-    lightbox: function(data, id) {
-      var cap, captions, images, item, items, n, pager, src, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
-      images = '';
-      _ref = data.images;
-      for (n = _i = 0, _len = _ref.length; _i < _len; n = ++_i) {
-        src = _ref[n];
-        images += template.image({
-          last: n === data.images.length,
-          src: src
-        });
-      }
-      captions = '';
-      _ref1 = data.captions;
-      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-        cap = _ref1[_j];
-        captions += template.caption({
-          caption: cap
-        });
-      }
-      if (data.images.length > 1) {
-        items = '';
-        _ref2 = data.images;
-        for (n = _k = 0, _len2 = _ref2.length; _k < _len2; n = ++_k) {
-          item = _ref2[n];
-          items += "<li microbox-trigger-set=\"" + id + "\" microbox-trigger-index=\"" + n + "\">" + (n + 1) + "</li>";
-        }
-        pager = "<ul class=\"microbox-pager\">\n	<li class=\"counts\">" + (data.active + 1) + "/" + data.images.length + "</li>\n	<li microbox-trigger-prev microbox-trigger-set=\"" + id + "\">&#9656;</li>\n	" + items + "\n	<li microbox-trigger-next microbox-trigger-set=\"" + id + "\">&#9656;</li>\n</ul>";
-      } else {
-        pager = '';
-      }
-      return "<div class=\"inner\">\n	" + images + "\n</div>\n" + captions + "\n" + pager;
+  template = function(data, id) {
+    var caption, captions, images, item, items, n, pager, src, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
+    images = '';
+    _ref = data.images;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      src = _ref[_i];
+      images += "<img src=\"" + src + "\" alt=\"\" />";
     }
+    captions = '';
+    _ref1 = data.captions;
+    for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+      caption = _ref1[_j];
+      captions += "<div class=\"caption\">\n	<span class=\"microbox-button\" microbox-trigger-caption>i</span>\n	" + caption + "\n</div>";
+    }
+    if (data.images.length > 1) {
+      items = '';
+      _ref2 = data.images;
+      for (n = _k = 0, _len2 = _ref2.length; _k < _len2; n = ++_k) {
+        item = _ref2[n];
+        items += "<li microbox-trigger-set=\"" + id + "\" microbox-trigger-index=\"" + n + "\">" + (n + 1) + "</li>";
+      }
+      pager = "<ul class=\"microbox-pager\">\n	<li class=\"counts\">" + (data.active + 1) + "/" + data.images.length + "</li>\n	<li microbox-trigger-prev microbox-trigger-set=\"" + id + "\">&#9656;</li>\n	" + items + "\n	<li microbox-trigger-next microbox-trigger-set=\"" + id + "\">&#9656;</li>\n</ul>";
+    } else {
+      pager = '';
+    }
+    return "<div class=\"inner\">\n	" + images + "\n</div>\n" + captions + "\n" + pager;
   };
 
   microbox = (function() {
@@ -159,7 +146,7 @@
     });
     _.each(model.get('sets'), function(set, id) {
       var element, html;
-      html = template.lightbox(set, id);
+      html = template(set, id);
       element = document.createElement('div');
       element.className = 'microbox';
       element.innerHTML = html;

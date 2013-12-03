@@ -1,62 +1,50 @@
-template =
+template = (data, id) ->
 
-	caption: (data) ->
-
+	# images
+	images = ''
+	for src in data.images
+		images += """
+			<img src="#{src}" alt="" />
 		"""
+
+	# captions
+	captions = ''
+	for caption in data.captions
+		captions += """
 			<div class="caption">
 				<span class="microbox-button" microbox-trigger-caption>i</span>
-				#{data.caption}
+				#{caption}
 			</div>
 		"""
 
-	image: (data) ->
+	# pager
+	if data.images.length > 1
 
-		"""
-			<img src="#{data.src}" alt="" />
-		"""
-
-	lightbox: (data, id) ->
-
-		# images
-		images = ''
-		for src, n in data.images
-			images += template.image
-				last: n is data.images.length
-				src: src
-
-		# captions
-		captions = ''
-		for cap in data.captions
-			captions += template.caption
-				caption: cap
-
-		# pager
-		if data.images.length > 1
-
-			items = ''
-			for item, n in data.images
-				items += """
-					<li microbox-trigger-set="#{id}" microbox-trigger-index="#{n}">#{n+1}</li>
-				"""
-
-			pager = """
-				<ul class="microbox-pager">
-					<li class="counts">#{data.active+1}/#{data.images.length}</li>
-					<li microbox-trigger-prev microbox-trigger-set="#{id}">&#9656;</li>
-					#{items}
-					<li microbox-trigger-next microbox-trigger-set="#{id}">&#9656;</li>
-				</ul>
+		items = ''
+		for item, n in data.images
+			items += """
+				<li microbox-trigger-set="#{id}" microbox-trigger-index="#{n}">#{n+1}</li>
 			"""
-		else
-			pager = ''
 
+		pager = """
+			<ul class="microbox-pager">
+				<li class="counts">#{data.active+1}/#{data.images.length}</li>
+				<li microbox-trigger-prev microbox-trigger-set="#{id}">&#9656;</li>
+				#{items}
+				<li microbox-trigger-next microbox-trigger-set="#{id}">&#9656;</li>
+			</ul>
 		"""
-			<div class="inner">
-				#{images}
-			</div>
-			#{captions}
-			#{pager}
-		"""
+	else
+		pager = ''
+
+	# return
+	"""
+		<div class="inner">
+			#{images}
+		</div>
+		#{captions}
+		#{pager}
+	"""
 
 microbox = do ->
 
@@ -230,7 +218,7 @@ microbox = do ->
 	# build lightboxes
 	_.each (model.get 'sets'), (set, id) ->
 
-		html = template.lightbox set, id
+		html = template set, id
 		element = document.createElement 'div'
 		element.className = 'microbox'
 		element.innerHTML = html
