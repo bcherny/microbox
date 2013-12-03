@@ -163,7 +163,7 @@ microbox = (function() {
     return model.set("sets/" + id + "/element", element);
   });
   return document.addEventListener('click', function(e) {
-    var caption, height, index, newTop, screen, set, target, top;
+    var caption, height, index, newTop, pager, screen, set, target, top;
     target = e.target;
     if (target.classList.contains('inner')) {
       (model.get('visible')).classList.remove('visible');
@@ -186,13 +186,16 @@ microbox = (function() {
       height = caption.offsetHeight;
       screen = window.innerHeight;
       top = caption.style.top;
+      pager = caption.parentNode.querySelector('.microbox-pager');
       if ((!top) || ((parseInt(top, 10)) === screen)) {
         newTop = screen - height;
         caption.style.top = "" + newTop + "px";
-        return caption.classList.add('active');
+        caption.classList.add('active');
+        return pager.style.bottom = "" + (height + 10) + "px";
       } else {
         caption.classList.remove('active');
-        return caption.style.top = "" + screen + "px";
+        caption.style.top = "" + screen + "px";
+        return pager.style.bottom = "10px";
       }
     }
   });

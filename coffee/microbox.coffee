@@ -321,16 +321,24 @@ microbox = do ->
 			height = caption.offsetHeight
 			screen = window.innerHeight
 			top = caption.style.top
+			pager = caption.parentNode.querySelector '.microbox-pager'
 
 			# caption is hidden -> show it
 			if (not top) or ((parseInt top, 10) is screen)
 
+				# show caption
 				newTop = screen - height
 				caption.style.top = "#{newTop}px"
 				caption.classList.add 'active'
+
+				# move pager up
+				pager.style.bottom = "#{height + 10}px"
 
 			# hide it
 			else
 
 				caption.classList.remove 'active'
 				caption.style.top = "#{screen}px"
+
+				# move pager down
+				pager.style.bottom = "10px"
