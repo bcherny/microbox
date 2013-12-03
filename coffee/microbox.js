@@ -11,9 +11,11 @@ template = function(data, id) {
   }
   captions = '';
   _ref1 = data.captions;
-  for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-    caption = _ref1[_j];
-    captions += "<div class=\"caption\">\n	<span class=\"microbox-button\" microbox-trigger-caption>i</span>\n	" + caption + "\n</div>";
+  for (n = _j = 0, _len1 = _ref1.length; _j < _len1; n = ++_j) {
+    caption = _ref1[n];
+    if (caption) {
+      captions += "<div class=\"caption\" microbox-caption=\"" + n + "\">\n	<span class=\"microbox-button\" microbox-trigger-caption>i</span>\n	" + caption + "\n</div>";
+    }
   }
   if (data.images.length > 1) {
     items = '';
@@ -98,7 +100,9 @@ microbox = (function() {
         caption.style.top = '';
         return pager.style.bottom = '';
       });
-      captions[index].classList.remove('hide');
+      if (captions[index]) {
+        captions[index].classList.remove('hide');
+      }
       set.active = index;
       return model.set('visible', element);
     } else {

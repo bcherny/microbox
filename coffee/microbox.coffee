@@ -9,9 +9,9 @@ template = (data, id) ->
 
 	# captions
 	captions = ''
-	for caption in data.captions
+	for caption, n in data.captions when caption
 		captions += """
-			<div class="caption">
+			<div class="caption" microbox-caption="#{n}">
 				<span class="microbox-button" microbox-trigger-caption>i</span>
 				#{caption}
 			</div>
@@ -153,7 +153,8 @@ microbox = do ->
 				pager.style.bottom = ''
 
 			# activate this caption
-			captions[index].classList.remove 'hide'
+			if captions[index]
+				captions[index].classList.remove 'hide'
 
 			#
 			# model
