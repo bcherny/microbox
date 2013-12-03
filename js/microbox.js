@@ -4,7 +4,7 @@
 
   template = {
     caption: function(data) {
-      return "<div class=\"caption\">\n	<span class=\"microbox-button caption-trigger\">i</span>\n	" + data.caption + "\n</div>";
+      return "<div class=\"caption\">\n	<span class=\"microbox-button\" microbox-trigger-caption>i</span>\n	" + data.caption + "\n</div>";
     },
     image: function(data) {
       return "<img src=\"" + data.src + "\" alt=\"\" />";
@@ -182,7 +182,7 @@
           --index;
         }
         return toggle(set, index, true);
-      } else if (target.classList.contains('caption-trigger')) {
+      } else if (target.hasAttribute('microbox-trigger-caption')) {
         caption = target.parentNode;
         height = caption.offsetHeight;
         screen = window.innerHeight;
@@ -190,11 +190,11 @@
         if ((!top) || ((parseInt(top, 10)) === screen)) {
           newTop = screen - height;
           caption.style.top = "" + newTop + "px";
-          caption.classList.add('active');
+          return caption.classList.add('active');
         } else {
           caption.classList.remove('active');
+          return caption.style.top = "" + screen + "px";
         }
-        return caption.style.top = "" + screen + "px";
       }
     });
   })();

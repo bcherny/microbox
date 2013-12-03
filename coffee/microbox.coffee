@@ -49,7 +49,7 @@ template =
 
 		"""
 			<div class="caption">
-				<span class="microbox-button caption-trigger">i</span>
+				<span class="microbox-button" microbox-trigger-caption>i</span>
 				#{data.caption}
 			</div>
 		"""
@@ -315,7 +315,7 @@ microbox = do ->
 			toggle set, index, true
 
 		# toggle caption
-		else if target.classList.contains 'caption-trigger'
+		else if target.hasAttribute 'microbox-trigger-caption'
 
 			caption = target.parentNode
 			height = caption.offsetHeight
@@ -332,5 +332,5 @@ microbox = do ->
 			# hide it
 			else
 
-				 caption.classList.remove 'active'
+				caption.classList.remove 'active'
 				caption.style.top = "#{screen}px"
