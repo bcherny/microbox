@@ -48,7 +48,10 @@ template =
 	caption: (data) ->
 
 		"""
-			<div class="caption"><span class="microbox-button caption-trigger">i</span>#{data.caption}</div>
+			<div class="caption">
+				<span class="microbox-button caption-trigger">i</span>
+				#{data.caption}
+			</div>
 		"""
 
 	image: (data) ->
@@ -57,7 +60,7 @@ template =
 			<img src="#{data.src}" alt="" />
 		"""
 
-	lightbox: (data) ->
+	lightbox: (data, id) ->
 
 		# images
 		images = ''
@@ -72,23 +75,32 @@ template =
 			captions += template.caption
 				caption: cap
 
-		# arrows
+		# pager
 		if data.images.length > 1
-			arrows = """
-				<div class="arrows">
-					<span class="microbox-button prev">&#9656;</span>
-					<span class="microbox-button next">&#9656;</span>
-				</div>
+
+			items = ''
+			for item, n in data.images
+				items += """
+					<li microbox-trigger="#{id}:#{n}">#{n+1}</li>
+				"""
+
+			pager = """
+				<ul class="microbox-pager">
+					<li class="counts">#{data.active+1}/#{data.images.length}</li>
+					<li microbox-trigger="prev">&#9656;</li>
+					#{items}
+					<li microbox-trigger="next">&#9656;</li>
+				</ul>
 			"""
 		else
-			arrows = ''
+			pager = ''
 
 		"""
 			<div class="inner">
 				#{images}
 			</div>
 			#{captions}
-			#{arrows}
+			#{pager}
 		"""
 
 microbox = do ->
@@ -181,7 +193,7 @@ microbox = do ->
 	# build lightboxes
 	_.each (model.get 'sets'), (set, id) ->
 
-		html = template.lightbox set
+		html = template.lightbox set, id
 		element = document.createElement 'div'
 		element.className = 'microbox'
 		element.innerHTML = html

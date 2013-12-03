@@ -6,6 +6,7 @@
 
 $border = 0
 $button = 46px
+$button-margin = 10px
 $shade = rgba(0,0,0,.8)
 $pager = #555
 $pager-hover = darken($pager, 5%)
@@ -36,6 +37,13 @@ $pager-active = darken($pager-hover, 8%)
 		top 100%
 		transition all .2s linear
 
+	.count
+		bottom $button-margin
+		color rgba(255,255,255,.3)
+		font-size 24px
+		left $button-margin
+		position absolute
+
 	img
 		box-shadow 0 0 3px rgba(0, 0, 0, 0.2)
 		cursor zoom-in
@@ -64,18 +72,19 @@ $pager-active = darken($pager-hover, 8%)
 	.caption-trigger
 		font-family "Times New Roman"
 		font-style italic
-		right 10px
+		right $button-margin
 		top -58px
 
 // buttons
 	
 .microbox-button
-	border-radius 30px
+.microbox-pager li
+	border-radius $button
 	box-shadow inset 0 2px 2px 2px rgba(0,0,0,.2)
 	color #ccc
 	cursor pointer
 	display block
-	font-size 36px
+	font-size ($button - 10)
 	gradient rgba(0,0,0,.2), rgba(0,0,0,.4)
 	height $button
 	line-height $button
@@ -93,94 +102,108 @@ $pager-active = darken($pager-hover, 8%)
 	&:active
 		gradient rgba(0,0,0,.3), rgba(0,0,0,.4)
 
-	&.next
-	&.prev
-		margin-top -($button/2)
-		top 50%
-
-	&.prev
-		left 10px
-		transform rotate(180deg)
-
-	&.next
-		right 10px
-
 // pager
 
 .microbox-pager
-	border-radius 5px
-	box-shadow 2px 2px 3px rgba(0, 0, 0, 0.2)
-	border-collapse collapse
-	bottom 6px
-	left 50px
-	position fixed
-	transition all .2s linear
-	z-index 3
-
-	td
-		color #ddd
-		cursor pointer
-		gradient $pager, darken($pager, 12%)
-		height 38px
-		text-align center
-		text-shadow 1px 1px 0 rgba(0,0,0,.2)
-		vertical-align middle
-		width 40px
-
-		&:hover
-			color #fff
-			gradient $pager-hover, darken($pager-hover, 12%)
-			text-decoration underline
-		
-		&:active
-			gradient $pager-active, darken($pager-hover, 12%)
-
-		&.cur
-		&.cur:hover
-			color #eee
-			font-size 18px
-			font-weight bold
-			gradient lighten($pager-active, 4%), darken($pager-active, 5%)
-			text-decoration none
-
-		&:first-of-type
-			border-radius 5px 0 0 5px
-
-		&:last-of-type
-			@include border-radius 0 5px 5px 0
-
-		// opera 9.5+ only
-		x-o-prefocus
-		&.cur
-		&.cur:hover
-			padding 8px 15px 7px
-
-	.microbox-pager-label
-		border-right 1px solid rgba(0,0,0,.2)
-		color #999
-		padding 0 15px
-
-	.microbox-pager-label
-		background rgba(0,0,0,.75)
-		border-radius 5px 0 0 5px
-		color #999
-		font-size 12px
-		font-weight bold
-		text-shadow -1px -1px 0 rgba(0,0,0,.15)
-
-.scroller
-	background-color rgba(0,0,0,.5)
-	box-shadow 0 0 2px rgba(0,0,0,.2)
-	cursor default
-	display block
-	height 100px
+	bottom $button-margin
+	left $button-margin
 	position absolute
-	left 0
-	top 0
-	width 30px
 
-	&:hover
-		background-color rgba(0,0,0,.6)
+	li
+		display inline-block
+		list-style none
+		margin-right 2px
+		position relative
+
+	.counts
+	.counts:active
+	.counts:hover
+		background 0
+		box-shadow 0 0
+		color rgba(255,255,255,.3)
+		cursor default
+		padding 0 $button-margin
+		width auto
+
+	[microbox-trigger="prev"]
+		margin-left 0
+		margin-right -2px
+		transform rotate(180deg)
+
+// .microbox-pager
+// 	border-radius 5px
+// 	box-shadow 2px 2px 3px rgba(0, 0, 0, 0.2)
+// 	border-collapse collapse
+// 	bottom 6px
+// 	left 50px
+// 	position fixed
+// 	transition all .2s linear
+// 	z-index 3
+
+// 	td
+// 		color #ddd
+// 		cursor pointer
+// 		gradient $pager, darken($pager, 12%)
+// 		height 38px
+// 		text-align center
+// 		text-shadow 1px 1px 0 rgba(0,0,0,.2)
+// 		vertical-align middle
+// 		width 40px
+
+// 		&:hover
+// 			color #fff
+// 			gradient $pager-hover, darken($pager-hover, 12%)
+// 			text-decoration underline
+		
+// 		&:active
+// 			gradient $pager-active, darken($pager-hover, 12%)
+
+// 		&.cur
+// 		&.cur:hover
+// 			color #eee
+// 			font-size 18px
+// 			font-weight bold
+// 			gradient lighten($pager-active, 4%), darken($pager-active, 5%)
+// 			text-decoration none
+
+// 		&:first-of-type
+// 			border-radius 5px 0 0 5px
+
+// 		&:last-of-type
+// 			@include border-radius 0 5px 5px 0
+
+// 		// opera 9.5+ only
+// 		x-o-prefocus
+// 		&.cur
+// 		&.cur:hover
+// 			padding 8px 15px 7px
+
+// 	.microbox-pager-label
+// 		border-right 1px solid rgba(0,0,0,.2)
+// 		color #999
+// 		padding 0 15px
+
+// 	.microbox-pager-label
+// 		background rgba(0,0,0,.75)
+// 		border-radius 5px 0 0 5px
+// 		color #999
+// 		font-size 12px
+// 		font-weight bold
+// 		text-shadow -1px -1px 0 rgba(0,0,0,.15)
+
+// .scroller
+// 	background-color rgba(0,0,0,.5)
+// 	box-shadow 0 0 2px rgba(0,0,0,.2)
+// 	cursor default
+// 	display block
+// 	height 100px
+// 	position absolute
+// 	left 0
+// 	top 0
+// 	width 30px
+
+// 	&:hover
+// 		background-color rgba(0,0,0,.6)
 	
-	&.active
-		background-color rgba(0,0,0,.8)
+// 	&.active
+// 		background-color rgba(0,0,0,.8)

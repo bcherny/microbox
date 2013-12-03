@@ -4,13 +4,13 @@
 
   template = {
     caption: function(data) {
-      return "<div class=\"caption\"><span class=\"microbox-button caption-trigger\">i</span>" + data.caption + "</div>";
+      return "<div class=\"caption\">\n	<span class=\"microbox-button caption-trigger\">i</span>\n	" + data.caption + "\n</div>";
     },
     image: function(data) {
       return "<img src=\"" + data.src + "\" alt=\"\" />";
     },
-    lightbox: function(data) {
-      var arrows, cap, captions, images, n, src, _i, _j, _len, _len1, _ref, _ref1;
+    lightbox: function(data, id) {
+      var cap, captions, images, item, items, n, pager, src, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
       images = '';
       _ref = data.images;
       for (n = _i = 0, _len = _ref.length; _i < _len; n = ++_i) {
@@ -29,11 +29,17 @@
         });
       }
       if (data.images.length > 1) {
-        arrows = "<div class=\"arrows\">\n	<span class=\"microbox-button prev\">&#9656;</span>\n	<span class=\"microbox-button next\">&#9656;</span>\n</div>";
+        items = '';
+        _ref2 = data.images;
+        for (n = _k = 0, _len2 = _ref2.length; _k < _len2; n = ++_k) {
+          item = _ref2[n];
+          items += "<li microbox-trigger=\"" + id + ":" + n + "\">" + (n + 1) + "</li>";
+        }
+        pager = "<ul class=\"microbox-pager\">\n	<li class=\"counts\">" + (data.active + 1) + "/" + data.images.length + "</li>\n	<li microbox-trigger=\"prev\">&#9656;</li>\n	" + items + "\n	<li microbox-trigger=\"next\">&#9656;</li>\n</ul>";
       } else {
-        arrows = '';
+        pager = '';
       }
-      return "<div class=\"inner\">\n	" + images + "\n</div>\n" + captions + "\n" + arrows;
+      return "<div class=\"inner\">\n	" + images + "\n</div>\n" + captions + "\n" + pager;
     }
   };
 
@@ -105,7 +111,7 @@
     });
     _.each(model.get('sets'), function(set, id) {
       var element, html;
-      html = template.lightbox(set);
+      html = template.lightbox(set, id);
       element = document.createElement('div');
       element.className = 'microbox';
       element.innerHTML = html;

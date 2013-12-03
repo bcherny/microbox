@@ -25,6 +25,13 @@
   -o-transition: all 0.2s linear;
   transition: all 0.2s linear;
 }
+.microbox .count {
+  bottom: 10px;
+  color: rgba(255,255,255,0.3);
+  font-size: 24px;
+  left: 10px;
+  position: absolute;
+}
 .microbox img {
   -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.2);
   -moz-box-shadow: 0 0 3px rgba(0,0,0,0.2);
@@ -68,12 +75,13 @@
   right: 10px;
   top: -58px;
 }
-.microbox-button {
-  -webkit-border-radius: 30px;
-  -moz-border-radius: 30px;
-  -ms-border-radius: 30px;
-  -o-border-radius: 30px;
-  border-radius: 30px;
+.microbox-button,
+.microbox-pager li {
+  -webkit-border-radius: 46px;
+  -moz-border-radius: 46px;
+  -ms-border-radius: 46px;
+  -o-border-radius: 46px;
+  border-radius: 46px;
   -webkit-box-shadow: inset 0 2px 2px 2px rgba(0,0,0,0.2);
   -moz-box-shadow: inset 0 2px 2px 2px rgba(0,0,0,0.2);
   -ms-box-shadow: inset 0 2px 2px 2px rgba(0,0,0,0.2);
@@ -100,7 +108,8 @@
   width: 46px;
   z-index: 100;
 }
-.microbox-button:hover {
+.microbox-button:hover,
+.microbox-pager li:hover {
   color: #eee;
   background-image: -webkit-linear-gradient(-90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.3));
   background-image: -moz-linear-gradient(-90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.3));
@@ -108,151 +117,45 @@
   background-image: -o-linear-gradient(-90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.3));
   background-image: linear-gradient(-180deg, rgba(0,0,0,0.2), rgba(0,0,0,0.3));
 }
-.microbox-button:active {
+.microbox-button:active,
+.microbox-pager li:active {
   background-image: -webkit-linear-gradient(-90deg, rgba(0,0,0,0.3), rgba(0,0,0,0.4));
   background-image: -moz-linear-gradient(-90deg, rgba(0,0,0,0.3), rgba(0,0,0,0.4));
   background-image: -ms-linear-gradient(-90deg, rgba(0,0,0,0.3), rgba(0,0,0,0.4));
   background-image: -o-linear-gradient(-90deg, rgba(0,0,0,0.3), rgba(0,0,0,0.4));
   background-image: linear-gradient(-180deg, rgba(0,0,0,0.3), rgba(0,0,0,0.4));
 }
-.microbox-button.next,
-.microbox-button.prev {
-  margin-top: -23px;
-  top: 50%;
-}
-.microbox-button.prev {
+.microbox-pager {
+  bottom: 10px;
   left: 10px;
+  position: absolute;
+}
+.microbox-pager li {
+  display: inline-block;
+  list-style: none;
+  margin-right: 2px;
+  position: relative;
+}
+.microbox-pager .counts,
+.microbox-pager .counts:active,
+.microbox-pager .counts:hover {
+  background: 0;
+  -webkit-box-shadow: 0 0;
+  -moz-box-shadow: 0 0;
+  -ms-box-shadow: 0 0;
+  -o-box-shadow: 0 0;
+  box-shadow: 0 0;
+  color: rgba(255,255,255,0.3);
+  cursor: default;
+  padding: 0 10px;
+  width: auto;
+}
+.microbox-pager [microbox-trigger="prev"] {
+  margin-left: 0;
+  margin-right: -2px;
   -webkit-transform: rotate(180deg);
   -moz-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   -o-transform: rotate(180deg);
   transform: rotate(180deg);
-}
-.microbox-button.next {
-  right: 10px;
-}
-.microbox-pager {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  border-radius: 5px;
-  -webkit-box-shadow: 2px 2px 3px rgba(0,0,0,0.2);
-  -moz-box-shadow: 2px 2px 3px rgba(0,0,0,0.2);
-  -ms-box-shadow: 2px 2px 3px rgba(0,0,0,0.2);
-  -o-box-shadow: 2px 2px 3px rgba(0,0,0,0.2);
-  box-shadow: 2px 2px 3px rgba(0,0,0,0.2);
-  border-collapse: collapse;
-  bottom: 6px;
-  left: 50px;
-  position: fixed;
-  -webkit-transition: all 0.2s linear;
-  -moz-transition: all 0.2s linear;
-  -ms-transition: all 0.2s linear;
-  -o-transition: all 0.2s linear;
-  transition: all 0.2s linear;
-  z-index: 3;
-}
-.microbox-pager td {
-  color: #ddd;
-  cursor: pointer;
-  background-image: -webkit-linear-gradient(-90deg, #555, #4b4b4b);
-  background-image: -moz-linear-gradient(-90deg, #555, #4b4b4b);
-  background-image: -ms-linear-gradient(-90deg, #555, #4b4b4b);
-  background-image: -o-linear-gradient(-90deg, #555, #4b4b4b);
-  background-image: linear-gradient(-180deg, #555, #4b4b4b);
-  height: 38px;
-  text-align: center;
-  -webkit-text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
-  -moz-text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
-  -ms-text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
-  -o-text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
-  text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
-  vertical-align: middle;
-  width: 40px;
-}
-.microbox-pager td:hover {
-  color: #fff;
-  background-image: -webkit-linear-gradient(-90deg, #515151, #474747);
-  background-image: -moz-linear-gradient(-90deg, #515151, #474747);
-  background-image: -ms-linear-gradient(-90deg, #515151, #474747);
-  background-image: -o-linear-gradient(-90deg, #515151, #474747);
-  background-image: linear-gradient(-180deg, #515151, #474747);
-  text-decoration: underline;
-}
-.microbox-pager td:active {
-  background-image: -webkit-linear-gradient(-90deg, #4b4b4b, #474747);
-  background-image: -moz-linear-gradient(-90deg, #4b4b4b, #474747);
-  background-image: -ms-linear-gradient(-90deg, #4b4b4b, #474747);
-  background-image: -o-linear-gradient(-90deg, #4b4b4b, #474747);
-  background-image: linear-gradient(-180deg, #4b4b4b, #474747);
-}
-.microbox-pager td.cur,
-.microbox-pager td.cur:hover {
-  color: #eee;
-  font-size: 18px;
-  font-weight: bold;
-  background-image: -webkit-linear-gradient(-90deg, #525252, #474747);
-  background-image: -moz-linear-gradient(-90deg, #525252, #474747);
-  background-image: -ms-linear-gradient(-90deg, #525252, #474747);
-  background-image: -o-linear-gradient(-90deg, #525252, #474747);
-  background-image: linear-gradient(-180deg, #525252, #474747);
-  text-decoration: none;
-}
-.microbox-pager td:first-of-type {
-  -webkit-border-radius: 5px 0 0 5px;
-  -moz-border-radius: 5px 0 0 5px;
-  -ms-border-radius: 5px 0 0 5px;
-  -o-border-radius: 5px 0 0 5px;
-  border-radius: 5px 0 0 5px;
-}
-.microbox-pager td:last-of-type {
-  include: border-radius 0 5px 5px 0;
-}
-.microbox-pager td x-o-prefocus,
-.microbox-pager td.cur,
-.microbox-pager td.cur:hover {
-  padding: 8px 15px 7px;
-}
-.microbox-pager .microbox-pager-label {
-  border-right: 1px solid rgba(0,0,0,0.2);
-  color: #999;
-  padding: 0 15px;
-}
-.microbox-pager .microbox-pager-label {
-  background: rgba(0,0,0,0.75);
-  -webkit-border-radius: 5px 0 0 5px;
-  -moz-border-radius: 5px 0 0 5px;
-  -ms-border-radius: 5px 0 0 5px;
-  -o-border-radius: 5px 0 0 5px;
-  border-radius: 5px 0 0 5px;
-  color: #999;
-  font-size: 12px;
-  font-weight: bold;
-  -webkit-text-shadow: -1px -1px 0 rgba(0,0,0,0.15);
-  -moz-text-shadow: -1px -1px 0 rgba(0,0,0,0.15);
-  -ms-text-shadow: -1px -1px 0 rgba(0,0,0,0.15);
-  -o-text-shadow: -1px -1px 0 rgba(0,0,0,0.15);
-  text-shadow: -1px -1px 0 rgba(0,0,0,0.15);
-}
-.scroller {
-  background-color: rgba(0,0,0,0.5);
-  -webkit-box-shadow: 0 0 2px rgba(0,0,0,0.2);
-  -moz-box-shadow: 0 0 2px rgba(0,0,0,0.2);
-  -ms-box-shadow: 0 0 2px rgba(0,0,0,0.2);
-  -o-box-shadow: 0 0 2px rgba(0,0,0,0.2);
-  box-shadow: 0 0 2px rgba(0,0,0,0.2);
-  cursor: default;
-  display: block;
-  height: 100px;
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 30px;
-}
-.scroller:hover {
-  background-color: rgba(0,0,0,0.6);
-}
-.scroller.active {
-  background-color: rgba(0,0,0,0.8);
 }
