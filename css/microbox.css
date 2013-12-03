@@ -49,13 +49,17 @@
   -o-box-shadow: 0 0 3px rgba(0,0,0,0.2);
   box-shadow: 0 0 3px rgba(0,0,0,0.2);
   cursor: zoom-in;
-  display: none;
   image-rendering: optimizeQuality;
   -ms-interpolation-mode: bicubic;
   left: 0;
   margin: auto;
   max-height: 100%;
   max-width: 100%;
+  -webkit-opacity: 0;
+  -moz-opacity: 0;
+  -ms-opacity: 0;
+  -o-opacity: 0;
+  opacity: 0;
   position: absolute;
   right: 0;
   top: 0;
@@ -66,7 +70,11 @@
   transition: all 0.2s linear;
 }
 .microbox img.visible {
-  display: block;
+  -webkit-opacity: 1;
+  -moz-opacity: 1;
+  -ms-opacity: 1;
+  -o-opacity: 1;
+  opacity: 1;
 }
 .microbox .inner {
   -webkit-box-shadow: 2px 2px 3px rgba(0,0,0,0.2);
