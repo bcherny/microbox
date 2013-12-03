@@ -81,7 +81,7 @@ template =
 			items = ''
 			for item, n in data.images
 				items += """
-					<li microbox-trigger="#{id}:#{n}">#{n+1}</li>
+					<li microbox-trigger-set="#{id}" microbox-trigger-index="#{n}">#{n+1}</li>
 				"""
 
 			pager = """

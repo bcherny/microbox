@@ -32,7 +32,7 @@ template = {
       _ref2 = data.images;
       for (n = _k = 0, _len2 = _ref2.length; _k < _len2; n = ++_k) {
         item = _ref2[n];
-        items += "<li microbox-trigger=\"" + id + ":" + n + "\">" + (n + 1) + "</li>";
+        items += "<li microbox-trigger-set=\"" + id + "\" microbox-trigger-index=\"" + n + "\">" + (n + 1) + "</li>";
       }
       pager = "<ul class=\"microbox-pager\">\n	<li class=\"counts\">" + (data.active + 1) + "/" + data.images.length + "</li>\n	<li microbox-trigger=\"prev\">&#9656;</li>\n	" + items + "\n	<li microbox-trigger=\"next\">&#9656;</li>\n</ul>";
     } else {
