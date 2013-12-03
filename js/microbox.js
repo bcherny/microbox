@@ -74,8 +74,8 @@
       element.classList[verb]('visible');
       if (element.classList.contains('visible')) {
         components = set.components;
-        _.each(components.images, function(img) {
-          return img.classList.remove('visible');
+        _.each(components.images, function(item) {
+          return item.classList.remove('visible');
         });
         components.images[index].classList.add('visible');
         components.counts.innerHTML = "" + (index + 1) + "/" + set.images.length;
@@ -83,16 +83,10 @@
           return item.classList.remove('active');
         });
         components.pagerItems[index].classList.add('active');
-        if (index === 0) {
-          components.prev.classList.add('disabled');
-        } else {
-          components.prev.classList.remove('disabled');
-        }
-        if (index === max) {
-          components.next.classList.add('disabled');
-        } else {
-          components.next.classList.remove('disabled');
-        }
+        verb = index === 0 ? 'add' : 'remove';
+        components.prev.classList[verb]('disabled');
+        verb = index === max ? 'add' : 'remove';
+        components.next.classList[verb]('disabled');
         _.each(components.captions, function(item) {
           item.classList.add('hide');
           item.classList.remove('active');

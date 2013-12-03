@@ -105,8 +105,8 @@ microbox = do ->
 			#
 
 			# clear active
-			_.each components.images, (img) ->
-				img.classList.remove 'visible'
+			_.each components.images, (item) ->
+				item.classList.remove 'visible'
 
 			# set active image
 			components.images[index].classList.add 'visible'
@@ -126,16 +126,12 @@ microbox = do ->
 			components.pagerItems[index].classList.add 'active'
 			
 			# deactivate "<" arrow?
-			if index is 0
-				components.prev.classList.add 'disabled'
-			else
-				components.prev.classList.remove 'disabled'
+			verb = if index is 0 then 'add' else 'remove'
+			components.prev.classList[verb] 'disabled'
 			
 			# deactivate ">" arrow?
-			if index is max
-				components.next.classList.add 'disabled'
-			else
-				components.next.classList.remove 'disabled'
+			verb = if index is max then 'add' else 'remove'
+			components.next.classList[verb] 'disabled'
 
 			#
 			# caption
