@@ -56,7 +56,7 @@
       }
     };
     toggle = function(id, index, show) {
-      var captions, counts, element, images, max, next, pagerItems, prev, set, verb;
+      var captions, counts, element, images, max, next, pager, pagerItems, prev, set, verb;
       if (index == null) {
         index = 0;
       }
@@ -83,7 +83,8 @@
         captions = element.querySelectorAll('.caption');
         counts = element.querySelector('.counts');
         images = element.querySelectorAll('img');
-        pagerItems = element.querySelectorAll('[microbox-trigger-index]');
+        pager = element.querySelector('.microbox-pager');
+        pagerItems = pager.querySelectorAll('[microbox-trigger-index]');
         next = element.querySelector('[microbox-trigger-next]');
         prev = element.querySelector('[microbox-trigger-prev]');
         _.each(images, function(img) {
@@ -107,7 +108,9 @@
         }
         _.each(captions, function(caption) {
           caption.classList.add('hide');
-          return caption.classList.remove('active');
+          caption.classList.remove('active');
+          caption.style.top = '';
+          return pager.style.bottom = '';
         });
         captions[index].classList.remove('hide');
         set.active = index;
@@ -195,8 +198,8 @@
           return pager.style.bottom = "" + (height + 10) + "px";
         } else {
           caption.classList.remove('active');
-          caption.style.top = "" + screen + "px";
-          return pager.style.bottom = "10px";
+          caption.style.top = '';
+          return pager.style.bottom = '';
         }
       }
     });

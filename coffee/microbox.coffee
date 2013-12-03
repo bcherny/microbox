@@ -156,7 +156,8 @@ microbox = do ->
 			captions = element.querySelectorAll '.caption'
 			counts = element.querySelector '.counts'
 			images = element.querySelectorAll 'img'
-			pagerItems = element.querySelectorAll '[microbox-trigger-index]'
+			pager = element.querySelector '.microbox-pager'
+			pagerItems = pager.querySelectorAll '[microbox-trigger-index]'
 			next = element.querySelector '[microbox-trigger-next]'
 			prev = element.querySelector '[microbox-trigger-prev]'
 
@@ -205,6 +206,8 @@ microbox = do ->
 			_.each captions, (caption) ->
 				caption.classList.add 'hide'
 				caption.classList.remove 'active'
+				caption.style.top = ''
+				pager.style.bottom = ''
 
 			# activate this caption
 			captions[index].classList.remove 'hide'
@@ -338,7 +341,7 @@ microbox = do ->
 			else
 
 				caption.classList.remove 'active'
-				caption.style.top = "#{screen}px"
+				caption.style.top = ''
 
 				# move pager down
-				pager.style.bottom = "10px"
+				pager.style.bottom = ''
