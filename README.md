@@ -58,3 +58,9 @@ Microbox is built with several micro-dependencies:
 1. Run an `npm install` in cmd/Terminal in the root directory
 2. Pop open `Gruntfile.js` and remove any unnecessary dependencies
 3. Run `grunt` in cmd/Terminal
+
+## Tested on
+
+- Chrome
+- Firefox 24
+- Safari 7
