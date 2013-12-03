@@ -126,12 +126,7 @@ $pager-active = darken($pager-hover, 8%)
 			cursor default
 
 	.counts
-	.counts:active
-	.counts:hover
-		background 0
-		box-shadow 0 0
-		color rgba(255,255,255,.3)
-		cursor default
+		button-disabled()
 		padding 0 $button-margin
 		width auto
 
@@ -144,13 +139,7 @@ $pager-active = darken($pager-hover, 8%)
 [microbox-trigger-prev]
 
 	&.disabled
-	&.disabled:active
-	&.disabled:hover
-		background 0
-		box-shadow 0 0
-		color rgba(255,255,255,.2)
-		cursor default
-		position relative
+		button-disabled()
 
 		&:after
 			border-bottom 2px solid rgba(255,255,255,.2)

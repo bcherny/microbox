@@ -155,6 +155,10 @@
   color: #fff;
   cursor: default;
 }
+.microbox-pager .counts {
+  padding: 0 10px;
+  width: auto;
+}
 .microbox-pager .counts,
 .microbox-pager .counts:active,
 .microbox-pager .counts:hover {
@@ -164,10 +168,8 @@
   -ms-box-shadow: 0 0;
   -o-box-shadow: 0 0;
   box-shadow: 0 0;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.2);
   cursor: default;
-  padding: 0 10px;
-  width: auto;
 }
 .microbox-pager [microbox-trigger-prev] {
   margin-left: 0;
@@ -192,14 +194,9 @@
   box-shadow: 0 0;
   color: rgba(255,255,255,0.2);
   cursor: default;
-  position: relative;
 }
 [microbox-trigger-next].disabled:after,
-[microbox-trigger-prev].disabled:after,
-[microbox-trigger-next].disabled:active:after,
-[microbox-trigger-prev].disabled:active:after,
-[microbox-trigger-next].disabled:hover:after,
-[microbox-trigger-prev].disabled:hover:after {
+[microbox-trigger-prev].disabled:after {
   border-bottom: 2px solid rgba(255,255,255,0.2);
   content: "";
   left: 10px;

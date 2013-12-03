@@ -189,10 +189,12 @@
         top = caption.style.top;
         if ((!top) || ((parseInt(top, 10)) === screen)) {
           newTop = screen - height;
-          return caption.style.top = "" + newTop + "px";
+          caption.style.top = "" + newTop + "px";
+          caption.classList.add('active');
         } else {
-          return caption.style.top = "" + screen + "px";
+          caption.classList.remove('active');
         }
+        return caption.style.top = "" + screen + "px";
       }
     });
   })();

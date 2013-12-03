@@ -322,12 +322,15 @@ microbox = do ->
 			screen = window.innerHeight
 			top = caption.style.top
 
-			# caption is hidden
+			# caption is hidden -> show it
 			if (not top) or ((parseInt top, 10) is screen)
 
 				newTop = screen - height
 				caption.style.top = "#{newTop}px"
+				caption.classList.add 'active'
 
+			# hide it
 			else
 
+				 caption.classList.remove 'active'
 				caption.style.top = "#{screen}px"

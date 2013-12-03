@@ -39,6 +39,18 @@ transition-property()
 
 // custom
 
+button()
+
+button-disabled()
+
+	&
+	&:active
+	&:hover
+		background 0
+		box-shadow 0 0
+		color rgba(255,255,255,.2)
+		cursor default
+
 gradient($from, $to, $angle = -90deg)
 	background-image -webkit-linear-gradient($angle, $from, $to)
 	background-image    -moz-linear-gradient($angle, $from, $to)
