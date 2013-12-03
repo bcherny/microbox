@@ -45,7 +45,7 @@
       }
     };
     toggle = function(id, index, show) {
-      var captions, counts, element, images, max, next, pager, pagerItems, prev, set, verb;
+      var caption, captions, counts, element, images, max, next, pager, pagerItems, prev, set, verb;
       if (index == null) {
         index = 0;
       }
@@ -70,6 +70,7 @@
       element.classList[verb]('visible');
       if (element.classList.contains('visible')) {
         captions = element.querySelectorAll('.caption');
+        caption = element.querySelector("[microbox-caption=\"" + index + "\"]");
         counts = element.querySelector('.counts');
         images = element.querySelectorAll('img');
         pager = element.querySelector('.microbox-pager');
@@ -95,14 +96,14 @@
         } else {
           next.classList.remove('disabled');
         }
-        _.each(captions, function(caption) {
-          caption.classList.add('hide');
-          caption.classList.remove('active');
-          caption.style.top = '';
+        _.each(captions, function(item) {
+          item.classList.add('hide');
+          item.classList.remove('active');
+          item.style.top = '';
           return pager.style.bottom = '';
         });
-        if (captions[index]) {
-          captions[index].classList.remove('hide');
+        if (caption) {
+          caption.classList.remove('hide');
         }
         set.active = index;
         return model.set('visible', element);

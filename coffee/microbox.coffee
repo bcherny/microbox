@@ -97,6 +97,7 @@ microbox = do ->
 		if element.classList.contains 'visible'
 
 			captions = element.querySelectorAll '.caption'
+			caption = element.querySelector "[microbox-caption=\"#{index}\"]"
 			counts = element.querySelector '.counts'
 			images = element.querySelectorAll 'img'
 			pager = element.querySelector '.microbox-pager'
@@ -146,15 +147,15 @@ microbox = do ->
 			#
 
 			# hide and deactivate all captions
-			_.each captions, (caption) ->
-				caption.classList.add 'hide'
-				caption.classList.remove 'active'
-				caption.style.top = ''
+			_.each captions, (item) ->
+				item.classList.add 'hide'
+				item.classList.remove 'active'
+				item.style.top = ''
 				pager.style.bottom = ''
 
 			# activate this caption
-			if captions[index]
-				captions[index].classList.remove 'hide'
+			if caption
+				caption.classList.remove 'hide'
 
 			#
 			# model
