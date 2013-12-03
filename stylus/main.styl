@@ -1,3 +1,7 @@
+// imports
+
+@import "mixins"
+
 // reset
 
 *
@@ -9,8 +13,23 @@
 
 body
 	background #eee
-	font 14px Helvetica, Arial, sans-serif
-	padding 20px
+	font 13px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif
+
+h1
+	background #ccc
+	box-shadow inset 0 0 5px rgba(0,0,0,.1)
+	color #999
+	line-height 100px
+	margin-bottom 20px
+	text-align center
+
+h2
+	font-weight normal
+	padding 10px 10px 0
+
+.credit
+	display block
+	padding 0 10px 10px
 
 li
 	display inline
