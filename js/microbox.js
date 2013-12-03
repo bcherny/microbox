@@ -45,7 +45,7 @@
       }
     };
     toggle = function(id, index, show) {
-      var caption, captions, counts, element, images, max, next, pager, pagerItems, prev, set, verb;
+      var caption, components, element, max, set, verb;
       if (index == null) {
         index = 0;
       }
@@ -69,39 +69,33 @@
       verb = show != null ? 'add' : 'toggle';
       element.classList[verb]('visible');
       if (element.classList.contains('visible')) {
-        captions = element.querySelectorAll('.caption');
-        caption = element.querySelector("[microbox-caption=\"" + index + "\"]");
-        counts = element.querySelector('.microbox-counts');
-        images = element.querySelectorAll('img');
-        pager = element.querySelector('.microbox-pager');
-        pagerItems = pager.querySelectorAll('[microbox-trigger-index]');
-        next = element.querySelector('[microbox-trigger-next]');
-        prev = element.querySelector('[microbox-trigger-prev]');
-        _.each(images, function(img) {
+        components = set.components;
+        _.each(components.images, function(img) {
           return img.classList.remove('visible');
         });
-        images[index].classList.add('visible');
-        counts.innerHTML = "" + (index + 1) + "/" + set.images.length;
-        _.each(pagerItems, function(item) {
+        components.images[index].classList.add('visible');
+        components.counts.innerHTML = "" + (index + 1) + "/" + set.images.length;
+        _.each(components.pagerItems, function(item) {
           return item.classList.remove('active');
         });
-        pagerItems[index].classList.add('active');
+        components.pagerItems[index].classList.add('active');
         if (index === 0) {
-          prev.classList.add('disabled');
+          components.prev.classList.add('disabled');
         } else {
-          prev.classList.remove('disabled');
+          components.prev.classList.remove('disabled');
         }
         if (index === max) {
-          next.classList.add('disabled');
+          components.next.classList.add('disabled');
         } else {
-          next.classList.remove('disabled');
+          components.next.classList.remove('disabled');
         }
-        _.each(captions, function(item) {
+        _.each(components.captions, function(item) {
           item.classList.add('hide');
           item.classList.remove('active');
-          item.style.top = '';
-          return pager.style.bottom = '';
+          return item.style.top = '';
         });
+        components.pager.style.bottom = '';
+        caption = components.captions[index];
         if (caption) {
           caption.classList.remove('hide');
         }
@@ -156,7 +150,21 @@
       element.className = 'microbox';
       element.innerHTML = html;
       document.body.appendChild(element);
-      return model.set("sets/" + id + "/element", element);
+      set = model.get("sets/" + id);
+      set.element = element;
+      set.components = {
+        captions: [],
+        counts: element.querySelector('.microbox-counts'),
+        images: element.querySelectorAll('img'),
+        pager: element.querySelector('.microbox-pager'),
+        pagerItems: element.querySelectorAll('[microbox-trigger-index]'),
+        next: element.querySelector('[microbox-trigger-next]'),
+        prev: element.querySelector('[microbox-trigger-prev]')
+      };
+      return _.each(element.querySelectorAll('[microbox-caption]'), function(item) {
+        id = +item.getAttribute('microbox-caption');
+        return set.components.captions[id] = item;
+      });
     });
     return document.addEventListener('click', function(e) {
       var caption, height, index, newTop, pager, screen, set, target, top;

@@ -97,64 +97,60 @@ microbox = do ->
 		# if visible, show the right image
 		if element.classList.contains 'visible'
 
-			captions = element.querySelectorAll '.caption'
-			caption = element.querySelector "[microbox-caption=\"#{index}\"]"
-			counts = element.querySelector '.microbox-counts'
-			images = element.querySelectorAll 'img'
-			pager = element.querySelector '.microbox-pager'
-			pagerItems = pager.querySelectorAll '[microbox-trigger-index]'
-			next = element.querySelector '[microbox-trigger-next]'
-			prev = element.querySelector '[microbox-trigger-prev]'
+			components = set.components
 
 			#
 			# image
 			#
 
 			# clear active
-			_.each images, (img) ->
+			_.each components.images, (img) ->
 				img.classList.remove 'visible'
 
 			# set active image
-			images[index].classList.add 'visible'
+			components.images[index].classList.add 'visible'
 
 			#
 			# pager
 			#
 
 			# update pager text
-			counts.innerHTML = "#{index+1}/#{set.images.length}"
+			components.counts.innerHTML = "#{index+1}/#{set.images.length}"
 
 			# deactivate pager items
-			_.each pagerItems, (item) ->
+			_.each components.pagerItems, (item) ->
 				item.classList.remove 'active'
 
 			# activate pager item
-			pagerItems[index].classList.add 'active'
+			components.pagerItems[index].classList.add 'active'
 			
 			# deactivate "<" arrow?
 			if index is 0
-				prev.classList.add 'disabled'
+				components.prev.classList.add 'disabled'
 			else
-				prev.classList.remove 'disabled'
+				components.prev.classList.remove 'disabled'
 			
 			# deactivate ">" arrow?
 			if index is max
-				next.classList.add 'disabled'
+				components.next.classList.add 'disabled'
 			else
-				next.classList.remove 'disabled'
+				components.next.classList.remove 'disabled'
 
 			#
 			# caption
 			#
 
 			# hide and deactivate all captions
-			_.each captions, (item) ->
+			_.each components.captions, (item) ->
 				item.classList.add 'hide'
 				item.classList.remove 'active'
 				item.style.top = ''
-				pager.style.bottom = ''
+			
+			# reset pager
+			components.pager.style.bottom = ''
 
 			# activate this caption
+			caption = components.captions[index]
 			if caption
 				caption.classList.remove 'hide'
 
@@ -228,7 +224,22 @@ microbox = do ->
 		document.body.appendChild element
 
 		# store in model
-		model.set "sets/#{id}/element", element
+		set = model.get "sets/#{id}"
+
+		# cache elements
+		set.element = element
+		set.components =
+			captions: []
+			counts: element.querySelector '.microbox-counts'
+			images: element.querySelectorAll 'img'
+			pager: element.querySelector '.microbox-pager'
+			pagerItems: element.querySelectorAll '[microbox-trigger-index]'
+			next: element.querySelector '[microbox-trigger-next]'
+			prev: element.querySelector '[microbox-trigger-prev]'
+
+		_.each (element.querySelectorAll '[microbox-caption]'), (item) ->
+			id = +item.getAttribute 'microbox-caption'
+			set.components.captions[id] = item
 
 	# hide lightboxes when clicking outside of them
 	document.addEventListener 'click', (e) ->
