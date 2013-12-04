@@ -141,3 +141,25 @@ $pager-active = darken($pager-hover, 8%)
 	margin-left 0
 	margin-right -2px
 	transform rotate(180deg)
+
+// handheld
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 568px)
+	
+	.microbox-counts
+		display none !important
+
+	.caption .microbox-button
+		right 0
+
+	.microbox-close
+		right 0
+		top 0
+
+	.microbox-pager
+		bottom 0
+		left 0
+
+	[microbox-trigger-next]
+	[microbox-trigger-prev]
+		line-height 41px !important

@@ -64,3 +64,12 @@ Microbox is built with several micro-dependencies:
 - Chrome
 - Firefox 24
 - Safari 7
+- Opera 17
+- iPad / iOS7
+- iPhone / iOS7
+
+## Todo
+
+- Unit & layout tests
+- Improve performance on old iOS/Droid
+- Add swipe support when device supports touch
