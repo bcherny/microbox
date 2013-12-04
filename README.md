@@ -5,7 +5,7 @@ microbox - the very tiny lightbox
 
 ## Demo
 
-http://eighttrackmind.github.io/microbox
+http://eighttrackmind.github.io/microbox/demo
 
 ## Features
 
