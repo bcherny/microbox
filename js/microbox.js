@@ -165,10 +165,11 @@
       });
     });
     return document.addEventListener('click', function(e) {
-      var caption, height, index, newTop, pager, screen, set, target, top;
+      var caption, height, index, newTop, pager, screen, set, target, top, visible;
       target = e.target;
       if ((_.classList.contains(target, 'inner')) || (target.hasAttribute('microbox-close'))) {
-        _.classList.remove(model.get('visible'), 'visible');
+        visible = model.get('visible');
+        _.classList.remove(visible, 'visible');
         return model.set('visible', null);
       } else if ((target.hasAttribute('microbox-trigger-index')) && (target.hasAttribute('microbox-trigger-set'))) {
         set = target.getAttribute('microbox-trigger-set');

@@ -245,9 +245,9 @@ microbox = do ->
 
 		# if clicked off a lightbox or clicked on the (x) while it is open, hide the lightbox
 		if (_.classList.contains target, 'inner') or (target.hasAttribute 'microbox-close')
-
-			_.classList.remove (model.get 'visible'), 'visible'
-
+			
+			visible = model.get 'visible'
+			_.classList.remove visible, 'visible'
 			model.set 'visible', null
 
 		# trigger set @ index
