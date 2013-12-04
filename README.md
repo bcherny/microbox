@@ -14,7 +14,7 @@ microbox - the very tiny lightbox
 
 ## Usage (non-AMD)
 
-1. Include the script and dependencies somewhere on your page (preferably right before `</body>`):
+Include the script and dependencies somewhere on your page (preferably right before `</body>`):
 
 ```html
 ...
@@ -25,7 +25,7 @@ microbox - the very tiny lightbox
 </html>
 ```
 
-2. Include the stylesheet somewhere in the `<head>` of your page (preferably right before `</head>`):
+Include the stylesheet somewhere in the `<head>` of your page (preferably right before `</head>`):
 
 ```html
 ...
@@ -34,7 +34,7 @@ microbox - the very tiny lightbox
 ...
 ```
 
-3. Add a `rel="lightbox"` attribute to any images you want to lightbox:
+Add a `rel="lightbox"` attribute to any images you want to lightbox:
 
 ```html
 <a href="images/fullSizedImage.png" rel="lightbox">
