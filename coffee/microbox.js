@@ -70,31 +70,31 @@ microbox = (function() {
     }
     index = bound(+index, 0, max);
     verb = show != null ? 'add' : 'toggle';
-    element.classList[verb]('visible');
-    if (element.classList.contains('visible')) {
+    _.classList[verb](element, 'visible');
+    if (_.classList.contains(element, 'visible')) {
       components = set.components;
       _.each(components.images, function(item) {
-        return item.classList.remove('visible');
+        return _.classList.remove(item, 'visible');
       });
-      components.images[index].classList.add('visible');
+      _.classList.add(components.images[index], 'visible');
       components.counts.innerHTML = "" + (index + 1) + "/" + set.images.length;
       _.each(components.pagerItems, function(item) {
-        return item.classList.remove('active');
+        return _.classList.remove(item, 'active');
       });
-      components.pagerItems[index].classList.add('active');
+      _.classList.add(components.pagerItems[index], 'active');
       verb = index === 0 ? 'add' : 'remove';
-      components.prev.classList[verb]('disabled');
+      _.classList[verb](components.prev, 'disabled');
       verb = index === max ? 'add' : 'remove';
-      components.next.classList[verb]('disabled');
+      _.classList[verb](components.next, 'disabled');
       _.each(components.captions, function(item) {
-        item.classList.add('hide');
-        item.classList.remove('active');
+        _.classList.add(item, 'hide');
+        _.classList.remove(item, 'active');
         return item.style.top = '';
       });
       components.pager.style.bottom = '';
       caption = components.captions[index];
       if (caption) {
-        caption.classList.remove('hide');
+        _.classList.remove(caption, 'hide');
       }
       set.active = index;
       return model.set('visible', element);
@@ -166,8 +166,8 @@ microbox = (function() {
   return document.addEventListener('click', function(e) {
     var caption, height, index, newTop, pager, screen, set, target, top;
     target = e.target;
-    if ((target.classList.contains('inner')) || (target.hasAttribute('microbox-close'))) {
-      (model.get('visible')).classList.remove('visible');
+    if ((_.classList.contains(target, 'inner')) || (target.hasAttribute('microbox-close'))) {
+      _.classList.remove(model.get('visible'), 'visible');
       return model.set('visible', null);
     } else if ((target.hasAttribute('microbox-trigger-index')) && (target.hasAttribute('microbox-trigger-set'))) {
       set = target.getAttribute('microbox-trigger-set');
@@ -191,10 +191,10 @@ microbox = (function() {
       if ((!top) || ((parseInt(top, 10)) === screen)) {
         newTop = screen - height;
         caption.style.top = "" + newTop + "px";
-        caption.classList.add('active');
+        _.classList.add(caption, 'active');
         return pager.style.bottom = "" + (height + 10) + "px";
       } else {
-        caption.classList.remove('active');
+        _.classList.remove(caption, 'active');
         caption.style.top = '';
         return pager.style.bottom = '';
       }

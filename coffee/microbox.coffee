@@ -93,10 +93,10 @@ microbox = do ->
 
 		# toggle visibility
 		verb = if show? then 'add' else 'toggle'
-		element.classList[verb] 'visible'
+		_.classList[verb] element, 'visible'
 
 		# if visible, show the right image
-		if element.classList.contains 'visible'
+		if _.classList.contains element, 'visible'
 
 			components = set.components
 
@@ -106,10 +106,10 @@ microbox = do ->
 
 			# clear active
 			_.each components.images, (item) ->
-				item.classList.remove 'visible'
+				_.classList.remove item, 'visible'
 
 			# set active image
-			components.images[index].classList.add 'visible'
+			_.classList.add components.images[index], 'visible'
 
 			#
 			# pager
@@ -120,18 +120,18 @@ microbox = do ->
 
 			# deactivate pager items
 			_.each components.pagerItems, (item) ->
-				item.classList.remove 'active'
+				_.classList.remove item, 'active'
 
 			# activate pager item
-			components.pagerItems[index].classList.add 'active'
+			_.classList.add components.pagerItems[index], 'active'
 			
 			# deactivate "<" arrow?
 			verb = if index is 0 then 'add' else 'remove'
-			components.prev.classList[verb] 'disabled'
+			_.classList[verb] components.prev, 'disabled'
 			
 			# deactivate ">" arrow?
 			verb = if index is max then 'add' else 'remove'
-			components.next.classList[verb] 'disabled'
+			_.classList[verb] components.next, 'disabled'
 
 			#
 			# caption
@@ -139,8 +139,8 @@ microbox = do ->
 
 			# hide and deactivate all captions
 			_.each components.captions, (item) ->
-				item.classList.add 'hide'
-				item.classList.remove 'active'
+				_.classList.add item, 'hide'
+				_.classList.remove item, 'active'
 				item.style.top = ''
 			
 			# reset pager
@@ -149,7 +149,7 @@ microbox = do ->
 			# activate this caption
 			caption = components.captions[index]
 			if caption
-				caption.classList.remove 'hide'
+				_.classList.remove caption, 'hide'
 
 			#
 			# model
@@ -244,9 +244,9 @@ microbox = do ->
 		target = e.target
 
 		# if clicked off a lightbox or clicked on the (x) while it is open, hide the lightbox
-		if (target.classList.contains 'inner') or (target.hasAttribute 'microbox-close')
+		if (_.classList.contains target, 'inner') or (target.hasAttribute 'microbox-close')
 
-			(model.get 'visible').classList.remove 'visible'
+			_.classList.remove (model.get 'visible'), 'visible'
 
 			model.set 'visible', null
 
@@ -286,7 +286,7 @@ microbox = do ->
 				# show caption
 				newTop = screen - height
 				caption.style.top = "#{newTop}px"
-				caption.classList.add 'active'
+				_.classList.add caption, 'active'
 
 				# move pager up
 				pager.style.bottom = "#{height + 10}px"
@@ -294,7 +294,7 @@ microbox = do ->
 			# hide it
 			else
 
-				caption.classList.remove 'active'
+				_.classList.remove caption, 'active'
 				caption.style.top = ''
 
 				# move pager down
