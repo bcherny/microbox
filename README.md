@@ -65,8 +65,9 @@ Microbox is built with several micro-dependencies:
 - Firefox 24
 - Safari 7
 - Opera 17
-- iPad / iOS7
-- iPhone / iOS7
+- Internet Explorer 9+
+- iPad (iOS7)
+- iPhone (iOS7)
 
 ## Todo
 
