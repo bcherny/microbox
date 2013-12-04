@@ -3,18 +3,39 @@
   "description": "The very tiny lightbox",
   "version": "3.0.0",
   "author": "Boris Cherny <boris@performancejs.com>",
+  "contributors": [
+    {
+      "name": "Boris Cherny",
+      "email": "boris@performancejs.com"
+    }
+  ],
+  "main": "microbox",
   "repository": {
     "type": "git",
     "url": "https://github.com/eighttrackmind/microbox"
   },
+  "license": "MIT",
+  "readmeFilename": "README.md",
   "devDependencies": {
     "grunt": "~0.4.1",
-    "grunt-cli": "0.1.7",
     "grunt-contrib-uglify": "~0.2.0",
-    "grunt-contrib-concat": "~0.3.0"
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-umd": "~1.3.0"
   },
   "dependencies": {
-    "umodel": "0.0.5",
+    "umodel": "0.0.x",
     "_": "git://github.com/eighttrackmind/_.git"
-  }
+  },
+  "keywords": [
+    "lightbox",
+    "image",
+    "img",
+    "slideshow",
+    "slide",
+    "show",
+    "clone",
+    "picture",
+    "photo"
+  ]
 }
