@@ -1,6 +1,12 @@
 microbox - the very tiny lightbox
 =================================
 
+![screenie](http://i.imgur.com/9TSwdIG.jpg)
+
+## Demo
+
+http://eighttrackmind.github.io/microbox
+
 ## Features
 
 - Tiny
