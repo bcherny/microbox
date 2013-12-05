@@ -93,10 +93,10 @@ microbox = do ->
 
 		# toggle visibility
 		verb = if show? then 'add' else 'toggle'
-		_.classList[verb] element, 'visible'
+		u.classList[verb] element, 'visible'
 
 		# if visible, show the right image
-		if _.classList.contains element, 'visible'
+		if u.classList.contains element, 'visible'
 
 			components = set.components
 
@@ -105,11 +105,11 @@ microbox = do ->
 			#
 
 			# clear active
-			_.each components.images, (item) ->
-				_.classList.remove item, 'visible'
+			u.each components.images, (item) ->
+				u.classList.remove item, 'visible'
 
 			# set active image
-			_.classList.add components.images[index], 'visible'
+			u.classList.add components.images[index], 'visible'
 
 			#
 			# pager
@@ -119,28 +119,28 @@ microbox = do ->
 			components.counts.innerHTML = "#{index+1}/#{set.images.length}"
 
 			# deactivate pager items
-			_.each components.pagerItems, (item) ->
-				_.classList.remove item, 'active'
+			u.each components.pagerItems, (item) ->
+				u.classList.remove item, 'active'
 
 			# activate pager item
-			_.classList.add components.pagerItems[index], 'active'
+			u.classList.add components.pagerItems[index], 'active'
 			
 			# deactivate "<" arrow?
 			verb = if index is 0 then 'add' else 'remove'
-			_.classList[verb] components.prev, 'disabled'
+			u.classList[verb] components.prev, 'disabled'
 			
 			# deactivate ">" arrow?
 			verb = if index is max then 'add' else 'remove'
-			_.classList[verb] components.next, 'disabled'
+			u.classList[verb] components.next, 'disabled'
 
 			#
 			# caption
 			#
 
 			# hide and deactivate all captions
-			_.each components.captions, (item) ->
-				_.classList.add item, 'hide'
-				_.classList.remove item, 'active'
+			u.each components.captions, (item) ->
+				u.classList.add item, 'hide'
+				u.classList.remove item, 'active'
 				item.style.top = ''
 			
 			# reset pager
@@ -149,7 +149,7 @@ microbox = do ->
 			# activate this caption
 			caption = components.captions[index]
 			if caption
-				_.classList.remove caption, 'hide'
+				u.classList.remove caption, 'hide'
 
 			#
 			# model
@@ -177,7 +177,7 @@ microbox = do ->
 	triggers = document.querySelectorAll 'a[href][rel^="lightbox"]'
 
 	# initialize triggers
-	_.each triggers, (trigger) ->
+	u.each triggers, (trigger) ->
 
 		href = trigger.getAttribute 'href'
 		rel = trigger.getAttribute 'rel'
@@ -212,7 +212,7 @@ microbox = do ->
 		attach id, trigger
 
 	# build lightboxes
-	_.each (model.get 'sets'), (set, id) ->
+	u.each (model.get 'sets'), (set, id) ->
 
 		html = template set, id
 		element = document.createElement 'div'
@@ -234,7 +234,7 @@ microbox = do ->
 			next: element.querySelector '[microbox-trigger-next]'
 			prev: element.querySelector '[microbox-trigger-prev]'
 
-		_.each (element.querySelectorAll '[microbox-caption]'), (item) ->
+		u.each (element.querySelectorAll '[microbox-caption]'), (item) ->
 			id = +item.getAttribute 'microbox-caption'
 			set.components.captions[id] = item
 
@@ -244,10 +244,10 @@ microbox = do ->
 		target = e.target
 
 		# if clicked off a lightbox or clicked on the (x) while it is open, hide the lightbox
-		if (_.classList.contains target, 'inner') or (target.hasAttribute 'microbox-close')
+		if (u.classList.contains target, 'inner') or (target.hasAttribute 'microbox-close')
 			
 			visible = model.get 'visible'
-			_.classList.remove visible, 'visible'
+			u.classList.remove visible, 'visible'
 			model.set 'visible', null
 
 		# trigger set @ index
@@ -286,7 +286,7 @@ microbox = do ->
 				# show caption
 				newTop = screen - height
 				caption.style.top = "#{newTop}px"
-				_.classList.add caption, 'active'
+				u.classList.add caption, 'active'
 
 				# move pager up
 				pager.style.bottom = "#{height + 10}px"
@@ -294,7 +294,7 @@ microbox = do ->
 			# hide it
 			else
 
-				_.classList.remove caption, 'active'
+				u.classList.remove caption, 'active'
 				caption.style.top = ''
 
 				# move pager down
