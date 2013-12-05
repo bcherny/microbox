@@ -44,6 +44,18 @@ return the first key in an object (order not guaranteed, as objects are automati
 
 			return id for id of collection
 
+## u.keys
+return an object's keys
+
+		keys: (object) ->
+
+			keys = []
+
+			for own key of object
+				keys.push key
+
+			keys
+
 ## u.classList
 manipulate `Element.classList` in an Internet Explorer-compatible way
 

@@ -70,3 +70,14 @@ exports.one = (test) ->
 	test.equal (u.one items), 'one'
 
 	do test.done
+
+exports.keys = (test) ->
+
+	items =
+		one: 'foo'
+		two: 'bar'
+		tre: 'baz'
+
+	test.deepEqual (u.keys items), ['one', 'two', 'tre']
+
+	do test.done

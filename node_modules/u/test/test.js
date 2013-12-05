@@ -73,3 +73,14 @@ exports.one = function(test) {
   test.equal(u.one(items), 'one');
   return test.done();
 };
+
+exports.keys = function(test) {
+  var items;
+  items = {
+    one: 'foo',
+    two: 'bar',
+    tre: 'baz'
+  };
+  test.deepEqual(u.keys(items), ['one', 'two', 'tre']);
+  return test.done();
+};

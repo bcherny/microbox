@@ -55,6 +55,15 @@ u = {
       return id;
     }
   },
+  keys: function(object) {
+    var key, keys;
+    keys = [];
+    for (key in object) {
+      if (!__hasProp.call(object, key)) continue;
+      keys.push(key);
+    }
+    return keys;
+  },
   classList: {
     add: function(element, className) {
       if (!u.classList.contains(element, className)) {
