@@ -1,14 +1,14 @@
 (function(root, factory) {
     if(typeof exports === 'object') {
-        module.exports = factory(require('umodel'), require('_'));
+        module.exports = factory(require('umodel'), require('u'));
     }
     else if(typeof define === 'function' && define.amd) {
-        define('microbox', ['umodel', '_'], factory);
+        define('microbox', ['umodel', 'u'], factory);
     }
     else {
-        root['microbox'] = factory(root.umodel, root._);
+        root['microbox'] = factory(root.umodel, root.u);
     }
-}(this, function(umodel, _) {
+}(this, function(umodel, u) {
 var bound, microbox, template;
 
 template = function(data, id) {
@@ -51,7 +51,8 @@ bound = function(thing, min, max) {
 };
 
 microbox = (function() {
-  var attach, counter, getId, model, toggle, triggers;
+  var attach, counter, getId, init, model, toggle,
+    _this = this;
   counter = -1;
   model = new umodel({
     visible: null,
@@ -80,31 +81,31 @@ microbox = (function() {
     }
     index = bound(+index, 0, max);
     verb = show != null ? 'add' : 'toggle';
-    _.classList[verb](element, 'visible');
-    if (_.classList.contains(element, 'visible')) {
+    u.classList[verb](element, 'visible');
+    if (u.classList.contains(element, 'visible')) {
       components = set.components;
-      _.each(components.images, function(item) {
-        return _.classList.remove(item, 'visible');
+      u.each(components.images, function(item) {
+        return u.classList.remove(item, 'visible');
       });
-      _.classList.add(components.images[index], 'visible');
+      u.classList.add(components.images[index], 'visible');
       components.counts.innerHTML = "" + (index + 1) + "/" + set.images.length;
-      _.each(components.pagerItems, function(item) {
-        return _.classList.remove(item, 'active');
+      u.each(components.pagerItems, function(item) {
+        return u.classList.remove(item, 'active');
       });
-      _.classList.add(components.pagerItems[index], 'active');
+      u.classList.add(components.pagerItems[index], 'active');
       verb = index === 0 ? 'add' : 'remove';
-      _.classList[verb](components.prev, 'disabled');
+      u.classList[verb](components.prev, 'disabled');
       verb = index === max ? 'add' : 'remove';
-      _.classList[verb](components.next, 'disabled');
-      _.each(components.captions, function(item) {
-        _.classList.add(item, 'hide');
-        _.classList.remove(item, 'active');
+      u.classList[verb](components.next, 'disabled');
+      u.each(components.captions, function(item) {
+        u.classList.add(item, 'hide');
+        u.classList.remove(item, 'active');
         return item.style.top = '';
       });
       components.pager.style.bottom = '';
       caption = components.captions[index];
       if (caption) {
-        _.classList.remove(caption, 'hide');
+        u.classList.remove(caption, 'hide');
       }
       set.active = index;
       return model.set('visible', element);
@@ -121,64 +122,67 @@ microbox = (function() {
       return toggle(id, index);
     });
   };
-  triggers = document.querySelectorAll('a[href][rel^="lightbox"]');
-  _.each(triggers, function(trigger) {
-    var href, id, parts, rel, set, title;
-    href = trigger.getAttribute('href');
-    rel = trigger.getAttribute('rel');
-    title = (trigger.getAttribute('title')) || '';
-    parts = rel.split('[');
-    if (parts[1]) {
-      id = parts[1].slice(0, -1);
-    } else {
-      id = getId();
-    }
-    set = model.get("sets/" + id);
-    if (set) {
-      if ((set.triggers.indexOf(trigger)) < 0) {
-        set.captions.push(title);
-        set.images.push(href);
-        set.triggers.push(trigger);
+  init = function() {
+    var triggers;
+    triggers = document.querySelectorAll('a[href][rel^="lightbox"]');
+    u.each(triggers, function(trigger) {
+      var href, id, parts, rel, set, title;
+      href = trigger.getAttribute('href');
+      rel = trigger.getAttribute('rel');
+      title = (trigger.getAttribute('title')) || '';
+      parts = rel.split('[');
+      if (parts[1]) {
+        id = parts[1].slice(0, -1);
+      } else {
+        id = getId();
       }
-    } else {
-      model.set("sets/" + id, {
-        captions: [title],
-        images: [href],
-        triggers: [trigger],
-        active: 0
-      });
-    }
-    return attach(id, trigger);
-  });
-  _.each(model.get('sets'), function(set, id) {
-    var element, html;
-    html = template(set, id);
-    element = document.createElement('div');
-    element.className = 'microbox';
-    element.innerHTML = html;
-    document.body.appendChild(element);
-    set = model.get("sets/" + id);
-    set.element = element;
-    set.components = {
-      captions: [],
-      counts: element.querySelector('.microbox-counts'),
-      images: element.querySelectorAll('img'),
-      pager: element.querySelector('.microbox-pager'),
-      pagerItems: element.querySelectorAll('[microbox-trigger-index]'),
-      next: element.querySelector('[microbox-trigger-next]'),
-      prev: element.querySelector('[microbox-trigger-prev]')
-    };
-    return _.each(element.querySelectorAll('[microbox-caption]'), function(item) {
-      id = +item.getAttribute('microbox-caption');
-      return set.components.captions[id] = item;
+      set = model.get("sets/" + id);
+      if (set) {
+        if ((set.triggers.indexOf(trigger)) < 0) {
+          set.captions.push(title);
+          set.images.push(href);
+          set.triggers.push(trigger);
+        }
+      } else {
+        model.set("sets/" + id, {
+          captions: [title],
+          images: [href],
+          triggers: [trigger],
+          active: 0
+        });
+      }
+      return attach(id, trigger);
     });
-  });
-  return document.addEventListener('click', function(e) {
+    return u.each(model.get('sets'), function(set, id) {
+      var element, html;
+      html = template(set, id);
+      element = document.createElement('div');
+      element.className = 'microbox';
+      element.innerHTML = html;
+      document.body.appendChild(element);
+      set = model.get("sets/" + id);
+      set.element = element;
+      set.components = {
+        captions: [],
+        counts: element.querySelector('.microbox-counts'),
+        images: element.querySelectorAll('img'),
+        pager: element.querySelector('.microbox-pager'),
+        pagerItems: element.querySelectorAll('[microbox-trigger-index]'),
+        next: element.querySelector('[microbox-trigger-next]'),
+        prev: element.querySelector('[microbox-trigger-prev]')
+      };
+      return u.each(element.querySelectorAll('[microbox-caption]'), function(item) {
+        id = +item.getAttribute('microbox-caption');
+        return set.components.captions[id] = item;
+      });
+    });
+  };
+  document.addEventListener('click', function(e) {
     var caption, height, index, newTop, pager, screen, set, target, top, visible;
     target = e.target;
-    if ((_.classList.contains(target, 'inner')) || (target.hasAttribute('microbox-close'))) {
+    if ((u.classList.contains(target, 'inner')) || (target.hasAttribute('microbox-close'))) {
       visible = model.get('visible');
-      _.classList.remove(visible, 'visible');
+      u.classList.remove(visible, 'visible');
       return model.set('visible', null);
     } else if ((target.hasAttribute('microbox-trigger-index')) && (target.hasAttribute('microbox-trigger-set'))) {
       set = target.getAttribute('microbox-trigger-set');
@@ -202,15 +206,19 @@ microbox = (function() {
       if ((!top) || ((parseInt(top, 10)) === screen)) {
         newTop = screen - height;
         caption.style.top = "" + newTop + "px";
-        _.classList.add(caption, 'active');
+        u.classList.add(caption, 'active');
         return pager.style.bottom = "" + (height + 10) + "px";
       } else {
-        _.classList.remove(caption, 'active');
+        u.classList.remove(caption, 'active');
         caption.style.top = '';
         return pager.style.bottom = '';
       }
     }
   });
+  init();
+  return {
+    init: init
+  };
 })();
 
     return microbox;
