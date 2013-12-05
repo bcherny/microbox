@@ -1,3 +1,7 @@
+#
+# helpers
+#
+
 template = (data, id) ->
 
 	# images
@@ -54,6 +58,17 @@ bound = (thing, min, max) ->
 		thing = max
 	thing
 
+keys =
+	27: 'esc'
+	37: 'left'
+	39: 'right'
+	65: 'a'
+	68: 'd'
+
+#
+# microbox
+#
+
 microbox = do ->
 
 	counter = -1
@@ -91,8 +106,15 @@ microbox = do ->
 		# coerce index to Number, validate index
 		index = bound +index, 0, max
 
+		# set verb
+		if show is true
+			verb = 'add'
+		else if show is false
+			verb = 'remove'
+		else
+			verb = 'toggle'
+
 		# toggle visibility
-		verb = if show? then 'add' else 'toggle'
 		u.classList[verb] element, 'visible'
 
 		# if visible, show the right image
@@ -159,7 +181,7 @@ microbox = do ->
 			set.active = index
 
 			# set active set in model
-			model.set 'visible', element
+			model.set 'visible', set
 
 		else
 
@@ -209,6 +231,7 @@ microbox = do ->
 					images: [href]
 					triggers: [trigger]
 					active: 0
+					id: id
 
 			# attach click event
 			attach id, trigger
@@ -249,7 +272,7 @@ microbox = do ->
 		if (u.classList.contains target, 'inner') or (target.hasAttribute 'microbox-close')
 			
 			visible = model.get 'visible'
-			u.classList.remove visible, 'visible'
+			u.classList.remove visible.element, 'visible'
 			model.set 'visible', null
 
 		# trigger set @ index
@@ -301,6 +324,28 @@ microbox = do ->
 
 				# move pager down
 				pager.style.bottom = ''
+
+	# key bindings
+	window.addEventListener 'keydown', (e) ->
+
+		key = keys[e.keyCode]
+		set = model.get 'visible'
+
+		if key and set
+
+			id = set.id
+			index = model.get "sets/#{id}/active"
+
+			switch key
+
+				when 'esc'
+					toggle set.id, null, false
+
+				when 'left', 'a'
+					toggle set.id, --index, true
+
+				when 'right', 'd'
+					toggle set.id, ++index, true
 
 	# initialize
 	do init
