@@ -238,7 +238,15 @@ microbox = (function() {
     index = model.get("sets/" + id + "/active");
     return toggle(id, null, false);
   };
-  show = function() {};
+  show = function(id) {
+    var available;
+    if (model.get("sets/" + id)) {
+      return toggle(id, null, true);
+    } else {
+      available = u.keys(model.get("sets"));
+      return console.error("Set with ID '" + id + "' does not exist. Available sets: ", available);
+    }
+  };
   next = function() {
     var id, index;
     id = (model.get('visible')).id;
@@ -253,6 +261,10 @@ microbox = (function() {
   };
   init();
   return {
-    init: init
+    init: init,
+    next: next,
+    prev: prev,
+    hide: hide,
+    show: show
   };
 })();

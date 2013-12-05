@@ -342,7 +342,12 @@ microbox = do ->
 		index = model.get "sets/#{id}/active"
 		toggle id, null, false
 
-	show = ->
+	show = (id) ->
+		if model.get "sets/#{id}"
+			toggle id, null, true
+		else
+			available = u.keys model.get "sets"
+			console.error "Set with ID '#{id}' does not exist. Available sets: ", available
 
 	next = ->
 		id = (model.get 'visible').id
@@ -360,4 +365,8 @@ microbox = do ->
 	# return
 	{
 		init: init
+		next: next
+		prev: prev
+		hide: hide
+		show: show
 	}
