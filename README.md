@@ -102,11 +102,11 @@ microbox.
 
 | command	| arguments					| what do												|
 |-----------|---------------------------|-------------------------------------------------------|
-| `init`	| -							| scan the DOM and initialize any uninitialized triggers|
-| `show`	| {String|Number} set id	| show lightbox with the given ID						|
-| `hide`	| -							| hide lightbox											|
-| `prev`	| -							| previous slide										|
-| `next`	| -							| next slide											|
+| `init()`	| -							| scan the DOM and initialize any uninitialized triggers|
+| `show()`	| {String or Number} id		| show lightbox with the given set ID					|
+| `hide()`	| -							| hide lightbox											|
+| `prev()`	| -							| previous slide										|
+| `next()`	| -							| next slide											|
 
 ## Tested on
 
