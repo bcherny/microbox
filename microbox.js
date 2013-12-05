@@ -248,16 +248,26 @@ microbox = (function() {
     }
   };
   next = function() {
-    var id, index;
-    id = (model.get('visible')).id;
-    index = model.get("sets/" + id + "/active");
-    return toggle(id, ++index, true);
+    var id, index, set;
+    set = model.get('visible');
+    if (set) {
+      id = set.id;
+      index = model.get("sets/" + id + "/active");
+      return toggle(id, ++index, true);
+    } else {
+      return console.error('microbox.next() can only be called when a set is visible');
+    }
   };
   prev = function() {
-    var id, index;
-    id = (model.get('visible')).id;
-    index = model.get("sets/" + id + "/active");
-    return toggle(id, --index, true);
+    var id, index, set;
+    set = model.get('visible');
+    if (set) {
+      id = set.id;
+      index = model.get("sets/" + id + "/active");
+      return toggle(id, --index, true);
+    } else {
+      return console.error('microbox.prev() can only be called when a set is visible');
+    }
   };
   init();
   return {

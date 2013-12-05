@@ -350,14 +350,26 @@ microbox = do ->
 			console.error "Set with ID '#{id}' does not exist. Available sets: ", available
 
 	next = ->
-		id = (model.get 'visible').id
-		index = model.get "sets/#{id}/active"
-		toggle id, ++index, true
+		set = model.get 'visible'
+
+		if set
+			id = set.id
+			index = model.get "sets/#{id}/active"
+			toggle id, ++index, true
+
+		else
+			console.error 'microbox.next() can only be called when a set is visible'
 
 	prev = ->
-		id = (model.get 'visible').id
-		index = model.get "sets/#{id}/active"
-		toggle id, --index, true
+		set = model.get 'visible'
+
+		if set
+			id = set.id
+			index = model.get "sets/#{id}/active"
+			toggle id, --index, true
+
+		else
+			console.error 'microbox.prev() can only be called when a set is visible'
 
 	# initialize
 	do init
