@@ -12,6 +12,10 @@ http://eighttrackmind.github.io/microbox/demo
 - Tiny
 - Fast
 - API compatible with [lightbox.js](http://lokeshdhakar.com/projects/lightbox2/)
+- Caption, album support
+- Keyboard bindings
+- JavaScript API
+- Compatible with AMD, CommonJS, and browser globals
 
 ## Dependencies
 
@@ -82,9 +86,17 @@ microbox.init()
 
 *Note:* This will skip over any elements that are already initialized. If you changed a trigger's `href` or `rel` attribute dynamically after microbox is already initialized, you'll need to generate a brand new element so microbox doesn't skip over it.
 
+## Key bindings
+
+| key			| what do			|
+|---------------|-------------------|
+| [esc]			| close lightbox	|
+| [←] or [a]	| previous slide	|
+| [→] or [d]	| next slide		|
+
 ## API
 
-```coffee
+```js
 microbox.
 ```
 
