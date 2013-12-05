@@ -49,7 +49,7 @@ keys = {
 };
 
 microbox = (function() {
-  var attach, counter, getId, init, model, toggle,
+  var attach, counter, getId, hide, init, model, next, prev, show, toggle,
     _this = this;
   counter = -1;
   model = new umodel({
@@ -229,16 +229,35 @@ microbox = (function() {
       index = model.get("sets/" + id + "/active");
       switch (key) {
         case 'esc':
-          return toggle(set.id, null, false);
+          return hide();
         case 'left':
         case 'a':
-          return toggle(set.id, --index, true);
+          return prev();
         case 'right':
         case 'd':
-          return toggle(set.id, ++index, true);
+          return next();
       }
     }
   });
+  hide = function() {
+    var id, index;
+    id = (model.get('visible')).id;
+    index = model.get("sets/" + id + "/active");
+    return toggle(id, null, false);
+  };
+  show = function() {};
+  next = function() {
+    var id, index;
+    id = (model.get('visible')).id;
+    index = model.get("sets/" + id + "/active");
+    return toggle(id, ++index, true);
+  };
+  prev = function() {
+    var id, index;
+    id = (model.get('visible')).id;
+    index = model.get("sets/" + id + "/active");
+    return toggle(id, --index, true);
+  };
   init();
   return {
     init: init

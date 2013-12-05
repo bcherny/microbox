@@ -339,13 +339,30 @@ microbox = do ->
 			switch key
 
 				when 'esc'
-					toggle set.id, null, false
+					do hide
 
 				when 'left', 'a'
-					toggle set.id, --index, true
+					do prev
 
 				when 'right', 'd'
-					toggle set.id, ++index, true
+					do next
+
+	hide = ->
+		id = (model.get 'visible').id
+		index = model.get "sets/#{id}/active"
+		toggle id, null, false
+
+	show = ->
+
+	next = ->
+		id = (model.get 'visible').id
+		index = model.get "sets/#{id}/active"
+		toggle id, ++index, true
+
+	prev = ->
+		id = (model.get 'visible').id
+		index = model.get "sets/#{id}/active"
+		toggle id, --index, true
 
 	# initialize
 	do init
