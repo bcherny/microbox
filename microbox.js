@@ -9,7 +9,7 @@
         root['microbox'] = factory(root.umodel, root.u);
     }
 }(this, function(umodel, u) {
-var bound, microbox, template;
+var bound, keys, microbox, template;
 
 template = function(data, id) {
   var caption, captions, images, item, items, n, pager, src, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
@@ -50,8 +50,16 @@ bound = function(thing, min, max) {
   return thing;
 };
 
+keys = {
+  27: 'esc',
+  37: 'left',
+  39: 'right',
+  65: 'a',
+  68: 'd'
+};
+
 microbox = (function() {
-  var attach, counter, getId, init, model, toggle,
+  var attach, counter, getId, hide, init, model, next, prev, show, toggle,
     _this = this;
   counter = -1;
   model = new umodel({
@@ -80,7 +88,13 @@ microbox = (function() {
       return false;
     }
     index = bound(+index, 0, max);
-    verb = show != null ? 'add' : 'toggle';
+    if (show === true) {
+      verb = 'add';
+    } else if (show === false) {
+      verb = 'remove';
+    } else {
+      verb = 'toggle';
+    }
     u.classList[verb](element, 'visible');
     if (u.classList.contains(element, 'visible')) {
       components = set.components;
@@ -108,7 +122,7 @@ microbox = (function() {
         u.classList.remove(caption, 'hide');
       }
       set.active = index;
-      return model.set('visible', element);
+      return model.set('visible', set);
     } else {
       return model.set('visible', null);
     }
@@ -148,7 +162,8 @@ microbox = (function() {
           captions: [title],
           images: [href],
           triggers: [trigger],
-          active: 0
+          active: 0,
+          id: id
         });
       }
       return attach(id, trigger);
@@ -178,25 +193,20 @@ microbox = (function() {
     });
   };
   document.addEventListener('click', function(e) {
-    var caption, height, index, newTop, pager, screen, set, target, top, visible;
+    var caption, height, index, newTop, pager, screen, set, target, top;
     target = e.target;
     if ((u.classList.contains(target, 'inner')) || (target.hasAttribute('microbox-close'))) {
-      visible = model.get('visible');
-      u.classList.remove(visible, 'visible');
-      return model.set('visible', null);
+      return hide();
     } else if ((target.hasAttribute('microbox-trigger-index')) && (target.hasAttribute('microbox-trigger-set'))) {
       set = target.getAttribute('microbox-trigger-set');
       index = target.getAttribute('microbox-trigger-index');
       return toggle(set, index, true);
     } else if ((target.hasAttribute('microbox-trigger-next')) || (target.hasAttribute('microbox-trigger-prev'))) {
-      set = target.getAttribute('microbox-trigger-set');
-      index = model.get("sets/" + set + "/active");
       if (target.hasAttribute('microbox-trigger-next')) {
-        ++index;
+        return next();
       } else {
-        --index;
+        return prev();
       }
-      return toggle(set, index, true);
     } else if (target.hasAttribute('microbox-trigger-caption')) {
       caption = target.parentNode;
       height = caption.offsetHeight;
@@ -215,9 +225,72 @@ microbox = (function() {
       }
     }
   });
+  window.addEventListener('keydown', function(e) {
+    var key, set;
+    key = keys[e.keyCode];
+    set = model.get('visible');
+    if (key && set) {
+      switch (key) {
+        case 'esc':
+          return hide();
+        case 'left':
+        case 'a':
+          return prev();
+        case 'right':
+        case 'd':
+          return next();
+      }
+    }
+  });
+  hide = function() {
+    var id, index, set;
+    set = model.get('visible');
+    if (set) {
+      id = set.id;
+      index = model.get("sets/" + id + "/active");
+      return toggle(id, null, false);
+    } else {
+      return console.error('microbox.hide() can only be called when a set is visible');
+    }
+  };
+  show = function(id) {
+    var available;
+    if (model.get("sets/" + id)) {
+      return toggle(id, null, true);
+    } else {
+      available = u.keys(model.get("sets"));
+      return console.error("Set with ID '" + id + "' does not exist. Available sets: ", available);
+    }
+  };
+  next = function() {
+    var id, index, set;
+    set = model.get('visible');
+    if (set) {
+      id = set.id;
+      index = model.get("sets/" + id + "/active");
+      return toggle(id, ++index, true);
+    } else {
+      return console.error('microbox.next() can only be called when a set is visible');
+    }
+  };
+  prev = function() {
+    var id, index, set;
+    set = model.get('visible');
+    if (set) {
+      id = set.id;
+      index = model.get("sets/" + id + "/active");
+      return toggle(id, --index, true);
+    } else {
+      return console.error('microbox.prev() can only be called when a set is visible');
+    }
+  };
   init();
   return {
-    init: init
+    init: init,
+    next: next,
+    prev: prev,
+    hide: hide,
+    show: show
   };
 })();
 
