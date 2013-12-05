@@ -82,6 +82,20 @@ microbox.init()
 
 *Note:* This will skip over any elements that are already initialized. If you changed a trigger's `href` or `rel` attribute dynamically after microbox is already initialized, you'll need to generate a brand new element so microbox doesn't skip over it.
 
+## API
+
+```coffee
+microbox.
+```
+
+| command	| arguments					| what do												|
+|-----------|---------------------------|-------------------------------------------------------|
+| `init`	| -							| scan the DOM and initialize any uninitialized triggers|
+| `show`	| {String|Number} set id	| show lightbox with the given ID						|
+| `hide`	| -							| hide lightbox											|
+| `prev`	| -							| previous slide										|
+| `next`	| -							| next slide											|
+
 ## Tested on
 
 - Chrome
