@@ -16,7 +16,7 @@ http://eighttrackmind.github.io/microbox/demo
 ## Dependencies
 
 - umodel (https://github.com/eighttrackmind/umodel)
-- _ (https://github.com/eighttrackmind/_)
+- u (https://github.com/eighttrackmind/u)
 
 ## Usage (non-AMD)
 
@@ -24,7 +24,7 @@ Include the script and dependencies somewhere on your page (preferably right bef
 
 ```html
 ...
-<script src="_.js"></script>
+<script src="u.js"></script>
 <script src="umodel.js"></script>
 <script src="microbox.min.js"></script>
 </body>
