@@ -173,70 +173,72 @@ microbox = do ->
 			do e.preventDefault
 			toggle id, index
 
-	# collect triggers
-	triggers = document.querySelectorAll 'a[href][rel^="lightbox"]'
+	init = =>
 
-	# initialize triggers
-	u.each triggers, (trigger) ->
+		# collect triggers
+		triggers = document.querySelectorAll 'a[href][rel^="lightbox"]'
 
-		href = trigger.getAttribute 'href'
-		rel = trigger.getAttribute 'rel'
-		title = (trigger.getAttribute 'title') or ''
-		parts = rel.split '['
+		# initialize triggers
+		u.each triggers, (trigger) ->
 
-		# get set id
-		if parts[1]
-			id = parts[1].slice 0, -1
-		else
-			id = do getId
+			href = trigger.getAttribute 'href'
+			rel = trigger.getAttribute 'rel'
+			title = (trigger.getAttribute 'title') or ''
+			parts = rel.split '['
 
-		# add to model
-		set = model.get "sets/#{id}"
+			# get set id
+			if parts[1]
+				id = parts[1].slice 0, -1
+			else
+				id = do getId
 
-		if set
+			# add to model
+			set = model.get "sets/#{id}"
 
-			# prevent duplicates
-			if (set.triggers.indexOf trigger) < 0
-				set.captions.push title
-				set.images.push href
-				set.triggers.push trigger
+			if set
 
-		else
-			model.set "sets/#{id}",
-				captions: [title]
-				images: [href]
-				triggers: [trigger]
-				active: 0
+				# prevent duplicates
+				if (set.triggers.indexOf trigger) < 0
+					set.captions.push title
+					set.images.push href
+					set.triggers.push trigger
 
-		# attach click event
-		attach id, trigger
+			else
+				model.set "sets/#{id}",
+					captions: [title]
+					images: [href]
+					triggers: [trigger]
+					active: 0
 
-	# build lightboxes
-	u.each (model.get 'sets'), (set, id) ->
+			# attach click event
+			attach id, trigger
 
-		html = template set, id
-		element = document.createElement 'div'
-		element.className = 'microbox'
-		element.innerHTML = html
-		document.body.appendChild element
+		# build lightboxes
+		u.each (model.get 'sets'), (set, id) ->
 
-		# store in model
-		set = model.get "sets/#{id}"
+			html = template set, id
+			element = document.createElement 'div'
+			element.className = 'microbox'
+			element.innerHTML = html
+			document.body.appendChild element
 
-		# cache elements
-		set.element = element
-		set.components =
-			captions: []
-			counts: element.querySelector '.microbox-counts'
-			images: element.querySelectorAll 'img'
-			pager: element.querySelector '.microbox-pager'
-			pagerItems: element.querySelectorAll '[microbox-trigger-index]'
-			next: element.querySelector '[microbox-trigger-next]'
-			prev: element.querySelector '[microbox-trigger-prev]'
+			# store in model
+			set = model.get "sets/#{id}"
 
-		u.each (element.querySelectorAll '[microbox-caption]'), (item) ->
-			id = +item.getAttribute 'microbox-caption'
-			set.components.captions[id] = item
+			# cache elements
+			set.element = element
+			set.components =
+				captions: []
+				counts: element.querySelector '.microbox-counts'
+				images: element.querySelectorAll 'img'
+				pager: element.querySelector '.microbox-pager'
+				pagerItems: element.querySelectorAll '[microbox-trigger-index]'
+				next: element.querySelector '[microbox-trigger-next]'
+				prev: element.querySelector '[microbox-trigger-prev]'
+
+			u.each (element.querySelectorAll '[microbox-caption]'), (item) ->
+				id = +item.getAttribute 'microbox-caption'
+				set.components.captions[id] = item
 
 	# hide lightboxes when clicking outside of them
 	document.addEventListener 'click', (e) ->
@@ -299,3 +301,11 @@ microbox = do ->
 
 				# move pager down
 				pager.style.bottom = ''
+
+	# initialize
+	do init
+
+	# return
+	{
+		init: init
+	}
