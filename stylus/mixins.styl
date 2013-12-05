@@ -65,9 +65,15 @@ button()
 		gradient rgba(0,0,0,.3), rgba(0,0,0,.4)
 
 button-active()
-	border 2px solid rgba(255,255,255,.8)
-	color #fff
-	cursor default
+
+	&
+	&:active
+	&:hover
+		background rgba(0,0,0,.6)
+		box-shadow 0 0 0
+		color #fff
+		cursor default
+		font-weight bold
 
 button-disabled()
 

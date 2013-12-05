@@ -1,7 +1,7 @@
 microbox - the very tiny lightbox
 =================================
 
-![screenie](http://i.imgur.com/9TSwdIG.jpg)
+![screenie](http://i.imgur.com/9aOYMU3.jpg)
 
 ## Demo
 
