@@ -1,7 +1,7 @@
 {
   "name": "microbox",
   "description": "The very tiny lightbox",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "author": "Boris Cherny <boris@performancejs.com>",
   "contributors": [
     {
