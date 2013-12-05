@@ -233,10 +233,15 @@ microbox = (function() {
     }
   });
   hide = function() {
-    var id, index;
-    id = (model.get('visible')).id;
-    index = model.get("sets/" + id + "/active");
-    return toggle(id, null, false);
+    var id, index, set;
+    set = model.get('visible');
+    if (set) {
+      id = set.id;
+      index = model.get("sets/" + id + "/active");
+      return toggle(id, null, false);
+    } else {
+      return console.error('microbox.hide() can only be called when a set is visible');
+    }
   };
   show = function(id) {
     var available;

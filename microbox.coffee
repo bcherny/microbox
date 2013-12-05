@@ -338,13 +338,20 @@ microbox = do ->
 					do next
 
 	hide = ->
-		id = (model.get 'visible').id
-		index = model.get "sets/#{id}/active"
-		toggle id, null, false
+		set = model.get 'visible'
+
+		if set
+			id = set.id
+			index = model.get "sets/#{id}/active"
+			toggle id, null, false
+
+		else
+			console.error 'microbox.hide() can only be called when a set is visible'
 
 	show = (id) ->
 		if model.get "sets/#{id}"
 			toggle id, null, true
+			
 		else
 			available = u.keys model.get "sets"
 			console.error "Set with ID '#{id}' does not exist. Available sets: ", available
