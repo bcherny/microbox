@@ -183,25 +183,20 @@ microbox = (function() {
     });
   };
   document.addEventListener('click', function(e) {
-    var caption, height, index, newTop, pager, screen, set, target, top, visible;
+    var caption, height, index, newTop, pager, screen, set, target, top;
     target = e.target;
     if ((u.classList.contains(target, 'inner')) || (target.hasAttribute('microbox-close'))) {
-      visible = model.get('visible');
-      u.classList.remove(visible.element, 'visible');
-      return model.set('visible', null);
+      return hide();
     } else if ((target.hasAttribute('microbox-trigger-index')) && (target.hasAttribute('microbox-trigger-set'))) {
       set = target.getAttribute('microbox-trigger-set');
       index = target.getAttribute('microbox-trigger-index');
       return toggle(set, index, true);
     } else if ((target.hasAttribute('microbox-trigger-next')) || (target.hasAttribute('microbox-trigger-prev'))) {
-      set = target.getAttribute('microbox-trigger-set');
-      index = model.get("sets/" + set + "/active");
       if (target.hasAttribute('microbox-trigger-next')) {
-        ++index;
+        return next();
       } else {
-        --index;
+        return prev();
       }
-      return toggle(set, index, true);
     } else if (target.hasAttribute('microbox-trigger-caption')) {
       caption = target.parentNode;
       height = caption.offsetHeight;
@@ -221,12 +216,10 @@ microbox = (function() {
     }
   });
   window.addEventListener('keydown', function(e) {
-    var id, index, key, set;
+    var key, set;
     key = keys[e.keyCode];
     set = model.get('visible');
     if (key && set) {
-      id = set.id;
-      index = model.get("sets/" + id + "/active");
       switch (key) {
         case 'esc':
           return hide();

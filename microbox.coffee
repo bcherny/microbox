@@ -271,9 +271,7 @@ microbox = do ->
 		# if clicked off a lightbox or clicked on the (x) while it is open, hide the lightbox
 		if (u.classList.contains target, 'inner') or (target.hasAttribute 'microbox-close')
 			
-			visible = model.get 'visible'
-			u.classList.remove visible.element, 'visible'
-			model.set 'visible', null
+			do hide
 
 		# trigger set @ index
 		else if (target.hasAttribute 'microbox-trigger-index') and (target.hasAttribute 'microbox-trigger-set')
@@ -286,15 +284,10 @@ microbox = do ->
 		# trigger prev/next
 		else if (target.hasAttribute 'microbox-trigger-next') or (target.hasAttribute 'microbox-trigger-prev')
 
-			set = target.getAttribute 'microbox-trigger-set'
-			index = model.get "sets/#{set}/active"
-
 			if target.hasAttribute 'microbox-trigger-next'
-				++index
+				do next
 			else
-				--index
-
-			toggle set, index, true
+				do prev
 
 		# toggle caption
 		else if target.hasAttribute 'microbox-trigger-caption'
@@ -332,9 +325,6 @@ microbox = do ->
 		set = model.get 'visible'
 
 		if key and set
-
-			id = set.id
-			index = model.get "sets/#{id}/active"
 
 			switch key
 
